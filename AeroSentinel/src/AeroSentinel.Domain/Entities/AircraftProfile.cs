@@ -6,19 +6,18 @@ namespace AeroSentinel.Domain.Entities;
 
 public sealed class AircraftProfile
 {
-    // Unique Mode S / ADS-B transponder address
-    public string ICAO24 { get; private set; }
+    public string ICAO24 { get; private set; } = null!; // Unique 24-bit ICAO address, represented as a 6-character hexadecimal string
 
-    // Philippine registration mark
-    public string Registration { get; private set; }
+    // Philippine registration mark RP-C#### 
+    public string Registration { get; private set; } = null!;
 
-    // Aircraft classification
-    public AircraftType AircraftType { get; private set; }
+    // Aircraft classification code, e.g. B738, A320, C172, etc.
+    public AircraftType AircraftType { get; private set; } 
 
-    // Derived from aircraft type
-    public AircraftManufacturer Manufacturer { get; private set; }
+    // Derived from aircraft type code, e.g. Boeing, Airbus, Cessna, etc.
+    public AircraftManufacturer Manufacturer { get; private set; } 
 
-    // Normal operational characteristics
+    // Normal operational characteristics 
     public double CruiseSpeedKnots { get; private set; }
 
     // Physical performance limits
@@ -26,7 +25,13 @@ public sealed class AircraftProfile
     public double MaxAltitudeFeet { get; private set; }
     public double MaxClimbRateFeetPerMinute { get; private set; }
     public double MaxDescentRateFeetPerMinute { get; private set; }
-    public double MaxTurnRateDegreesPerSecond { get; private set; }
+    public double MaxTurnRateDegreesPerSecond { get; private set; } 
+
+
+    private AircraftProfile()
+    {
+        // Parameterless constructor for ORM and serialization
+    }
 
     public AircraftProfile(
         string icao24,

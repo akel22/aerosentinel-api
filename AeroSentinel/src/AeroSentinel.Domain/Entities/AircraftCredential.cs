@@ -4,32 +4,36 @@ namespace AeroSentinel.Domain.Entities;
 
 public sealed class AircraftCredential
 {
-    public string AircraftId { get; private set; }
+    public string ICAO24 { get; private set; } = null!; //FK to AircraftProfile.ICAO24
 
-    private readonly byte[] _secretVerificationKey;
+    private readonly byte[] _secretVerificationKey = null!; // Stored securely as a byte array, not exposed directly
 
     public ReadOnlySpan<byte> SecretVerificationKey =>
         _secretVerificationKey.AsSpan();
 
+    private AircraftCredential()
+    {
+        // Parameterless constructor for ORM and serialization
+    }
     public AircraftCredential(string aircraftId, byte[] secretVerificationKey)
     {
 
-        AircraftId = AircraftProfileValidation
-            .RequireValidAircraftID(aircraftId, nameof(aircraftId));
+        ICAO24 = AircraftProfileValidation
+            .RequireValidICAO24(aircraftId, nameof(aircraftId));
         
 
         _secretVerificationKey = AircraftCredentialValidation
-            .RequireValidSecretVerificationKey(secretVerificationKey, AircraftId);
+            .RequireValidSecretVerificationKey(secretVerificationKey, ICAO24);
             
     }
 
-    public bool MatchesAircraft(string aircraftId)
+    public bool MatchesAircraft(string ICAO24)
     {
         
-        aircraftId = AircraftProfileValidation.RequireValidAircraftID(aircraftId, nameof(aircraftId));
+        ICAO24 = AircraftProfileValidation.RequireValidICAO24(ICAO24, nameof(ICAO24));
 
-        return AircraftId.Equals(
-            aircraftId,
+        return ICAO24.Equals(
+            this.ICAO24,
             StringComparison.OrdinalIgnoreCase);
     }
 }
