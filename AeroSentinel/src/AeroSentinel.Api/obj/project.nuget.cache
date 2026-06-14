@@ -1,11 +1,31 @@
 {
   "version": 2,
-  "dgSpecHash": "KeiLQsme8YA=",
+  "dgSpecHash": "SOkF7DoRI9E=",
   "success": true,
   "projectFilePath": "C:\\Users\\erevel\\VisualStudioCode\\AspNetCoreEmptyProjects\\AviationDataSystem\\AeroSentinel\\src\\AeroSentinel.Api\\AeroSentinel.Api.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\erevel\\.nuget\\packages\\mediatr\\14.1.0\\mediatr.14.1.0.nupkg.sha512",
+    "C:\\Users\\erevel\\.nuget\\packages\\mediatr.contracts\\2.0.1\\mediatr.contracts.2.0.1.nupkg.sha512",
+    "C:\\Users\\erevel\\.nuget\\packages\\mediatr.extensions.microsoft.dependencyinjection\\11.1.0\\mediatr.extensions.microsoft.dependencyinjection.11.1.0.nupkg.sha512",
     "C:\\Users\\erevel\\.nuget\\packages\\microsoft.aspnetcore.openapi\\10.0.8\\microsoft.aspnetcore.openapi.10.0.8.nupkg.sha512",
+    "C:\\Users\\erevel\\.nuget\\packages\\microsoft.identitymodel.abstractions\\8.14.0\\microsoft.identitymodel.abstractions.8.14.0.nupkg.sha512",
+    "C:\\Users\\erevel\\.nuget\\packages\\microsoft.identitymodel.jsonwebtokens\\8.14.0\\microsoft.identitymodel.jsonwebtokens.8.14.0.nupkg.sha512",
+    "C:\\Users\\erevel\\.nuget\\packages\\microsoft.identitymodel.logging\\8.14.0\\microsoft.identitymodel.logging.8.14.0.nupkg.sha512",
+    "C:\\Users\\erevel\\.nuget\\packages\\microsoft.identitymodel.tokens\\8.14.0\\microsoft.identitymodel.tokens.8.14.0.nupkg.sha512",
     "C:\\Users\\erevel\\.nuget\\packages\\microsoft.openapi\\2.0.0\\microsoft.openapi.2.0.0.nupkg.sha512"
   ],
-  "logs": []
+  "logs": [
+    {
+      "code": "NU1608",
+      "level": "Warning",
+      "message": "Detected package version outside of dependency constraint: MediatR.Extensions.Microsoft.DependencyInjection 11.1.0 requires MediatR (>= 11.0.0 && < 12.0.0) but version MediatR 14.1.0 was resolved.",
+      "projectPath": "C:\\Users\\erevel\\VisualStudioCode\\AspNetCoreEmptyProjects\\AviationDataSystem\\AeroSentinel\\src\\AeroSentinel.Api\\AeroSentinel.Api.csproj",
+      "warningLevel": 1,
+      "filePath": "C:\\Users\\erevel\\VisualStudioCode\\AspNetCoreEmptyProjects\\AviationDataSystem\\AeroSentinel\\src\\AeroSentinel.Api\\AeroSentinel.Api.csproj",
+      "libraryId": "MediatR",
+      "targetGraphs": [
+        "net10.0"
+      ]
+    }
+  ]
 }
