@@ -16,28 +16,16 @@ public enum AircraftType
     A330 = 3,
     A350 = 4,
 
-    B747 = 5,
-
     // Boeing
-    B737 = 6,
-    B777 = 7,
-    B787 = 8,
-
+    B777 = 5,
     // ATR
-    ATR72 = 9,
+    ATR72 = 6
 
-    // De Havilland Canada
-    DHC8Q400 = 10,
-
-    // Embraer
-    E190 = 11
 }
 
 public enum AircraftManufacturer
 {
     Airbus = 1,
     Boeing = 2,
-    ATR = 3,
-    DeHavillandCanada = 4,
-    Embraer = 5
+    ATR = 3
 }

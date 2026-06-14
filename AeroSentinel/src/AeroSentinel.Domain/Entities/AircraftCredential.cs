@@ -13,7 +13,7 @@ public sealed class AircraftCredential
 
     private AircraftCredential()
     {
-        // Parameterless constructor for ORM and serialization
+        // private constructor for ORM and serialization when Querying
     }
     public AircraftCredential(string aircraftId, byte[] secretVerificationKey)
     {

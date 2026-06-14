@@ -83,15 +83,9 @@ public static class AircraftProfileValidation
             "A330" => AircraftType.A330,
             "A350" => AircraftType.A350,
 
-            "B737" => AircraftType.B737,
             "B777" => AircraftType.B777,
-            "B787" => AircraftType.B787,
 
             "ATR72" => AircraftType.ATR72,
-
-            "DHC8Q400" => AircraftType.DHC8Q400,
-
-            "E190" => AircraftType.E190,
 
             _ => throw new InvalidAircraftTypeException(
                 aircraftTypeCode,

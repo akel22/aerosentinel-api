@@ -81,7 +81,7 @@ public static class FlightTelemetryValidation
 
     public static double RequireValidVerticalRateFeetPerMinute(double verticalRateFeetPerMinute, string propertyName)
     {
-        if (verticalRateFeetPerMinute < -MaxCommercialVerticalRateFpm || verticalRateFeetPerMinute > MaxCommercialVerticalRateFpm)
+        if (verticalRateFeetPerMinute < MaxCommercialVerticalRateFpm || verticalRateFeetPerMinute > MaxCommercialVerticalRateFpm)
             throw new AircraftConditionException(verticalRateFeetPerMinute, 
                 $"{propertyName} ({verticalRateFeetPerMinute} ft/min) represents an aerodynamic impossibility for stable passenger service configurations.");
         
