@@ -18,10 +18,7 @@ public sealed class AircraftProfile
     public AircraftManufacturer Manufacturer { get; private set; } 
 
     // Normal operational characteristics 
-    public double CruiseSpeedKnots { get; private set; }
-
-    // Physical performance limits
-    public double MaxVelocityKnots { get; private set; }
+    public AircraftKnotsValueObject AircraftKnotsValueObject { get; private set; }  = null!;
     public double MaxAltitudeFeet { get; private set; }
     public double MaxClimbRateFeetPerMinute { get; private set; }
     public double MaxDescentRateFeetPerMinute { get; private set; }
@@ -37,8 +34,7 @@ public sealed class AircraftProfile
         string icao24,
         string registration,
         string aircraftType,
-        double cruiseSpeedKnots,
-        double maxVelocityKnots,
+        AircraftKnotsValueObject aircraftKnotsValueObject,
         double maxAltitudeFeet,
         double maxClimbRateFeetPerMinute,
         double maxDescentRateFeetPerMinute,
@@ -59,15 +55,7 @@ public sealed class AircraftProfile
 
         Manufacturer = AircraftType.GetManufacturer();
 
-        CruiseSpeedKnots = AircraftProfileValidation
-            .RequirePositive(
-                cruiseSpeedKnots,
-                nameof(cruiseSpeedKnots));
-
-        MaxVelocityKnots = AircraftProfileValidation
-            .RequirePositive(
-                maxVelocityKnots,
-                nameof(maxVelocityKnots));
+        AircraftKnotsValueObject = aircraftKnotsValueObject;
 
         MaxAltitudeFeet = AircraftProfileValidation
             .RequirePositive(
@@ -89,16 +77,7 @@ public sealed class AircraftProfile
                 maxTurnRateDegreesPerSecond,
                 nameof(maxTurnRateDegreesPerSecond));
 
-        ValidatePerformanceEnvelope();
+        AircraftKnotsValueObject.ValidatePerformanceEnvelope(Registration);
     }
 
-    private void ValidatePerformanceEnvelope()
-    {
-        if (CruiseSpeedKnots >= MaxVelocityKnots)
-        {
-            throw new AircraftPerformanceException(
-                Registration,
-                "Cruise speed must be lower than maximum velocity.");
-        }
-    }
 }
