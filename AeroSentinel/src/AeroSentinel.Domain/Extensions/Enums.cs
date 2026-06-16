@@ -1,4 +1,4 @@
-namespace AeroSentinel.Domain.Enums;
+namespace AeroSentinel.Domain.Extensions;
 
 public enum TelemetryStatus
 {

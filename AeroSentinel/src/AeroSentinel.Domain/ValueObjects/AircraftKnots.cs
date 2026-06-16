@@ -4,7 +4,7 @@ public class AircraftKnotsValueObject{
     public double CruiseSpeedKnots {get; private set;}
     public double MaxVelocityKnots  {get; private set;}
 
-    public AircraftKnotsValueObject( double cruiseSpeedKnots, double maxVelocityKnots ){
+    public AircraftKnotsValueObject(double cruiseSpeedKnots, double maxVelocityKnots ){
     
         CruiseSpeedKnots = cruiseSpeedKnots;
         MaxVelocityKnots = maxVelocityKnots;

@@ -33,19 +33,6 @@ public static class AircraftProfileValidation
         return registration;
     }
 
-    public static string RequireValidAircraftID(string aircraftId, string propertyName)
-    {
-        if (string.IsNullOrWhiteSpace(aircraftId))
-        {
-            throw new InvalidAircraftIdentifierException(
-                aircraftId,
-                $"{propertyName} is required and does not contain spaces.");
-        }
-
-        aircraftId = aircraftId.Trim().ToUpperInvariant();
-
-      return aircraftId;
-    }
 
     public static string RequireValidICAO24(string ICAO24, string propertyName)
     {
@@ -58,10 +45,10 @@ public static class AircraftProfileValidation
 
         ICAO24 = ICAO24.Trim().ToUpperInvariant();
         
-          if (!Regex.IsMatch(ICAO24, "^[A-F0-9]{6}$"))
+          if (!Regex.IsMatch(ICAO24, @"^75[89A-Fa-f][0-9A-Fa-f]{3}$"))
         {
             throw new InvalidICAOCodeException(ICAO24,
-                "ICAO24 must contain exactly 6 hexadecimal characters.");
+                "ICAO24 must contain exactly 6 hexadecimal characters. Must be within Philippine allocation");
         }
 
         return ICAO24;

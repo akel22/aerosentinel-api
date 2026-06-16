@@ -1,6 +1,4 @@
 using System;
-using AeroSentinel.Domain.Enums;
-using AeroSentinel.Domain.Extensions;
 
 namespace AeroSentinel.Domain.Entities;
 
