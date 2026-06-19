@@ -17,6 +17,8 @@ public sealed class AircraftProfile
 
     // Normal operational characteristics 
     public AircraftKnotsValueObject AircraftKnotsValueObject { get;  init;} 
+
+    public AircraftCredential AircraftCredential {get; init;} = null!;
     public double MaxAltitudeFeet { get;  init;}
     public double MaxClimbRateFeetPerMinute { get;  init;}
     public double MaxDescentRateFeetPerMinute { get;  init;}
@@ -33,6 +35,7 @@ public sealed class AircraftProfile
         string registration,
         string aircraftType,
         AircraftKnotsValueObject aircraftKnotsValueObject,
+        AircraftCredential aircraftCredential,
         double maxAltitudeFeet,
         double maxClimbRateFeetPerMinute,
         double maxDescentRateFeetPerMinute,
@@ -54,6 +57,8 @@ public sealed class AircraftProfile
         Manufacturer = AircraftType.GetManufacturer();
 
         AircraftKnotsValueObject = aircraftKnotsValueObject;
+
+        AircraftCredential = aircraftCredential;
 
         MaxAltitudeFeet = AircraftProfileValidation
             .RequirePositive(

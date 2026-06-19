@@ -2,7 +2,7 @@ namespace AeroSentinel.Domain.ValueObjects;
 
 public readonly record struct SpatialState
 {
-    public AircraftGeoCoordinates Coordinates { get; } // Reusing your Coordinate class!
+    public AircraftGeoCoordinates Coordinates { get; } 
     public double BaroAltitudeFeet { get; }
     public double GeoAltitudeFeet { get; }
     public double GroundSpeedKnots { get; }

@@ -4,7 +4,7 @@ namespace AeroSentinel.Domain.Entities;
 
 public sealed class AircraftCredential
 {
-    public string ICAO24 { get; private set; } = null!; //FK to AircraftProfile.ICAO24
+    public string ICAO24 { get; init;} = null!; //FK to AircraftProfile.ICAO24
 
     private readonly byte[] _secretVerificationKey = null!; // Stored securely as a byte array, not exposed directly
 
