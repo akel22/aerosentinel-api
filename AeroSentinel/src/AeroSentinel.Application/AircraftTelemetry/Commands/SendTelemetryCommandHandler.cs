@@ -59,7 +59,7 @@ public class SendTelemetryCommandHandler : IRequestHandler<SendTelemetryCommand,
       );
 
        
-    return new Guid();//PLACEHOLDER
+    
       
     }
 }
