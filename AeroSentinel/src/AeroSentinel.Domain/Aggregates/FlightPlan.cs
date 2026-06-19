@@ -1,14 +1,14 @@
 public sealed class FlightPlan
 {
-    public Guid FlightPlanID { get; private set; } 
-    public string ICAO24 { get; private set; } = null!; //FK to AircraftProfile.ICAO24
+    public Guid FlightPlanID { get; init;} 
+    public string ICAO24 { get; init;} = null!; //FK to AircraftProfile.ICAO24
 
-    public string Callsign { get; private set; } = null!;
-    public string DepartureAirport { get; private set; } = null!;
-    public string DestinationAirport { get; private set; } = null!;
+    public string Callsign { get; init;} = null!;
+    public string DepartureAirport { get; init; } = null!;
+    public string DestinationAirport { get; init;} = null!;
 
-    public DateTime DepartureTimeUtc { get; private set; } 
-    public DateTime EstimatedArrivalTimeUtc { get; private set; } 
+    public DateTime DepartureTimeUtc { get; init;} 
+    public DateTime EstimatedArrivalTimeUtc { get; init;} 
     public string CurrentWaypoint { get; private set; } = null!;
     public string NextWaypoint { get; private set; } = null!;
 

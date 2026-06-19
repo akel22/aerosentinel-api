@@ -4,26 +4,26 @@ using AeroSentinel.Domain.ValueObjects;
 
 namespace AeroSentinel.Domain.Entities;
 
-public sealed class FlightTelemetry
+public sealed class FlightTelemetry //Aggregate root
 {
     // Identification Markers
-    public Guid MessageId { get; }
-    public string ICAO24 { get; } = null!;
-    public string Callsign { get; } = null!;
-    public string Squawk {get; } = null!;
-    public DateTime TimestampUtc { get; } 
+    public Guid MessageId { get; init;}
+    public string ICAO24 { get; init;} = null!; //FK to Aircraft Profile root
+    public string Callsign { get; init;} = null!;
+    public string Squawk {get;init; } = null!;
+    public DateTime TimestampUtc { get; init;} 
 
     //WHERE THE AIRCRAFT IS CURRENTLY
-    SpatialState SpatialState {get;} = null!;
+    SpatialState SpatialState {get; init;} //Value object
    
    //WHAT THE AIRCRAFT IS CURRENTLY DOING
-    FlightIntent FlightIntent {get;} = null!;
+    FlightIntent FlightIntent {get; init;} //Value object
 
-    public long SequenceNumber {get;}
-    public string Signature{get;} = null!;
+    public long SequenceNumber {get; init;}
+    public string Signature{get; init;} = null!;
 
-    // public TelemetryStatus Status { get; private set; }
-    // public string FailureReason { get; private set; } = null!;
+    public TelemetryStatus Status { get; private set; }
+    public string? FailureReason { get; private set; } 
 
     private FlightTelemetry()
     {
@@ -55,26 +55,36 @@ public sealed class FlightTelemetry
        
         Signature = FlightTelemetryValidation.RequireValidSignature(signature, nameof(signature));
         
-        //Status = TelemetryStatus.Stale;
+        Status = TelemetryStatus.Stale;
         
-        //FailureReason = "Pending multi-stage verification analysis pipeline.";
+        FailureReason = "Pending multi-stage verification analysis pipeline.";
     }
 
-    // public void MarkAsCompromised(string explanation)
-    // {
-    //     Status = TelemetryStatus.Compromised;
-    //     FailureReason = explanation;
-    // }
+    public void MarkAsCompromised(string explanation)
+    {
+        if(string.IsNullOrEmpty(explanation))
+        {
+            throw new NullException(explanation, nameof(explanation));
+        }
 
-    // public void MarkAsSpoofed(string explanation)
-    // {
-    //     Status = TelemetryStatus.Spoofed;
-    //     FailureReason = explanation;
-    // }
+        Status = TelemetryStatus.Compromised;
+        FailureReason = explanation.Trim();
+    }
 
-    // public void MarkAsVerified()
-    // {
-    //     Status = TelemetryStatus.Verified;
-    //     FailureReason = string.Empty;
-    // }
+    public void MarkAsSpoofed(string explanation)
+    {
+         if(string.IsNullOrEmpty(explanation))
+        {
+            throw new NullException(explanation, nameof(explanation));
+        }
+
+        Status = TelemetryStatus.Spoofed;
+        FailureReason = explanation.Trim();
+    }
+
+    public void MarkAsVerified()
+    {
+        Status = TelemetryStatus.Verified;
+        FailureReason = string.Empty;
+    }
 }

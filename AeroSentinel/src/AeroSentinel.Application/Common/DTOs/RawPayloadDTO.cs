@@ -1,8 +1,7 @@
 namespace AeroSentinel.Application.Common.DTOs;
 public record RawPayloadDTO(
-    string Icao24, 
+    string ICAO24, 
     string Callsign, 
-    string Registration,
     double Latitude, 
     double Longitude,
      double Altitude, 

@@ -21,8 +21,6 @@ public class SendTelemetryCommandHandler : IRequestHandler<SendTelemetryCommand,
 
        await _aircraftCredentialRepository.GetByICAO24Async(rawPayload.Icao24);
 
-       
-
        var telemetry = new FlightTelemetry(
         rawPayload.Icao24,
         rawPayload.Callsign,

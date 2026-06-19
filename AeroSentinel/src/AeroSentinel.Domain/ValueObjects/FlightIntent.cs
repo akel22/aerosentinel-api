@@ -2,8 +2,7 @@ using System;
 using System.Collections.Generic;
 
 namespace AeroSentinel.Domain.ValueObjects;
-
-public sealed class FlightIntent
+public readonly record struct FlightIntent
 {
     public double VerticalRateFpm { get; }
     public double SelectedAltitudeFeet { get; }
@@ -18,30 +17,6 @@ public sealed class FlightIntent
         IndicatedAirspeedKnots = FlightTelemetryValidation.RequireValidIndicatedAirspeed(indicatedAirspeedKnots, nameof(indicatedAirspeedKnots));
         MagneticHeadingDegrees = FlightTelemetryValidation.RequireValidMagneticHeading(magneticHeadingDegrees, nameof(magneticHeadingDegrees));
         RollAngleDegrees = FlightTelemetryValidation.RequireValidRollAngle(rollAngleDegrees, nameof(rollAngleDegrees));
-    }
-
-    public override bool Equals(object? obj)
-    {
-        return obj is FlightIntent intent &&
-               VerticalRateFpm == intent.VerticalRateFpm &&
-               SelectedAltitudeFeet == intent.SelectedAltitudeFeet &&
-               IndicatedAirspeedKnots == intent.IndicatedAirspeedKnots &&
-               MagneticHeadingDegrees == intent.MagneticHeadingDegrees &&
-               RollAngleDegrees == intent.RollAngleDegrees;
-    }
-
-    public override int GetHashCode()
-    {
-        return HashCode.Combine(VerticalRateFpm, SelectedAltitudeFeet, IndicatedAirspeedKnots, MagneticHeadingDegrees, RollAngleDegrees);
-    }
-
-    public static bool operator ==(FlightIntent? left, FlightIntent? right)
-    {
-        return EqualityComparer<FlightIntent>.Default.Equals(left, right);
-    }
-
-    public static bool operator !=(FlightIntent? left, FlightIntent? right)
-    {
-        return !(left == right);
+   
     }
 }

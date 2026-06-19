@@ -81,7 +81,7 @@ public static class FlightTelemetryValidation
     public static string RequireValidSignature(string signature, string propertyName)
     {
         if (string.IsNullOrWhiteSpace(signature))
-            throw new ArgumentException("Cryptographic transmission payload requires an authentication signature block.", propertyName);
+            throw new SignatureException("Cryptographic transmission payload requires an authentication signature block.", propertyName);
 
         return signature.Trim();
     }
@@ -98,62 +98,62 @@ public static class FlightTelemetryValidation
         return squawk.Trim();
     }
 
-    public static double RequireValidBaroAltitude(double altitudeFeet, string paramName)
+    public static double RequireValidBaroAltitude(double altitudeFeet, string propertyName)
     {
         if (altitudeFeet is < -2000.0 or > 85000.0)
-            throw new ArgumentOutOfRangeException(paramName, "Barometric altitude must be between -2,000 and 85,000 feet.");
+            throw new ArgumentOutOfRangeException(propertyName, "Barometric altitude must be between -2,000 and 85,000 feet.");
 
         return altitudeFeet;
     }
 
-    public static double RequireValidSelectedAutoPilotAltitudeFeet(double altitudeFeet, string paramName)
+    public static double RequireValidSelectedAutoPilotAltitudeFeet(double altitudeFeet, string propertyName)
     {
         if (altitudeFeet is < 0.0 or > 45000.0)
         {
-            throw new ArgumentOutOfRangeException(paramName, altitudeFeet,
+            throw new ArgumentOutOfRangeException(propertyName, altitudeFeet,
                 "Selected altitude violates CAAP commercial flight rules. Must be between 0 and 45,000 feet.");
         }
         return altitudeFeet;
     }
 
-    public static double RequireValidVerticalRate(double verticalRateFpm, string paramName)
+    public static double RequireValidVerticalRate(double verticalRateFpm, string propertyName)
     {
         if (verticalRateFpm is < -12000.0 or > 60000.0) // Kept max limit structured or bound directly to +6000.0
         {
             // Tailoring strictly to commercial envelope
             if (verticalRateFpm < -12000.0 || verticalRateFpm > 6000.0)
             {
-                throw new ArgumentOutOfRangeException(paramName, verticalRateFpm,
+                throw new ArgumentOutOfRangeException(propertyName, verticalRateFpm,
                     "Vertical rate exceeds commercial airline capabilities (-12k FPM emergency dive to +6k FPM max climb).");
             }
         }
         return verticalRateFpm;
     }
 
-    public static double RequireValidIndicatedAirspeed(double airspeedKnots, string paramName)
+    public static double RequireValidIndicatedAirspeed(double airspeedKnots, string propertyName)
     {
         if (airspeedKnots is < 0.0 or > 450.0)
         {
-            throw new ArgumentOutOfRangeException(paramName, airspeedKnots,
+            throw new ArgumentOutOfRangeException(propertyName, airspeedKnots,
                 "Indicated airspeed exceeds maximum commercial airframe structural boundaries (Max 450 knots IAS).");
         }
         return airspeedKnots;
     }
 
-    public static double RequireValidMagneticHeading(double headingDegrees, string paramName)
+    public static double RequireValidMagneticHeading(double headingDegrees, string propertyName)
     {
         if (headingDegrees is < 0.0 or > 360.0)
         {
-            throw new ArgumentOutOfRangeException(paramName, headingDegrees,
+            throw new ArgumentOutOfRangeException(propertyName, headingDegrees,
                 "Magnetic heading must be a valid commercial track coordinate between 0.0 and 360.0 degrees.");
         }
         return headingDegrees;
     }
-    public static double RequireValidRollAngle(double rollDegrees, string paramName)
+    public static double RequireValidRollAngle(double rollDegrees, string propertyName)
     {
         if (rollDegrees is < -70.0 or > 70.0)
         {
-            throw new ArgumentOutOfRangeException(paramName, rollDegrees,
+            throw new ArgumentOutOfRangeException(propertyName, rollDegrees,
                 "Roll angle exceeds commercial fly-by-wire structural thresholds (Max 70-degree structural bank limit).");
         }
         return rollDegrees;
@@ -162,9 +162,9 @@ public static class FlightTelemetryValidation
      public static AircraftGeoCoordinates RequireValidCoord(AircraftGeoCoordinates aircraftGeoCoordinates,
     string propertyName)
     {
-        if(aircraftGeoCoordinates is null)
+        if(aircraftGeoCoordinates == default)
         {
-            throw new InvalidCoordinatesSystemException(null,"Coordinates cannot be null");
+            throw new InvalidCoordinatesSystemException(null,"Coordinates must be set properly");
         }
 
         return aircraftGeoCoordinates;
@@ -173,7 +173,7 @@ public static class FlightTelemetryValidation
 
     public static SpatialState RequireValidSpatialState(SpatialState spatialState, string propertyName)
     {
-         if(spatialState is null)
+         if(spatialState == default)
         {
             throw new ValueObjectException(spatialState, "Spatial state of the data cannot be null");
         }
@@ -184,7 +184,7 @@ public static class FlightTelemetryValidation
 
      public static FlightIntent RequireValidFlightIntent(FlightIntent flightIntent, string propertyName)
     {
-         if(flightIntent is null)
+         if(flightIntent == default)
         {
             throw new ValueObjectException(flightIntent, "Flight intent of the data cannot be null");
         }
