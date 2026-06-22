@@ -9,7 +9,7 @@ public class SendTelemetryCommandHandler : IRequestHandler<SendTelemetryCommand,
 {
     private readonly IAircraftProfileRepository _aircraftProfileRepository;
     private readonly IAircraftTelemetryRepository _aircraftTelemetryRepository;
-    private readonly ReplayProtectionService _replayProtectionService = null!;
+    private readonly ReplayProtectionService _replayProtectionService;
     private readonly Logger<SendTelemetryCommandHandler> _logger;
     public SendTelemetryCommandHandler( 
 
@@ -20,6 +20,7 @@ public class SendTelemetryCommandHandler : IRequestHandler<SendTelemetryCommand,
     {
         _aircraftProfileRepository = aircraftProfileRepository;
         _aircraftTelemetryRepository = aircraftTelemetryRepository;
+        _replayProtectionService = replayProtectionService;
         _logger = logger;
     }
 
@@ -47,7 +48,12 @@ public class SendTelemetryCommandHandler : IRequestHandler<SendTelemetryCommand,
         );
 
 
-        var recentTelemetry = _aircraftTelemetryRepository.GetByICAO24Async(rawPayload.ICAO24!);
+        var recentTelemetry = await _aircraftTelemetryRepository.GetByICAO24Async(rawPayload.ICAO24!);
+
+        if(recentTelemetry is null)
+        {
+          throw new InvalidMessageException(null, "Recent telemetry for that ICAO24 cannot be found");
+        }
 
         _replayProtectionService.ValidateSequence(rawPayload.TimestampUTC, rawPayload.Sequence,
         recentTelemetry.Sequence);

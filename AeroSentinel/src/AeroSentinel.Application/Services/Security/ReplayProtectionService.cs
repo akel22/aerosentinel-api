@@ -10,12 +10,20 @@ public sealed class ReplayProtectionService
     public void ValidateSequence(
         DateTime timestampUtc,
         long incomingSequence,
-        long lastAcceptedSequence)
+        long? lastAcceptedSequence)
     {
         if(timestampUtc < (DateTime.UtcNow - AllowedClockDrift))
         {
             throw new ReplayAttackException(null,
                 "Telemetry timestamp expired.");
+        }
+
+        if(lastAcceptedSequence == null)
+        {
+            if(incomingSequence != 1)
+            {
+                throw new ReplayAttackException(incomingSequence, "Sequence must start with correct identifier");
+            }
         }
 
         if(incomingSequence <= lastAcceptedSequence)
