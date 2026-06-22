@@ -1,9 +1,6 @@
-
-
 namespace AeroSentinel.Application.Security;
 
-public sealed class ReplayProtectionService
-    : IReplayProtectionService
+public sealed class ReplayProtectionService : IReplayProtectionService
 {
     private static readonly TimeSpan AllowedClockDrift = TimeSpan.FromSeconds(30);
 
@@ -12,24 +9,33 @@ public sealed class ReplayProtectionService
         long incomingSequence,
         long? lastAcceptedSequence)
     {
-        if(timestampUtc < (DateTime.UtcNow - AllowedClockDrift))
+        var currentUtc = DateTime.UtcNow;
+        
+        // 1. Dual-Bounded Window Validation
+        var oldestAllowed = currentUtc - AllowedClockDrift;
+        var newestAllowed = currentUtc + AllowedClockDrift;
+
+        if (timestampUtc < oldestAllowed)
         {
-            throw new ReplayAttackException(null,
-                "Telemetry timestamp expired.");
+            throw new ReplayAttackException(incomingSequence, "Telemetry timestamp has expired (Too stale).");
         }
 
-        if(lastAcceptedSequence == null)
+        if (timestampUtc > newestAllowed)
         {
-            if(incomingSequence != 1)
-            {
-                throw new ReplayAttackException(incomingSequence, "Sequence must start with correct identifier");
-            }
+            throw new ReplayAttackException(incomingSequence, "Telemetry timestamp is out of bounds (Too far in the future).");
         }
 
-        if(incomingSequence <= lastAcceptedSequence)
+        // 2. Cold-Start Initialization Handling
+        if (lastAcceptedSequence == null)
         {
-            throw new ReplayAttackException(incomingSequence,
-                $"Replay of telemetry detected");
+            return; 
+        }
+
+        // 3. Monotonically Increasing Sequence Check
+        if (incomingSequence <= lastAcceptedSequence)
+        {
+            throw new ReplayAttackException(incomingSequence, 
+                $"Replay attack or duplicate packet detected. Incoming: {incomingSequence}, Last Accepted: {lastAcceptedSequence}");
         }
     }
 }
