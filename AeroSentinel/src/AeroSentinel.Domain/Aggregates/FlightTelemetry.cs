@@ -14,10 +14,10 @@ public sealed class FlightTelemetry //Aggregate root
     public DateTime TimestampUtc { get; init;} 
 
     //WHERE THE AIRCRAFT IS CURRENTLY
-    SpatialState SpatialState {get; init;} //Value object
+    public SpatialState SpatialState {get; init;} //Value object
    
    //WHAT THE AIRCRAFT IS CURRENTLY DOING
-    FlightIntent FlightIntent {get; init;} //Value object
+    public FlightIntent FlightIntent {get; init;} //Value object
 
     public long SequenceNumber {get; init;}
     public string Signature{get; init;} = null!;
@@ -45,7 +45,9 @@ public sealed class FlightTelemetry //Aggregate root
 
         Callsign = PhilippineFlightPlanDetailsValidation.RequireValidCallsign(callsign, nameof(callsign));
 
-        TimestampUtc = FlightTelemetryValidation.RequireValidTimestamp(timestampUtc, nameof(timestampUtc));
+        Squawk = FlightTelemetryValidation.RequireValidSquawk(squawk, nameof(squawk));
+
+        TimestampUtc = timestampUtc;
 
         SpatialState = FlightTelemetryValidation.RequireValidSpatialState(spatialState, nameof(spatialState));
        
@@ -55,9 +57,11 @@ public sealed class FlightTelemetry //Aggregate root
        
         Signature = FlightTelemetryValidation.RequireValidSignature(signature, nameof(signature));
         
-        Status = TelemetryStatus.Stale;
+        Status = TelemetryStatus.PendingVerification;
         
-        FailureReason = "Pending multi-stage verification analysis pipeline.";
+        FailureReason = null;
+
+
     }
 
     public void MarkAsCompromised(string explanation)

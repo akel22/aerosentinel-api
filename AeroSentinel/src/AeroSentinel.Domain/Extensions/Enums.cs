@@ -5,7 +5,7 @@ public enum TelemetryStatus
     Verified = 1,
     Compromised = 2,
     Spoofed = 3,    
-    Stale = 4
+    PendingVerification = 4
 }
 
 public enum AircraftType

@@ -20,7 +20,7 @@ public static class FlightTelemetryValidation
     public static string RequireValidMessageId(string messageId, string propertyName)
     {
         if (string.IsNullOrWhiteSpace(messageId))
-            throw new InvalidMessageIdentifierException(messageId, $"{propertyName} cannot be empty.");
+            throw new InvalidMessageException(null, $"{propertyName} cannot be empty.");
             
         return messageId.Trim();
     }
@@ -52,14 +52,14 @@ public static class FlightTelemetryValidation
         return trackDegrees;
     }
     
-    public static DateTime RequireValidTimestamp(DateTime timestampUtc, string propertyName)
-    {
-        // Guard against latency anomalies or replay streams trying to feed stale telemetry
-        if (timestampUtc > DateTime.UtcNow.AddMinutes(5) || timestampUtc < DateTime.UtcNow.AddHours(-24))
-            throw new InvalidTimestampException(timestampUtc, $"{propertyName} falls outside the permissible real-time synchronization window.");
+    // public static DateTime RequireValidTimestamp(DateTime timestampUtc, string propertyName)
+    // {
+    //     // Guard against latency anomalies or replay streams trying to feed stale telemetry
+    //     if (timestampUtc > DateTime.UtcNow.AddMinutes(5) || timestampUtc < DateTime.UtcNow.AddHours(-24))
+    //         throw new InvalidTimestampException(timestampUtc, $"{propertyName} falls outside the permissible real-time synchronization window.");
         
-        return timestampUtc;
-    }
+    //     return timestampUtc;
+    // }
 
     public static double RequireValidGroundSpeedKnots(double groundSpeedKnots, string propertyName)
     {
@@ -73,7 +73,7 @@ public static class FlightTelemetryValidation
     public static long RequireValidSequenceNumber(long sequenceNumber, string propertyName)
     {
         if (sequenceNumber < 0)
-            throw new InvalidMessageIdentifierException(null, $"{propertyName} must be an incremental non-negative sequence counter.");
+            throw new InvalidMessageException(null, $"{propertyName} must be an incremental non-negative sequence counter.");
 
         return sequenceNumber;
     }

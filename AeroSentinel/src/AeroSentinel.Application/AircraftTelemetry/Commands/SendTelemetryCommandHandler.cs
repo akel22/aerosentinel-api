@@ -1,4 +1,5 @@
 
+using AeroSentinel.Application.Security;
 using AeroSentinel.Domain.ValueObjects;
 using Microsoft.Extensions.Logging;
 
@@ -6,14 +7,15 @@ namespace AeroSentinel.Application.AircraftTelemetry.Commands;
 
 public class SendTelemetryCommandHandler : IRequestHandler<SendTelemetryCommand, Guid>
 {
-        private readonly IAircraftProfileRepository _aircraftProfileRepository;
+    private readonly IAircraftProfileRepository _aircraftProfileRepository;
     private readonly IAircraftTelemetryRepository _aircraftTelemetryRepository;
-
+    private readonly ReplayProtectionService _replayProtectionService = null!;
     private readonly Logger<SendTelemetryCommandHandler> _logger;
     public SendTelemetryCommandHandler( 
 
             IAircraftProfileRepository aircraftProfileRepository,
             IAircraftTelemetryRepository aircraftTelemetryRepository,
+            ReplayProtectionService replayProtectionService,
             Logger<SendTelemetryCommandHandler> logger)
     {
         _aircraftProfileRepository = aircraftProfileRepository;
@@ -22,44 +24,48 @@ public class SendTelemetryCommandHandler : IRequestHandler<SendTelemetryCommand,
     }
 
     public async Task<Guid> Handle(SendTelemetryCommand request, CancellationToken cancellationToken)
-    {
-      var rawPayload = request.Payload;
+    {        
+        var rawPayload = request.Payload;
 
-      var coordinates = new AircraftGeoCoordinates(rawPayload.Latitude, rawPayload.Longitude);
-      var spatialState = new SpatialState
-      (
-        coordinates,
-        rawPayload.BaroAltitudeFeet,
-        rawPayload.GeoAltitudeFeet,
-        rawPayload.GroundSpeedKnots,
-        rawPayload.TrackAngleDegrees
-      );
+        var coordinates = new AircraftGeoCoordinates(rawPayload.Latitude, rawPayload.Longitude);
+        var spatialState = new SpatialState
+        (
+          coordinates,
+          rawPayload.BaroAltitudeFeet,
+          rawPayload.GeoAltitudeFeet,
+          rawPayload.GroundSpeedKnots,
+          rawPayload.TrackAngleDegrees
+        );
 
-       var flightIntent = new FlightIntent
-       (
-        rawPayload.VerticalRateFpm,
-        rawPayload.SelectedAltitudeFeet,
-        rawPayload.IndicatedAirspeedKnots,
-        rawPayload.MagneticHeadingDegrees, 
-        rawPayload.RollAngleDegrees
-       );
+        var flightIntent = new FlightIntent
+        (
+          rawPayload.VerticalRateFpm,
+          rawPayload.SelectedAltitudeFeet,
+          rawPayload.IndicatedAirspeedKnots,
+          rawPayload.MagneticHeadingDegrees, 
+          rawPayload.RollAngleDegrees
+        );
 
 
-      var flightTelemetry = new FlightTelemetry
-      (
-          rawPayload.ICAO24!,
-          rawPayload.Callsign!,
-          rawPayload.Squawk!,
-          rawPayload.TimestampUTC,
-          spatialState,
-          flightIntent,
-          rawPayload.Sequence,
-          rawPayload.Signature
+        var recentTelemetry = _aircraftTelemetryRepository.GetByICAO24Async(rawPayload.ICAO24!);
+
+        _replayProtectionService.ValidateSequence(rawPayload.TimestampUTC, rawPayload.Sequence,
+        recentTelemetry.Sequence);
+
+        var flightTelemetry = new FlightTelemetry
+        (
+            rawPayload.ICAO24!,
+            rawPayload.Callsign!,
+            rawPayload.Squawk!,
+            rawPayload.TimestampUTC,
+            spatialState,
+            flightIntent,
+            rawPayload.Sequence,
+            rawPayload.Signature
+          
+        );
+
+        return flightTelemetry.MessageId;
         
-      );
-
-       
-    
-      
     }
 }
