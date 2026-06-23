@@ -15,72 +15,73 @@ public class SendTelemetryCommandHandler : IRequestHandler<SendTelemetryCommand,
 {
     private readonly IAircraftProfileRepository _aircraftProfileRepository;
     private readonly IAircraftTelemetryRepository _aircraftTelemetryRepository;
-    private readonly IReplayProtectionService _replayProtectionService; // Fixed: Swapped to abstract interface
-    private readonly ILogger<SendTelemetryCommandHandler> _logger; // Fixed: Swapped to ILogger interface
+    
+    private readonly  ICryptographyService _cryptoService;
+    private readonly IReplayProtectionService _replayProtectionService; 
+    private readonly ILogger<SendTelemetryCommandHandler> _logger; 
 
     public SendTelemetryCommandHandler( 
         IAircraftProfileRepository aircraftProfileRepository,
         IAircraftTelemetryRepository aircraftTelemetryRepository,
+        ICryptographyService cryptoService,
         IReplayProtectionService replayProtectionService,
         ILogger<SendTelemetryCommandHandler> logger)
     {
         _aircraftProfileRepository = aircraftProfileRepository;
         _aircraftTelemetryRepository = aircraftTelemetryRepository;
+        _cryptoService = cryptoService;
         _replayProtectionService = replayProtectionService;
         _logger = logger;
     }
 
     public async Task<Guid> Handle(SendTelemetryCommand request, CancellationToken cancellationToken)
     {        
-        var rawPayload = request.Payload;
+        var payload = request.Payload;
 
-        // 1. Group structural metrics into highly cohesive Value Objects
-        var coordinates = new AircraftGeoCoordinates(rawPayload.Latitude, rawPayload.Longitude);
+        var coordinates = new AircraftGeoCoordinates(payload.Latitude, payload.Longitude);
         var spatialState = new SpatialState(
             coordinates,
-            rawPayload.BaroAltitudeFeet,
-            rawPayload.GeoAltitudeFeet,
-            rawPayload.GroundSpeedKnots,
-            rawPayload.TrackAngleDegrees
+            payload.BaroAltitudeFeet,
+            payload.GeoAltitudeFeet,
+            payload.GroundSpeedKnots,
+            payload.TrackAngleDegrees
         );
 
         var flightIntent = new FlightIntent(
-            rawPayload.VerticalRateFpm,
-            rawPayload.SelectedAltitudeFeet,
-            rawPayload.IndicatedAirspeedKnots,
-            rawPayload.MagneticHeadingDegrees, 
-            rawPayload.RollAngleDegrees
+            payload.VerticalRateFpm,
+            payload.SelectedAltitudeFeet,
+            payload.IndicatedAirspeedKnots,
+            payload.MagneticHeadingDegrees, 
+            payload.RollAngleDegrees
         );
 
-        // 2. Query for historical telemetry baseline
-        var recentTelemetry = await _aircraftTelemetryRepository.GetByICAO24Async(rawPayload.ICAO24!, cancellationToken);
+        // _cryptoService.VerifyPayloadSignature(payload, /*cache.GetbyAircraftCredentialId(payload.CredentialId)*/);
 
-        // Fixed: Extract the last sequence safely without crashing if it's a first-time stream connection
+        var recentTelemetry = await _aircraftTelemetryRepository.GetByICAO24Async(payload.ICAO24!, cancellationToken);
+
         long? lastAcceptedSequence = recentTelemetry?.SequenceNumber; 
 
-        // 3. Execute the security layer verification pipeline
         _replayProtectionService.ValidateSequence(
-            rawPayload.TimestampUTC, 
-            rawPayload.Sequence,
+            payload.TimestampUTC, 
+            payload.Sequence,
             lastAcceptedSequence
         );
 
-        // 4. Instantiate the domain aggregate root (Runs your internal guard clauses)
         var flightTelemetry = new FlightTelemetry(
-            rawPayload.ICAO24!,
-            rawPayload.Callsign!,
-            rawPayload.Squawk!,
-            rawPayload.TimestampUTC,
+            payload.ICAO24!,
+            payload.Callsign!,
+            payload.Squawk!,
+            payload.TimestampUTC,
             spatialState,
             flightIntent,
-            rawPayload.Sequence,
-            rawPayload.Signature
+            payload.Sequence,
+            payload.Signature
         );
 
         // 5. Fixed: Actively persist the aggregate state to your data store repository
         await _aircraftTelemetryRepository.SaveAsync(flightTelemetry, cancellationToken);
         
-        _logger.LogInformation("Successfully tracked telemetry frame for ICAO24: {ICAO24}", rawPayload.ICAO24);
+        _logger.LogInformation("Successfully tracked telemetry frame for ICAO24: {ICAO24}", payload.ICAO24);
 
         return flightTelemetry.MessageId;
     }

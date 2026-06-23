@@ -64,17 +64,6 @@ public sealed class FlightTelemetry //Aggregate root
 
     }
 
-    public void MarkAsCompromised(string explanation)
-    {
-        if(string.IsNullOrEmpty(explanation))
-        {
-            throw new NullException(explanation, nameof(explanation));
-        }
-
-        Status = TelemetryStatus.Compromised;
-        FailureReason = explanation.Trim();
-    }
-
     public void MarkAsSpoofed(string explanation)
     {
          if(string.IsNullOrEmpty(explanation))

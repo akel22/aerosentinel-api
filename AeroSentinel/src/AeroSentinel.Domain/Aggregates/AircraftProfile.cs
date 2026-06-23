@@ -4,21 +4,17 @@ namespace AeroSentinel.Domain.Entities;
 
 public sealed class AircraftProfile
 {
-    public string ICAO24 {get; init;} = null!; // Unique 24-bit ICAO address, represented as a 6-character hexadecimal string
+    public string ICAO24 {get; init;} = null!; 
 
-    // Philippine registration mark RP-C#### 
     public string Registration {get;  init;} = null!;
 
-    // Aircraft classification code, e.g. B738, A320, C172, etc.
     public AircraftType AircraftType { get;  init;} 
 
-    // Derived from aircraft type code, e.g. Boeing, Airbus, Cessna, etc.
     public AircraftManufacturer Manufacturer { get;  init;}  
 
-    // Normal operational characteristics 
-    public AircraftKnotsValueObject AircraftKnotsValueObject { get;  init;} 
+    public AircraftPerformance AircraftPerformance { get;  init;} 
 
-    public AircraftCredential AircraftCredential {get; init;} = null!;
+    public Guid CredentialId {get; init;} 
     public double MaxAltitudeFeet { get;  init;}
     public double MaxClimbRateFeetPerMinute { get;  init;}
     public double MaxDescentRateFeetPerMinute { get;  init;}
@@ -34,8 +30,8 @@ public sealed class AircraftProfile
         string icao24,
         string registration,
         string aircraftType,
-        AircraftKnotsValueObject aircraftKnotsValueObject,
-        AircraftCredential aircraftCredential,
+        AircraftPerformance aircraftPerformance,
+        Guid credentialId,
         double maxAltitudeFeet,
         double maxClimbRateFeetPerMinute,
         double maxDescentRateFeetPerMinute,
@@ -56,9 +52,11 @@ public sealed class AircraftProfile
 
         Manufacturer = AircraftType.GetManufacturer();
 
-        AircraftKnotsValueObject = aircraftKnotsValueObject;
+        aircraftPerformance.ValidatePerformanceEnvelope(Registration);
 
-        AircraftCredential = aircraftCredential;
+        AircraftPerformance = aircraftPerformance;
+
+        CredentialId = credentialId; //VALIDATION PA
 
         MaxAltitudeFeet = AircraftProfileValidation
             .RequirePositive(
@@ -80,7 +78,6 @@ public sealed class AircraftProfile
                 maxTurnRateDegreesPerSecond,
                 nameof(maxTurnRateDegreesPerSecond));
 
-        AircraftKnotsValueObject.ValidatePerformanceEnvelope(Registration);
     }
 
 }

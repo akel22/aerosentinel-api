@@ -1,10 +1,10 @@
 namespace AeroSentinel.Domain.Entities;
-public readonly record struct AircraftKnotsValueObject{
+public readonly record struct AircraftPerformance{
 
     public double CruiseSpeedKnots {get;}
     public double MaxVelocityKnots  {get; }
 
-    public AircraftKnotsValueObject(double cruiseSpeedKnots, double maxVelocityKnots ){
+    public AircraftPerformance(double cruiseSpeedKnots, double maxVelocityKnots ){
     
         CruiseSpeedKnots = cruiseSpeedKnots;
         MaxVelocityKnots = maxVelocityKnots;    

@@ -2,6 +2,7 @@ namespace AeroSentinel.Domain.Entities;
 
 public sealed class AircraftCredential
 {
+    public Guid CredentialId {get; private set;}
     public string ICAO24 { get; init; } = null!;
 
     private readonly byte[] _secretVerificationKey = null!;
@@ -20,15 +21,18 @@ public sealed class AircraftCredential
         // ORM / serialization
     }
 
-    public AircraftCredential(
-        string aircraftId,
+    public AircraftCredential(Guid credentialId,
+        string icao24,
         byte[] secretVerificationKey)
     {
+
+        CredentialId = credentialId;
+
         ICAO24 =
             AircraftProfileValidation
             .RequireValidICAO24(
-                aircraftId,
-                nameof(aircraftId));
+                icao24,
+                nameof(icao24));
 
         _secretVerificationKey =
             AircraftCredentialValidation
