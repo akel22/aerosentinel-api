@@ -13,21 +13,18 @@ namespace AeroSentinel.Application.AircraftTelemetry.Commands;
 
 public class SendTelemetryCommandHandler : IRequestHandler<SendTelemetryCommand, Guid>
 {
-    private readonly IAircraftProfileRepository _aircraftProfileRepository;
-    private readonly IAircraftTelemetryRepository _aircraftTelemetryRepository;
+        private readonly IAircraftTelemetryRepository _aircraftTelemetryRepository;
     
     private readonly  ICryptographyService _cryptoService;
     private readonly IReplayProtectionService _replayProtectionService; 
     private readonly ILogger<SendTelemetryCommandHandler> _logger; 
 
     public SendTelemetryCommandHandler( 
-        IAircraftProfileRepository aircraftProfileRepository,
         IAircraftTelemetryRepository aircraftTelemetryRepository,
         ICryptographyService cryptoService,
         IReplayProtectionService replayProtectionService,
         ILogger<SendTelemetryCommandHandler> logger)
     {
-        _aircraftProfileRepository = aircraftProfileRepository;
         _aircraftTelemetryRepository = aircraftTelemetryRepository;
         _cryptoService = cryptoService;
         _replayProtectionService = replayProtectionService;
