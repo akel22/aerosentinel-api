@@ -1,6 +1,7 @@
+namespace AeroSentinel.Application.Security;
+
 public interface ICryptographyService
 {
+    public bool VerifyPayloadSignature(SendTelemetryCommand request, string sharedSecretKey);
    
-    string ComputeHashAsync(string input, CancellationToken cancellationToken = default);
-
 }

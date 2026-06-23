@@ -8,6 +8,14 @@ public enum TelemetryStatus
     PendingVerification = 4
 }
 
+public enum CredentialStatus
+{
+    Active = 1,
+    Suspended = 2,
+    Revoked = 3
+}
+
+
 public enum AircraftType
 {
     // Airbus

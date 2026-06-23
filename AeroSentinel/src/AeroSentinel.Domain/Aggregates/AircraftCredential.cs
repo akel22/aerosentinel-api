@@ -1,39 +1,47 @@
-using System;
-
 namespace AeroSentinel.Domain.Entities;
 
 public sealed class AircraftCredential
 {
-    public string ICAO24 { get; init;} = null!; //FK to AircraftProfile.ICAO24
+    public string ICAO24 { get; init; } = null!;
 
-    private readonly byte[] _secretVerificationKey = null!; // Stored securely as a byte array, not exposed directly
+    private readonly byte[] _secretVerificationKey = null!;
 
-    public ReadOnlySpan<byte> SecretVerificationKey =>
+    public ReadOnlySpan<byte> VerificationKey =>
         _secretVerificationKey.AsSpan();
+
+    public int KeyVersion { get; private set; }
+
+    public CredentialStatus Status { get; private set; }
+
+    public DateTime CreatedUtc { get; private set; }
 
     private AircraftCredential()
     {
-        // private constructor for ORM and serialization when Querying
-    }
-    public AircraftCredential(string aircraftId, byte[] secretVerificationKey)
-    {
-
-        ICAO24 = AircraftProfileValidation
-            .RequireValidICAO24(aircraftId, nameof(aircraftId));
-        
-
-        _secretVerificationKey = AircraftCredentialValidation
-            .RequireValidSecretVerificationKey(secretVerificationKey, ICAO24);
-            
+        // ORM / serialization
     }
 
-    public bool MatchesAircraft(string ICAO24)
+    public AircraftCredential(
+        string aircraftId,
+        byte[] secretVerificationKey)
     {
-        
-        ICAO24 = AircraftProfileValidation.RequireValidICAO24(ICAO24, nameof(ICAO24));
+        ICAO24 =
+            AircraftProfileValidation
+            .RequireValidICAO24(
+                aircraftId,
+                nameof(aircraftId));
 
-        return ICAO24.Equals(
-            this.ICAO24,
-            StringComparison.OrdinalIgnoreCase);
+        _secretVerificationKey =
+            AircraftCredentialValidation
+            .RequireValidSecretVerificationKey(
+                secretVerificationKey,
+                ICAO24);
+
+        KeyVersion = 1;
+
+        Status =
+            CredentialStatus.Active;
+
+        CreatedUtc =
+            DateTime.UtcNow;
     }
 }

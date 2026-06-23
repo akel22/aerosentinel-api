@@ -9,9 +9,6 @@ public sealed class FlightPlan
 
     public DateTime DepartureTimeUtc { get; init;} 
     public DateTime EstimatedArrivalTimeUtc { get; init;} 
-    public string CurrentWaypoint { get; private set; } = null!;
-    public string NextWaypoint { get; private set; } = null!;
-
 
     private FlightPlan()
     {
@@ -19,7 +16,7 @@ public sealed class FlightPlan
     }
 
     public FlightPlan(string icao24, string callsign, string departureAirport, string destinationAirport, DateTime departureTimeUtc, 
-    DateTime estimatedArrivalTimeUtc, string currentWaypoint, string nextWaypoint)
+    DateTime estimatedArrivalTimeUtc)
     {
         FlightPlanID = Guid.NewGuid();
 
@@ -38,12 +35,6 @@ public sealed class FlightPlan
 
         EstimatedArrivalTimeUtc = PhilippineFlightPlanDetailsValidation.RequireValidArrivalTime
         (estimatedArrivalTimeUtc, departureTimeUtc, nameof(estimatedArrivalTimeUtc));
-
-        CurrentWaypoint = PhilippineFlightPlanDetailsValidation.RequireValidWaypoint
-        (currentWaypoint, nameof(currentWaypoint));
-
-        NextWaypoint = PhilippineFlightPlanDetailsValidation.RequireValidWaypoint
-        (nextWaypoint, nameof(nextWaypoint));
 
     }
 }
