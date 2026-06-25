@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "IHrg8y3T01g=",
+  "dgSpecHash": "wgCgaIJJcxU=",
   "success": true,
   "projectFilePath": "C:\\Users\\erevel\\VisualStudioCode\\AspNetCoreEmptyProjects\\AviationDataSystem\\AeroSentinel\\src\\AeroSentinel.Api\\AeroSentinel.Api.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\erevel\\.nuget\\packages\\csvhelper\\33.1.0\\csvhelper.33.1.0.nupkg.sha512",
     "C:\\Users\\erevel\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\erevel\\.nuget\\packages\\mediatr\\14.1.0\\mediatr.14.1.0.nupkg.sha512",
     "C:\\Users\\erevel\\.nuget\\packages\\mediatr.contracts\\2.0.1\\mediatr.contracts.2.0.1.nupkg.sha512",
