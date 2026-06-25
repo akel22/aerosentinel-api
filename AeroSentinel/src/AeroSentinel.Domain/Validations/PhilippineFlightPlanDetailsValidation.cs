@@ -51,19 +51,6 @@ public static class PhilippineFlightPlanDetailsValidation
     return airportCode;
 }
 
-   public static string RequireValidWaypoint(string waypoint, string propertyName)
-{
-    if (string.IsNullOrWhiteSpace(waypoint)) return "NONE";
-
-    waypoint = waypoint.Trim().ToUpperInvariant();
-
-    if (!Regex.IsMatch( waypoint, @"^[A-Z0-9]{2,5}$"))
-    {
-        throw new InvalidWaypointException(waypoint, $"{propertyName} is invalid.");
-    }
-    return waypoint;
-}
-
 
     public static DateTime RequireValidDepartureTime(DateTime departureTimeUtc, string propertyName)
     {
