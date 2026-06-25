@@ -10,10 +10,11 @@
 using System;
 using System.Reflection;
 
+[assembly: Microsoft.Extensions.Configuration.UserSecrets.UserSecretsIdAttribute("7b790a7d-4986-4ed3-98ee-1970f3fbdd38")]
 [assembly: System.Reflection.AssemblyCompanyAttribute("AeroSentinel.Api")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+997355292fb0f76c3b0d269db1eda309033cbabf")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+dcdabdc25de264a1278823172d5333d3ef209c99")]
 [assembly: System.Reflection.AssemblyProductAttribute("AeroSentinel.Api")]
 [assembly: System.Reflection.AssemblyTitleAttribute("AeroSentinel.Api")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

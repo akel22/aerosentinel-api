@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("AeroSentinel.Application")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+997355292fb0f76c3b0d269db1eda309033cbabf")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+dcdabdc25de264a1278823172d5333d3ef209c99")]
 [assembly: System.Reflection.AssemblyProductAttribute("AeroSentinel.Application")]
 [assembly: System.Reflection.AssemblyTitleAttribute("AeroSentinel.Application")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

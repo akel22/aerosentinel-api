@@ -1,6 +1,12 @@
-public class ApplicationDbContext: DbContext
+namespace AeroSentinel.Infrastructure.Persistence
 {
-    public DbSet<Waypoint> Waypoints{get; set;}
+    public class ApplicationDbContext : DbContext
+    {
+     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options): base(options)
+        {
+            
+        }
+        public DbSet<Waypoint> Waypoints { get; set; }
 
-
+    }
 }
