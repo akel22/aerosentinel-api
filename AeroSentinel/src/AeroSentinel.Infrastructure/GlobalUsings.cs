@@ -9,3 +9,8 @@ global using Microsoft.Extensions.Configuration;
 global using Microsoft.Extensions.DependencyInjection;
 global using AeroSentinel.Domain.Entities;
 global using Microsoft.EntityFrameworkCore.Metadata.Builders;
+global using AeroSentinel.Application.Common.Interfaces;
+global using AeroSentinel.Infrastructure.Implementations.Services.Security;
+global using AeroSentinel.Infrastructure.Persistence;
+global using AeroSentinel.Application.Services.Interfaces;
+

@@ -1,5 +1,4 @@
-using AeroSentinel.Application.Common.Interfaces;
-using AeroSentinel.Infrastructure.Persistence;
+using AeroSentinel.Application.Services.Interfaces;
 
 namespace AeroSentinel.Infrastructure
 {
@@ -12,12 +11,9 @@ namespace AeroSentinel.Infrastructure
                 options.UseNpgsql(
                     configuration.GetConnectionString("Default")));
 
-            return services;
-        }
-
-        public static IServiceCollection AddTelemetryRepository(this IServiceCollection services)
-        {
-            services.AddScoped<IAircraftTelemetryRepository, AircraftTelemetryRepository>();
+             services.AddScoped<IAircraftTelemetryRepository, AircraftTelemetryRepository>();
+             services.AddScoped<ICryptographyService, CryptographyService>();
+            services.AddScoped<IReplayProtectionService, ReplayProtectionService>();
 
             return services;
 

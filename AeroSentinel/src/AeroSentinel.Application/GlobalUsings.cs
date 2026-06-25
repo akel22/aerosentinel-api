@@ -6,3 +6,5 @@ global using AeroSentinel.Application.Common.DTOs;
 global using System;
 global using AeroSentinel.Application.Telemetry.Commands;
 global using AeroSentinel.Domain.Exceptions;
+global using Microsoft.Extensions.DependencyInjection;
+

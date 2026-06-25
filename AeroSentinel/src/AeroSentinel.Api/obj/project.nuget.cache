@@ -1,13 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "QW7aS6xCkls=",
+  "dgSpecHash": "IHrg8y3T01g=",
   "success": true,
   "projectFilePath": "C:\\Users\\erevel\\VisualStudioCode\\AspNetCoreEmptyProjects\\AviationDataSystem\\AeroSentinel\\src\\AeroSentinel.Api\\AeroSentinel.Api.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\erevel\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\erevel\\.nuget\\packages\\mediatr\\14.1.0\\mediatr.14.1.0.nupkg.sha512",
     "C:\\Users\\erevel\\.nuget\\packages\\mediatr.contracts\\2.0.1\\mediatr.contracts.2.0.1.nupkg.sha512",
-    "C:\\Users\\erevel\\.nuget\\packages\\mediatr.extensions.microsoft.dependencyinjection\\11.1.0\\mediatr.extensions.microsoft.dependencyinjection.11.1.0.nupkg.sha512",
     "C:\\Users\\erevel\\.nuget\\packages\\microsoft.aspnetcore.openapi\\10.0.8\\microsoft.aspnetcore.openapi.10.0.8.nupkg.sha512",
     "C:\\Users\\erevel\\.nuget\\packages\\microsoft.build.framework\\18.0.2\\microsoft.build.framework.18.0.2.nupkg.sha512",
     "C:\\Users\\erevel\\.nuget\\packages\\microsoft.codeanalysis.analyzers\\3.11.0\\microsoft.codeanalysis.analyzers.3.11.0.nupkg.sha512",
@@ -40,18 +39,5 @@
     "C:\\Users\\erevel\\.nuget\\packages\\system.composition.runtime\\9.0.0\\system.composition.runtime.9.0.0.nupkg.sha512",
     "C:\\Users\\erevel\\.nuget\\packages\\system.composition.typedparts\\9.0.0\\system.composition.typedparts.9.0.0.nupkg.sha512"
   ],
-  "logs": [
-    {
-      "code": "NU1608",
-      "level": "Warning",
-      "message": "Detected package version outside of dependency constraint: MediatR.Extensions.Microsoft.DependencyInjection 11.1.0 requires MediatR (>= 11.0.0 && < 12.0.0) but version MediatR 14.1.0 was resolved.",
-      "projectPath": "C:\\Users\\erevel\\VisualStudioCode\\AspNetCoreEmptyProjects\\AviationDataSystem\\AeroSentinel\\src\\AeroSentinel.Api\\AeroSentinel.Api.csproj",
-      "warningLevel": 1,
-      "filePath": "C:\\Users\\erevel\\VisualStudioCode\\AspNetCoreEmptyProjects\\AviationDataSystem\\AeroSentinel\\src\\AeroSentinel.Api\\AeroSentinel.Api.csproj",
-      "libraryId": "MediatR",
-      "targetGraphs": [
-        "net10.0"
-      ]
-    }
-  ]
+  "logs": []
 }

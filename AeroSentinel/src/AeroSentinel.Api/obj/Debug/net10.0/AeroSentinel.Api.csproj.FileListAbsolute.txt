@@ -8,7 +8,6 @@ C:\Users\erevel\VisualStudioCode\AspNetCoreEmptyProjects\AviationDataSystem\Aero
 C:\Users\erevel\VisualStudioCode\AspNetCoreEmptyProjects\AviationDataSystem\AeroSentinel\src\AeroSentinel.Api\bin\Debug\net10.0\AeroSentinel.Api.pdb
 C:\Users\erevel\VisualStudioCode\AspNetCoreEmptyProjects\AviationDataSystem\AeroSentinel\src\AeroSentinel.Api\bin\Debug\net10.0\MediatR.dll
 C:\Users\erevel\VisualStudioCode\AspNetCoreEmptyProjects\AviationDataSystem\AeroSentinel\src\AeroSentinel.Api\bin\Debug\net10.0\MediatR.Contracts.dll
-C:\Users\erevel\VisualStudioCode\AspNetCoreEmptyProjects\AviationDataSystem\AeroSentinel\src\AeroSentinel.Api\bin\Debug\net10.0\MediatR.Extensions.Microsoft.DependencyInjection.dll
 C:\Users\erevel\VisualStudioCode\AspNetCoreEmptyProjects\AviationDataSystem\AeroSentinel\src\AeroSentinel.Api\bin\Debug\net10.0\Microsoft.AspNetCore.OpenApi.dll
 C:\Users\erevel\VisualStudioCode\AspNetCoreEmptyProjects\AviationDataSystem\AeroSentinel\src\AeroSentinel.Api\bin\Debug\net10.0\Microsoft.EntityFrameworkCore.dll
 C:\Users\erevel\VisualStudioCode\AspNetCoreEmptyProjects\AviationDataSystem\AeroSentinel\src\AeroSentinel.Api\bin\Debug\net10.0\Microsoft.EntityFrameworkCore.Abstractions.dll
