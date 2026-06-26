@@ -77,7 +77,7 @@ public class SendTelemetryCommandHandler : IRequestHandler<SendTelemetryCommand,
         // 5. Fixed: Actively persist the aggregate state to your data store repository
         await _aircraftTelemetryRepository.SaveAsync(flightTelemetry, cancellationToken);
         
-        _logger.LogInformation("Successfully tracked telemetry frame for ICAO24: {ICAO24}", payload.ICAO24);
+        _logger.LogInformation($"Successfully tracked telemetry frame for ICAO24: {payload.ICAO24}");
 
         return flightTelemetry.MessageId;
     }

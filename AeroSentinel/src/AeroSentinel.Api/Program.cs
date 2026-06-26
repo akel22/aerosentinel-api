@@ -6,6 +6,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
+builder.Services.AddLogging();
+
 builder.Services.AddInfrastructure(builder.Configuration);
 
 builder.Services.AddApplication();
@@ -18,7 +20,7 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 }
 
-await app.SeedWaypoints();
+// await app.SeedWaypoints(); ALREADY DONE
 app.UseHttpsRedirection();
 app.Run();
 
