@@ -14,13 +14,12 @@
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.2" />
   </ItemGroup>
 
-  <ItemGroup>
-  <Content Include="SeedData\PhilippineAircraftWaypoints_Final.csv">
-      <CopyToOutputDirectory>
-          PreserveNewest
-      </CopyToOutputDirectory>
-  </Content>
- </ItemGroup>
+    <ItemGroup>
+  <None Update="SeedData\PhilippineAircraftWaypoints_Final.csv">
+    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+  </None>
+</ItemGroup>
+
 
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>

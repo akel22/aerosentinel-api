@@ -7,10 +7,10 @@ namespace AeroSentinel.Domain.Entities;
 public static class FlightTelemetryValidation
 {
     // Philippine Flight Information Region (FIR) Geofencing Constants
-    private const double PhMinLatitude = 4.0;
-    private const double PhMaxLatitude = 22.0;
-    private const double PhMinLongitude = 116.0;
-    private const double PhMaxLongitude = 127.0;
+   private const double PhMinLatitude = 3.5;
+        private const double PhMaxLatitude = 21.1;
+        private const double PhMinLongitude = 114.0;
+        private const double PhMaxLongitude = 132.5;
 
     // Commercial Passenger Fleet Capability Constants (A320/A321/B737/ATR)
     private const double MaxCommercialAltitudeFeet = 42000.0;

@@ -3,10 +3,10 @@ namespace AeroSentinel.Domain.Validations
     public static class WaypointValidation
     {
         // Philippine Flight Information Region (FIR) Geofencing Constants
-        private const double PhMinLatitude = 4.0;
-        private const double PhMaxLatitude = 22.0;
-        private const double PhMinLongitude = 116.0;
-        private const double PhMaxLongitude = 127.0;
+        private const double PhMinLatitude = 3.5;
+        private const double PhMaxLatitude = 21.1;
+        private const double PhMinLongitude = 114.0;
+        private const double PhMaxLongitude = 132.5;
 
         public static string RequireValidWaypoint(string waypointId, string propertyName)
         {
@@ -27,18 +27,7 @@ namespace AeroSentinel.Domain.Validations
 
             return waypointId;
         }
-
-
-        public static int RequireValidSequence(int sequence, string propertyName)
-        {
-            if (sequence < 1)
-            {
-                throw new InvalidRouteException(sequence, "Route sequence must start at 1");
-            }
-
-            return sequence;
-        }
-
+        
 
         public static double RequireValidLatitude(double latitude, string propertyName)
         {

@@ -1,4 +1,4 @@
-using AeroSentinel.Application.Services.Interfaces;
+using AeroSentinel.Infrastructure.Implementations.Services;
 
 namespace AeroSentinel.Infrastructure
 {
@@ -14,6 +14,7 @@ namespace AeroSentinel.Infrastructure
              services.AddScoped<IAircraftTelemetryRepository, AircraftTelemetryRepository>();
              services.AddScoped<ICryptographyService, CryptographyService>();
              services.AddScoped<IReplayProtectionService, ReplayProtectionService>();
+             services.AddScoped<WaypointsCSVService>();
 
             
             return services;
