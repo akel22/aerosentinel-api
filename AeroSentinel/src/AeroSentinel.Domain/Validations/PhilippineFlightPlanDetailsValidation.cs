@@ -4,7 +4,6 @@ namespace AeroSentinel.Domain.Entities.Validations;
 
 public static class PhilippineFlightPlanDetailsValidation
 {
-
    public static string RequireValidCallsign(string callsign, string propertyName)
 {
     if (string.IsNullOrWhiteSpace(callsign))

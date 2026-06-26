@@ -1,4 +1,5 @@
 using AeroSentinel.Infrastructure.Implementations.Services;
+using AeroSentinel.Infrastructure.Repositories;
 
 namespace AeroSentinel.Infrastructure
 {
@@ -12,6 +13,7 @@ namespace AeroSentinel.Infrastructure
                     configuration.GetConnectionString("Default")));
 
              services.AddScoped<IAircraftTelemetryRepository, AircraftTelemetryRepository>();
+             services.AddScoped<IAircraftProfileRepository, AircraftProfileRepository>();
              services.AddScoped<ICryptographyService, CryptographyService>();
              services.AddScoped<IReplayProtectionService, ReplayProtectionService>();
              services.AddScoped<WaypointsCSVService>();

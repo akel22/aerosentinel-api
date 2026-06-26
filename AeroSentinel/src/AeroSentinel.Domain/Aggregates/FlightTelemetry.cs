@@ -9,6 +9,7 @@ public sealed class FlightTelemetry //Aggregate root
     // Identification Markers
     public Guid MessageId { get; init;}
     public string ICAO24 { get; init;} = null!; //FK to Aircraft Profile root
+    public Guid FlightPlanID { get; init;}
     public string Callsign { get; init;} = null!;
     public string Squawk {get;init; } = null!;
     public DateTime TimestampUtc { get; init;} 
@@ -30,6 +31,7 @@ public sealed class FlightTelemetry //Aggregate root
         // Parameterless constructor for ORM and serialization
     }
     public FlightTelemetry(
+        Guid flightplanId,
         string icao24,
         string callsign,
         string squawk,
@@ -40,6 +42,8 @@ public sealed class FlightTelemetry //Aggregate root
         string signature)
     {
         MessageId = Guid.NewGuid();
+
+        FlightPlanID = flightplanId;
 
         ICAO24 = AircraftProfileValidation.RequireValidICAO24(icao24, nameof(icao24));
 

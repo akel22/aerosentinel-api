@@ -3,11 +3,11 @@ using Microsoft.Extensions.Logging;
 
 public sealed class AircraftProfileCommandHandler : IRequestHandler<CreateAircraftProfileCommand, string>
 {
-    IAircraftProfileRepository _aircraftProfileRepository;
-    ILogger _logger;
+    private readonly IAircraftProfileRepository _aircraftProfileRepository;
+    private readonly ILogger<AircraftProfileCommandHandler> _logger;
 
     public AircraftProfileCommandHandler(IAircraftProfileRepository aircraftProfileRepository,
-    ILogger logger){
+    ILogger<AircraftProfileCommandHandler> logger){
 
         _aircraftProfileRepository = aircraftProfileRepository;
         _logger = logger;
