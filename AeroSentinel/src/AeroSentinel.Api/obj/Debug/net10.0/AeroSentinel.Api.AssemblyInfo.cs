@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("AeroSentinel.Api")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+aa032595b2578bfde6c597fefdcf89ad56884c3a")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+be3246cd46ad4ba5edfa5d5824020377ecc05beb")]
 [assembly: System.Reflection.AssemblyProductAttribute("AeroSentinel.Api")]
 [assembly: System.Reflection.AssemblyTitleAttribute("AeroSentinel.Api")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

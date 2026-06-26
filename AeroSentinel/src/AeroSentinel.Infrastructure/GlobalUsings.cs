@@ -16,3 +16,4 @@ global using AeroSentinel.Application.Services.Interfaces;
 global using System.Globalization;
 global using AeroSentinel.Infrastructure.Importing;
 global using CsvHelper;
+global using AeroSentinel;
