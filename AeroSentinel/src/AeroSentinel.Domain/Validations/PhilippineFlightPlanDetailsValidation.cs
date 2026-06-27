@@ -88,5 +88,16 @@ public static class PhilippineFlightPlanDetailsValidation
         return arrivalTimeUtc;
     }
 
+     public static Guid RequireValidGuid(Guid guid, string propertyName){
+
+        if(guid == Guid.Empty)
+        {
+            throw new GuidException(guid, $"{propertyName} must not be empty");
+        }
+
+        return guid;
+    }
+
+
     
 }

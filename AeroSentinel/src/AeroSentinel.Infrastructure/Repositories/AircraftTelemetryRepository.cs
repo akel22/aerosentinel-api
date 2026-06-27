@@ -13,12 +13,11 @@ public sealed class AircraftTelemetryRepository : IAircraftTelemetryRepository
        await _applicationDbContext.SaveChangesAsync();
     }
 
-    public async Task<FlightTelemetry?> GetBySequenceAsync(long sequence, 
-    CancellationToken cancellationToken = default)
+    public async Task<FlightTelemetry?> GetByMessageCompositeIndexAsync(long sequence, string callsign, CancellationToken cancellationToken = default)
     {
-        //GET BY SEQUENCE NUMBER AND DATETIME COMPOSITE INDEX
 
-        return await null;
+        var telemetry = _applicationDbContext.FlightTelemetries.
+            FirstOrDefaultAsync(f => f.SequenceNumber == sequence and  f.Callsign == callsign);
     }
 
 }

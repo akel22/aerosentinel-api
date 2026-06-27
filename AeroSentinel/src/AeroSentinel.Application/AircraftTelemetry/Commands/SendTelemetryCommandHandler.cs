@@ -52,7 +52,7 @@ public class SendTelemetryCommandHandler : IRequestHandler<SendTelemetryCommand,
         );
 
 
-        var recentTelemetry = await _aircraftTelemetryRepository.GetByICAO24Async(payload.ICAO24!, cancellationToken);
+        var recentTelemetry = await _aircraftTelemetryRepository.GetByCompositeKeyAsync(payload.ICAO24!, cancellationToken);
 
         long? lastAcceptedSequence = recentTelemetry?.SequenceNumber; 
 

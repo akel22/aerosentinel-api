@@ -6,16 +6,15 @@ namespace AeroSentinel.Infrastructure.Persistence.Configurations
         {
             builder.HasKey(x => new
             {
-                x.FlightPlanID,
-                x.TimestampUtc,
-                x.SequenceNumber
+                x.MessageId
                 
             });
 
             builder.HasIndex(x => new
             {
                 x.SequenceNumber,
-                x.TimestampUtc
+                x.Callsign
+
             });
          
         }
