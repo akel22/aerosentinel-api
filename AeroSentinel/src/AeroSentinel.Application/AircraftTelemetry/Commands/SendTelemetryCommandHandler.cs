@@ -51,7 +51,6 @@ public class SendTelemetryCommandHandler : IRequestHandler<SendTelemetryCommand,
             payload.RollAngleDegrees
         );
 
-        // _cryptoService.VerifyPayloadSignature(payload, /*cache.GetbyAircraftCredentialId(payload.CredentialId)*/);
 
         var recentTelemetry = await _aircraftTelemetryRepository.GetByICAO24Async(payload.ICAO24!, cancellationToken);
 
@@ -64,6 +63,7 @@ public class SendTelemetryCommandHandler : IRequestHandler<SendTelemetryCommand,
         );
 
         var flightTelemetry = new FlightTelemetry(
+            payload.FlightPlanId,
             payload.ICAO24!,
             payload.Callsign!,
             payload.Squawk!,
@@ -77,7 +77,7 @@ public class SendTelemetryCommandHandler : IRequestHandler<SendTelemetryCommand,
         // 5. Fixed: Actively persist the aggregate state to your data store repository
         await _aircraftTelemetryRepository.SaveAsync(flightTelemetry, cancellationToken);
         
-        _logger.LogInformation($"Successfully tracked telemetry frame for ICAO24: {payload.ICAO24}");
+        _logger.LogInformation("Successfully tracked telemetry frame for ICAO24: {ICAO24}", payload.ICAO24);
 
         return flightTelemetry.MessageId;
     }

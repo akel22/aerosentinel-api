@@ -18,8 +18,6 @@ public sealed class AircraftTelemetryRepository : IAircraftTelemetryRepository
     {
         //GET BY SEQUENCE NUMBER AND DATETIME COMPOSITE INDEX
 
-
-
         return await null;
     }
 

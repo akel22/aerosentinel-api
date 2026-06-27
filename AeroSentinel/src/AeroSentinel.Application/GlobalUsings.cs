@@ -8,4 +8,6 @@ global using AeroSentinel.Application.Telemetry.Commands;
 global using AeroSentinel.Domain.Exceptions;
 global using Microsoft.Extensions.DependencyInjection;
 global using AeroSentinel.Domain.Extensions;
+global using System.Text.Json.Serialization;
+
 

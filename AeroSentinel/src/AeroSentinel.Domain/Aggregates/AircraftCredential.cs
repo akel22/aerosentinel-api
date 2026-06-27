@@ -10,8 +10,6 @@ public sealed class AircraftCredential
     public ReadOnlySpan<byte> VerificationKey =>
         _secretVerificationKey.AsSpan();
 
-    public int KeyVersion { get; private set; }
-
     public CredentialStatus Status { get; private set; }
 
     public DateTime CreatedUtc { get; private set; }
@@ -39,8 +37,6 @@ public sealed class AircraftCredential
             .RequireValidSecretVerificationKey(
                 secretVerificationKey,
                 ICAO24);
-
-        KeyVersion = 1;
 
         Status =
             CredentialStatus.Active;

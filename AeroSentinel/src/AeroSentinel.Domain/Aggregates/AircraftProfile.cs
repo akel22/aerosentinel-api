@@ -56,7 +56,7 @@ public sealed class AircraftProfile
 
         AircraftPerformance = aircraftPerformance;
 
-        CredentialId = credentialId; //VALIDATION PA
+        CredentialId = AircraftProfileValidation.RequireValidGuid(credentialId, nameof(credentialId));
 
         MaxAltitudeFeet = AircraftProfileValidation
             .RequirePositive(

@@ -17,5 +17,6 @@ global using System.Globalization;
 global using AeroSentinel.Infrastructure.Importing;
 global using CsvHelper;
 global using AeroSentinel.Domain.Exceptions;
-
-
+global using AeroSentinel.Application.Telemetry.Commands;
+global using Microsoft.Extensions.Caching.Memory;
+global using Microsoft.Extensions.Logging;

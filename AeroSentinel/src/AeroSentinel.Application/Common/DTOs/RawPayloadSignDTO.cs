@@ -1,9 +1,6 @@
-using System.Text.Json.Serialization;
-
 namespace AeroSentinel.Application.Common.DTOs;
 
-public record RawPayloadDTO(
-    Guid FlightPlanId,
+public readonly record struct RawPayloadSignDTO(
     long Sequence,
     string ICAO24,
     Guid CredentialId,
@@ -20,8 +17,14 @@ public record RawPayloadDTO(
     double SelectedAltitudeFeet,
     double IndicatedAirspeedKnots,
     double MagneticHeadingDegrees,
-    double RollAngleDegrees,
-
-    // The signature itself is excluded from the hashing process internally
-    string Signature
+    double RollAngleDegrees
 );
+
+[JsonSerializable(typeof(RawPayloadSignDTO))]
+[JsonSourceGenerationOptions(
+    PropertyNamingPolicy = JsonKnownNamingPolicy.Unspecified,
+    WriteIndented = false
+)]
+public partial class TelemetryJsonContext : JsonSerializerContext
+{
+}

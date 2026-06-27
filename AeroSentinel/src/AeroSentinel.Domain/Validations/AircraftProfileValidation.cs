@@ -79,6 +79,14 @@ public static class AircraftProfileValidation
                 $"{propertyName} is not a valid aircraft type.")
         };
     }
+    public static Guid RequireValidGuid(Guid guid, string propertyName){
 
+        if(guid == Guid.Empty)
+        {
+            throw new GuidException(guid, $"{propertyName} must not be empty");
+        }
+
+        return guid;
+    }
 
 }
