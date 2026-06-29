@@ -11,9 +11,19 @@ public sealed class AircraftProfileRepository : IAircraftProfileRepository
     {
         var profile = await _applicationDbContext.AircraftProfiles.FindAsync(icao24);
 
-        
+        if(profile is null)
+        {
+            throw new InvalidAircraftIdentifierException(profile?.ICAO24, "A profile with this ICAO24 is not existing");
+        }
 
-        
+        return profile;
+    }
+
+    public async Task SaveChangesAsync(AircraftProfile profile, CancellationToken cancellationToken = default)
+    {
+       await _applicationDbContext.AddAsync(profile);
+
+       await _applicationDbContext.SaveChangesAsync();
     }
     
 }

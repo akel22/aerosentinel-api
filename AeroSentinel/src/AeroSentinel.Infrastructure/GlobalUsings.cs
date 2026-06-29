@@ -20,3 +20,4 @@ global using AeroSentinel.Domain.Exceptions;
 global using AeroSentinel.Application.Telemetry.Commands;
 global using Microsoft.Extensions.Caching.Memory;
 global using Microsoft.Extensions.Logging;
+global using AeroSentinel.Application.Common.DTOs;

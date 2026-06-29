@@ -5,9 +5,8 @@ namespace AeroSentinel.Infrastructure.Implementations.Services.Security;
 
 public sealed class CryptographyService : ICryptographyService
 {
-    public bool VerifyPayloadSignature(SendTelemetryCommand request, byte[] secretKey)
+    public bool VerifyPayloadSignature(RawPayloadDTO payload, byte[] secretKey)
     {
-        var payload = request.Payload;
 
         if (string.IsNullOrWhiteSpace(payload.Signature)) return false;
 

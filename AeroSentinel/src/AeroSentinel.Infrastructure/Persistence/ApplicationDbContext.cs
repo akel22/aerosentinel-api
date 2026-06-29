@@ -8,6 +8,8 @@ namespace AeroSentinel.Infrastructure.Persistence
         public DbSet<FlightTelemetry> FlightTelemetries {get; set;}
 
         public DbSet<AircraftCredential> AircraftCredentials {get; set;}
+
+        public DbSet<AircraftProfile> AircraftProfiles {get; set;}
         public DbSet<Waypoint> Waypoints { get; set; }
 
     }

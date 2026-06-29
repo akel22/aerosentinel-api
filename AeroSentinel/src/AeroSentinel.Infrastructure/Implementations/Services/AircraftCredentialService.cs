@@ -8,7 +8,7 @@ public sealed class AircraftCredentialCacheService: IAircraftCredentialCacheServ
 
     private readonly ILogger<AircraftCredentialCacheService> _logger;
 
-    private static readonly TimeSpan CacheDuration = TimeSpan.FromMinutes(30);
+    private static readonly TimeSpan CacheDuration = TimeSpan.FromMinutes(1);
 
     public AircraftCredentialCacheService(
         IMemoryCache cache,
@@ -47,8 +47,8 @@ public sealed class AircraftCredentialCacheService: IAircraftCredentialCacheServ
                 Size = 1
             };
 
-        _cache.Set(cacheKey, sharedKey.ToArray(), options);
+        _cache.Set(cacheKey, sharedKey, options);
 
-        return sharedKey;
+        return sharedKey.ToArray();
     }
 }

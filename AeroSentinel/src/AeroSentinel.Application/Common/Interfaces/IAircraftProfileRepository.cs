@@ -4,7 +4,7 @@ namespace AeroSentinel.Application.Common.Interfaces;
     {
         Task<AircraftProfile?> GetByICAO24Async(string icao24, CancellationToken cancellationToken = default);
 
-        Task SaveProfileAsync(AircraftProfile aircraftProfile, CancellationToken cancellationToken = default);  
+        Task SaveChangesAsync(AircraftProfile profile, CancellationToken cancellationToken = default);  
     
         
     
