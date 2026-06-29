@@ -4,7 +4,7 @@ public sealed class AircraftCredentialCacheService: IAircraftCredentialCacheServ
 {
     private readonly IMemoryCache _cache;
 
-    private readonly IAircraftCredentialRepository _repository;
+    private readonly IAircraftCredentialRepository _aircraftCredentialRepository;
 
     private readonly ILogger<AircraftCredentialCacheService> _logger;
 
@@ -12,32 +12,33 @@ public sealed class AircraftCredentialCacheService: IAircraftCredentialCacheServ
 
     public AircraftCredentialCacheService(
         IMemoryCache cache,
-        IAircraftCredentialRepository repository,
+        IAircraftCredentialRepository aircraftCredentialRepository,
         ILogger<AircraftCredentialCacheService> logger)
     {
         _cache = cache;
-        _repository = repository;
+        _aircraftCredentialRepository = aircraftCredentialRepository;
         _logger = logger;
     }
 
-    public async Task<AircraftCredential?>GetCredentialAsync(Guid credentialId,CancellationToken cancellationToken)
+    public async Task<byte[]?>GetSharedVerificationAsync(Guid credentialId,CancellationToken cancellationToken)
     {
         var cacheKey = $"credential:{credentialId}";
 
-        if(_cache.TryGetValue(cacheKey, out AircraftCredential?credential))
+        if(_cache.TryGetValue(cacheKey, out byte[]? sharedKey))
         {
             _logger.LogInformation("Credential cache hit");
 
-            return credential;
+            return sharedKey!.ToArray();
         }
-
 
         _logger.LogInformation("Credential cache miss");
 
-        credential = await _repository.GetByIdAsync(credentialId,cancellationToken);
+        var credential = await _aircraftCredentialRepository.
+        GetAircraftCredentialAsync(credentialId, cancellationToken);
 
         if(credential is null) return null;
-  
+
+        sharedKey = credential.VerificationKey.ToArray();
 
         var options = new MemoryCacheEntryOptions
             {
@@ -46,8 +47,8 @@ public sealed class AircraftCredentialCacheService: IAircraftCredentialCacheServ
                 Size = 1
             };
 
-        _cache.Set(cacheKey, credential, options);
+        _cache.Set(cacheKey, sharedKey.ToArray(), options);
 
-        return credential;
+        return sharedKey;
     }
 }

@@ -4,7 +4,14 @@ public sealed class ReplayProtectionService : IReplayProtectionService
 {
     private static readonly TimeSpan AllowedClockDrift = TimeSpan.FromSeconds(30);
 
-    public void ValidateSequence(DateTime timestampUtc,long incomingSequence, long? lastAcceptedSequence)
+    private readonly IMemoryCache _memoryCache;
+
+    public ReplayProtectionService(IMemoryCache memoryCache)
+    {
+        _memoryCache = memoryCache;
+    }
+
+    public void ValidateSequence(DateTime timestampUtc, long incomingSequence, long? lastAcceptedSequence)
     {
         var currentUtc = DateTime.UtcNow;
         

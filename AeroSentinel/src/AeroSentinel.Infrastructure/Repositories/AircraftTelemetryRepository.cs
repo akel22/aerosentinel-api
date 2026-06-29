@@ -5,6 +5,7 @@ public sealed class AircraftTelemetryRepository : IAircraftTelemetryRepository
     public AircraftTelemetryRepository(ApplicationDbContext applicationDbContext)
     {
         _applicationDbContext = applicationDbContext;
+
     }
     public async Task SaveAsync(FlightTelemetry telemetry, CancellationToken cancellationToken = default)
     {
@@ -13,11 +14,11 @@ public sealed class AircraftTelemetryRepository : IAircraftTelemetryRepository
        await _applicationDbContext.SaveChangesAsync();
     }
 
-    public async Task<FlightTelemetry?> GetByMessageCompositeIndexAsync(long sequence, string callsign, CancellationToken cancellationToken = default)
+    public async Task<FlightTelemetry?> GetByCompositeIndexAsync(long sequence, Guid flightPlanId, CancellationToken cancellationToken = default)
     {
+        var telemetry = await _applicationDbContext.FlightTelemetries.
+            FirstOrDefaultAsync(x => x.SequenceNumber == sequence && x.FlightPlanID == flightPlanId, cancellationToken);
 
-        var telemetry = _applicationDbContext.FlightTelemetries.
-            FirstOrDefaultAsync(f => f.SequenceNumber == sequence and  f.Callsign == callsign);
+        return telemetry;    
     }
-
 }
