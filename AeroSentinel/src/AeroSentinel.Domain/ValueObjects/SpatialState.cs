@@ -1,6 +1,6 @@
 namespace AeroSentinel.Domain.ValueObjects;
 
-public readonly record struct SpatialState
+public sealed class SpatialState
 {
     public AircraftGeoCoordinates Coordinates { get; } 
     public double BaroAltitudeFeet { get; }

@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 
 namespace AeroSentinel.Domain.ValueObjects;
-public readonly record struct FlightIntent
+public sealed class FlightIntent
 {
     public double VerticalRateFpm { get; }
     public double SelectedAltitudeFeet { get; }

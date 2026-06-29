@@ -15,10 +15,7 @@ public sealed class AircraftProfile
     public AircraftPerformance AircraftPerformance { get;  init;} 
 
     public Guid CredentialId {get; init;} 
-    public double MaxAltitudeFeet { get;  init;}
-    public double MaxClimbRateFeetPerMinute { get;  init;}
-    public double MaxDescentRateFeetPerMinute { get;  init;}
-    public double MaxTurnRateDegreesPerSecond { get;  init;} 
+ 
 
 
     private AircraftProfile()
@@ -58,26 +55,5 @@ public sealed class AircraftProfile
 
         CredentialId = AircraftProfileValidation.RequireValidGuid(credentialId, nameof(credentialId));
 
-        MaxAltitudeFeet = AircraftProfileValidation
-            .RequirePositive(
-                maxAltitudeFeet,
-                nameof(maxAltitudeFeet));
-
-        MaxClimbRateFeetPerMinute = AircraftProfileValidation
-            .RequirePositive(
-                maxClimbRateFeetPerMinute,
-                nameof(maxClimbRateFeetPerMinute));
-
-        MaxDescentRateFeetPerMinute = AircraftProfileValidation
-            .RequirePositive(
-                maxDescentRateFeetPerMinute,
-                nameof(maxDescentRateFeetPerMinute));
-
-        MaxTurnRateDegreesPerSecond = AircraftProfileValidation
-            .RequirePositive(
-                maxTurnRateDegreesPerSecond,
-                nameof(maxTurnRateDegreesPerSecond));
-
     }
-
 }
