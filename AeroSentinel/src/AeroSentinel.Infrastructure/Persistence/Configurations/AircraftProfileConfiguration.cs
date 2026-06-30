@@ -4,13 +4,21 @@ namespace AeroSentinel.Infrastructure.Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<AircraftProfile> builder)
         {
-           builder.HasKey(
-                x => x.ICAO24);
+           builder.HasKey(x => x.ICAO24);
 
-            builder.OwnsOne(x => x.AircraftPerformance, AircraftPerformance =>
+           builder.HasOne(x => x.AircraftCredential).WithOne()
+                  .HasForeignKey<AircraftCredential>(x => x.CredentialId);
+
+           builder.OwnsOne(x => x.AircraftPerformance, _ =>
             {
-                AircraftPerformance.Property(x => x.CruiseSpeedKnots).HasColumnName("CruiseSpeedKnots");
-                AircraftPerformance.Property(x => x.MaxVelocityKnots).HasColumnName("MaxVelocityKnots");
+                _.Property(x => x.CruiseSpeedKnots);
+                _.Property(x => x.MaxVelocityKnots);
+                _.Property(x => x.MaxAltitudeFeet);
+                _.Property(x => x.MaxAltitudeFeet);
+                _.Property(x => x.MaxClimbRateFeetPerMinute);
+                _.Property(x => x.MaxDescentRateFeetPerMinute);
+                _.Property(x => x.MaxTurnRateDegreesPerSecond);
+
             });
 
             builder.Property(x=> x.AircraftType).HasConversion<string>();

@@ -21,3 +21,6 @@ global using AeroSentinel.Application.Telemetry.Commands;
 global using Microsoft.Extensions.Caching.Memory;
 global using Microsoft.Extensions.Logging;
 global using AeroSentinel.Application.Common.DTOs;
+global using AeroSentinel.Infrastructure.Implementations.Services;
+global using AeroSentinel.Infrastructure.Repositories;
+global using Microsoft.EntityFrameworkCore.Sqlite;

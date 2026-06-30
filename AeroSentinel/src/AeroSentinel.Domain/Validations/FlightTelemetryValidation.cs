@@ -7,10 +7,10 @@ namespace AeroSentinel.Domain.Entities;
 public static class FlightTelemetryValidation
 {
     // Philippine Flight Information Region (FIR) Geofencing Constants
-   private const double PhMinLatitude = 3.5;
-        private const double PhMaxLatitude = 21.1;
-        private const double PhMinLongitude = 114.0;
-        private const double PhMaxLongitude = 132.5;
+    private const double PhMinLatitude = 3.5;
+    private const double PhMaxLatitude = 21.1;
+    private const double PhMinLongitude = 114.0;
+    private const double PhMaxLongitude = 132.5;
 
     // Commercial Passenger Fleet Capability Constants (A320/A321/B737/ATR)
     private const double MaxCommercialAltitudeFeet = 42000.0;
@@ -52,14 +52,6 @@ public static class FlightTelemetryValidation
         return trackDegrees;
     }
     
-    // public static DateTime RequireValidTimestamp(DateTime timestampUtc, string propertyName)
-    // {
-    //     // Guard against latency anomalies or replay streams trying to feed stale telemetry
-    //     if (timestampUtc > DateTime.UtcNow.AddMinutes(5) || timestampUtc < DateTime.UtcNow.AddHours(-24))
-    //         throw new InvalidTimestampException(timestampUtc, $"{propertyName} falls outside the permissible real-time synchronization window.");
-        
-    //     return timestampUtc;
-    // }
 
     public static double RequireValidGroundSpeedKnots(double groundSpeedKnots, string propertyName)
     {

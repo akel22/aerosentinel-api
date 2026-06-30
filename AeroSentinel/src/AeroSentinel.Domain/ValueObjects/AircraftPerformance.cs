@@ -1,6 +1,6 @@
 namespace AeroSentinel.Domain.Entities;
 
-public sealed class  AircraftPerformance
+public sealed class AircraftPerformance
 {
     public double CruiseSpeedKnots { get; init; }
     public double MaxVelocityKnots { get; init; }

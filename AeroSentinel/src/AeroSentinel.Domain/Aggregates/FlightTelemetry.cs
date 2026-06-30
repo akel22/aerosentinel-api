@@ -15,10 +15,10 @@ public sealed class FlightTelemetry //Aggregate root
     public DateTime TimestampUtc { get; init;} 
 
     //WHERE THE AIRCRAFT IS CURRENTLY
-    public SpatialState SpatialState {get; init;} //Value object
+    public SpatialState SpatialState {get; init;} = null!; //Value object
    
    //WHAT THE AIRCRAFT IS CURRENTLY DOING
-    public FlightIntent FlightIntent {get; init;} //Value object
+    public FlightIntent FlightIntent {get; init;} = null!; //Value object
 
     public long SequenceNumber {get; init;}
     public string Signature{get; init;} = null!;

@@ -1,5 +1,4 @@
-using AeroSentinel.Infrastructure.Implementations.Services;
-using AeroSentinel.Infrastructure.Repositories;
+
 
 namespace AeroSentinel.Infrastructure
 {
@@ -9,8 +8,7 @@ namespace AeroSentinel.Infrastructure
             IConfiguration configuration)
         {
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseNpgsql(
-                    configuration.GetConnectionString("Default")));
+                options.UseSqlite("Data Source=Persistence/testingDB.db"));
 
              services.AddScoped<IAircraftTelemetryRepository, AircraftTelemetryRepository>();
              services.AddScoped<IAircraftProfileRepository, AircraftProfileRepository>();

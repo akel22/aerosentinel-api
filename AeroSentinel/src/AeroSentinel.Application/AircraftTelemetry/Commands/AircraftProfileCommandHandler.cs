@@ -15,26 +15,27 @@ public sealed class AircraftProfileCommandHandler : IRequestHandler<CreateAircra
 
     public async Task<string> Handle(CreateAircraftProfileCommand request, CancellationToken cancellation = default)
     {
-     var newAircraftProfile = request.AircraftProfileDTO;
+        var newAircraftProfile = request.AircraftProfileDTO;
 
-     var newPerformance = new AircraftPerformance(
-        newAircraftProfile.CruiseSpeedKnots,
-        newAircraftProfile.MaxVelocityKnots
-     );
+        var newPerformance = new AircraftPerformance(
+            newAircraftProfile.CruiseSpeedKnots,
+            newAircraftProfile.MaxVelocityKnots,
+            newAircraftProfile.MaxAltitudeFeet,
+            newAircraftProfile.MaxClimbRateFeetPerMinute,
+            newAircraftProfile.MaxDescentRateFeetPerMinute,
+            newAircraftProfile.MaxTurnRateDegreesPerSecond
+        );
 
-     var aircraftProfile = new AircraftProfile(
-        newAircraftProfile.ICAO24,
-        newAircraftProfile.Registration,
-        newAircraftProfile.AircraftType,
-        newPerformance,
-        newAircraftProfile.CredentialId,
-        newAircraftProfile.MaxAltitudeFeet,
-        newAircraftProfile.MaxClimbRateFeetPerMinute,
-        newAircraftProfile.MaxDescentRateFeetPerMinute,
-        newAircraftProfile.MaxTurnRateDegreesPerSecond
-     );
+        var aircraftProfile = new AircraftProfile(
+            newAircraftProfile.ICAO24,
+            newAircraftProfile.Registration,
+            newAircraftProfile.AircraftType,
+            newPerformance,
+            newAircraftProfile.CredentialId 
+        );
 
-        await _aircraftProfileRepository.SaveProfileAsync(aircraftProfile, cancellation);
+        await _aircraftProfileRepository.SaveChangesAsync(aircraftProfile, cancellation);
+
         _logger.LogInformation($"New aircraft profile has been created at {DateTime.UtcNow}");
 
 
