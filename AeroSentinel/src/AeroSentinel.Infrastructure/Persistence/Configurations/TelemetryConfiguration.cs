@@ -8,7 +8,7 @@ namespace AeroSentinel.Infrastructure.Persistence.Configurations
 
            builder.HasIndex(x => new
                 {
-                    x.FlightPlanID,
+                    x.FlightPlanId,
                     x.SequenceNumber
 
                 }).IsUnique();
@@ -19,7 +19,7 @@ namespace AeroSentinel.Infrastructure.Persistence.Configurations
                     x.TimestampUtc
                 });
 
-            builder.Property(x => x.Status).HasConversion<string>();
+            builder.Property(x => x.Status).HasConversion<string>().IsRequired();
 
             builder.OwnsOne(x => x.FlightIntent, _ =>
                 {

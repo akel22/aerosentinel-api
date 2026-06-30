@@ -15,7 +15,7 @@ public static class AircraftCredentialValidation
                 secretVerificationKey,
                 $"Verification key for aircraft [{ICAO24}] must be at least 32 bytes (256 bits).");
 
-        return (byte[])secretVerificationKey.Clone();
+        return [.. secretVerificationKey];
         // a clone is returned to prevent external modification of the internal key storage
 
     }

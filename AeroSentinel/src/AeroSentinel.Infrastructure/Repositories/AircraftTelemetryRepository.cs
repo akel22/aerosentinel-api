@@ -10,8 +10,8 @@ public sealed class AircraftTelemetryRepository : IAircraftTelemetryRepository
 
     public async Task<FlightTelemetry?> GetByCompositeIndexAsync(long sequence, Guid flightPlanId, CancellationToken cancellationToken = default)
     {
-        var telemetry = await _applicationDbContext.FlightTelemetries.
-            FirstOrDefaultAsync(x => x.SequenceNumber == sequence && x.FlightPlanID == flightPlanId, cancellationToken);
+        var telemetry = await _applicationDbContext.flight_telemetry.
+            FirstOrDefaultAsync(x => x.SequenceNumber == sequence && x.FlightPlanId == flightPlanId, cancellationToken);
 
         if(telemetry is null)
         {
@@ -30,7 +30,7 @@ public sealed class AircraftTelemetryRepository : IAircraftTelemetryRepository
 
     public async Task<FlightTelemetry?> GetLatestFlightTelemetryAsync(string callsign, DateTime timestampUtc, CancellationToken cancellationToken = default)
     {
-        var telemetry = await _applicationDbContext.FlightTelemetries.
+        var telemetry = await _applicationDbContext.flight_telemetry.
             FirstOrDefaultAsync(x => x.Callsign == callsign && x.TimestampUtc == timestampUtc, cancellationToken);
 
         if(telemetry is null)

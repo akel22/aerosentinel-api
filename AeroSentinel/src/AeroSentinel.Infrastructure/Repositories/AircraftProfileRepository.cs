@@ -9,7 +9,7 @@ public sealed class AircraftProfileRepository : IAircraftProfileRepository
     }
     public async Task<AircraftProfile?> GetByICAO24Async(string icao24, CancellationToken cancellationToken = default)
     {
-        var profile = await _applicationDbContext.AircraftProfiles.FindAsync(icao24);
+        var profile = await _applicationDbContext.aircraft_profile.FindAsync(icao24);
 
         if(profile is null)
         {

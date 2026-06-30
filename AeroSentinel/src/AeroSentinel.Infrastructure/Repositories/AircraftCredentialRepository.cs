@@ -7,7 +7,7 @@ public sealed class AircraftCredentialRepository : IAircraftCredentialRepository
     }
     async public Task<AircraftCredential?> GetAircraftCredentialAsync(Guid credentialId, CancellationToken cancellationToken)
     {   
-        var credential = await _applicationDbContext.AircraftCredentials.FindAsync(credentialId);
+        var credential = await _applicationDbContext.aircraft_credential.FindAsync(credentialId);
 
         if(credential is null) 
         {

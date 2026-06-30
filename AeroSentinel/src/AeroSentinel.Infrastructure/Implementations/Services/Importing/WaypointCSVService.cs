@@ -17,7 +17,7 @@ public sealed class WaypointsCSVService
 
         var rows = await csv.GetRecordsAsync<WaypointsCSV>().ToListAsync();
 
-        var existing = await _dbContext.Waypoints.Select(x => x.WaypointId).ToHashSetAsync();
+        var existing = await _dbContext.waypoint.Select(x => x.WaypointId).ToHashSetAsync();
 
         var batch = new List<Waypoint>();
 
@@ -30,7 +30,7 @@ public sealed class WaypointsCSVService
 
         if(batch.Count>0)
         {
-            await _dbContext.Waypoints.AddRangeAsync(batch);
+            await _dbContext.waypoint.AddRangeAsync(batch);
 
             await _dbContext.SaveChangesAsync();
         }

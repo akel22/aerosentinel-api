@@ -1,40 +1,43 @@
-public sealed class FlightPlan
+namespace AeroSentinel.Domain.Aggregates
 {
-    public Guid FlightPlanID { get; init;} 
-    public string ICAO24 { get; init;} = null!; //FK to AircraftProfile.ICAO24
-
-    public string Callsign { get; init;} = null!;
-    public string DepartureAirport { get; init; } = null!;
-    public string DestinationAirport { get; init;} = null!;
-
-    public DateTime DepartureTimeUtc { get; init;} 
-    public DateTime EstimatedArrivalTimeUtc { get; init;} 
-
-    private FlightPlan()
+    public sealed class FlightPlan
     {
-        
-    }
+        public Guid FlightPlanId { get; init; }
+        public string ICAO24 { get; init; } = null!; //FK to AircraftProfile.ICAO24
 
-    public FlightPlan(string icao24, string callsign, string departureAirport, string destinationAirport, DateTime departureTimeUtc, 
-    DateTime estimatedArrivalTimeUtc)
-    {
-        FlightPlanID = Guid.NewGuid();
+        public string Callsign { get; init; } = null!;
+        public string DepartureAirport { get; init; } = null!;
+        public string DestinationAirport { get; init; } = null!;
 
-        ICAO24 = AircraftProfileValidation.RequireValidICAO24(icao24, nameof(icao24));//FK
+        public DateTime DepartureTimeUtc { get; init; }
+        public DateTime EstimatedArrivalTimeUtc { get; init; }
 
-        Callsign = PhilippineFlightPlanDetailsValidation.RequireValidCallsign(callsign, nameof(callsign));
+        private FlightPlan()
+        {
 
-        DepartureAirport = PhilippineFlightPlanDetailsValidation.RequireValidAirportCode
-       (departureAirport, nameof(departureAirport));
+        }
 
-        DestinationAirport = PhilippineFlightPlanDetailsValidation.RequireValidAirportCode
-        (destinationAirport, nameof(destinationAirport));
+        public FlightPlan(string icao24, string callsign, string departureAirport, string destinationAirport, DateTime departureTimeUtc,
+        DateTime estimatedArrivalTimeUtc)
+        {
+            FlightPlanId =  FlightTelemetryValidation.RequireValidGuid(Guid.NewGuid(), null);
 
-        DepartureTimeUtc = PhilippineFlightPlanDetailsValidation.RequireValidDepartureTime
-        (departureTimeUtc, nameof(departureTimeUtc));
+            ICAO24 = AircraftProfileValidation.RequireValidICAO24(icao24, nameof(icao24));//FK
 
-        EstimatedArrivalTimeUtc = PhilippineFlightPlanDetailsValidation.RequireValidArrivalTime
-        (estimatedArrivalTimeUtc, departureTimeUtc, nameof(estimatedArrivalTimeUtc));
+            Callsign = PhilippineFlightPlanDetailsValidation.RequireValidCallsign(callsign, nameof(callsign));
 
+            DepartureAirport = PhilippineFlightPlanDetailsValidation.RequireValidAirportCode
+           (departureAirport, nameof(departureAirport));
+
+            DestinationAirport = PhilippineFlightPlanDetailsValidation.RequireValidAirportCode
+            (destinationAirport, nameof(destinationAirport));
+
+            DepartureTimeUtc = PhilippineFlightPlanDetailsValidation.RequireValidDepartureTime
+            (departureTimeUtc, nameof(departureTimeUtc));
+
+            EstimatedArrivalTimeUtc = PhilippineFlightPlanDetailsValidation.RequireValidArrivalTime
+            (estimatedArrivalTimeUtc, departureTimeUtc, nameof(estimatedArrivalTimeUtc));
+
+        }
     }
 }
