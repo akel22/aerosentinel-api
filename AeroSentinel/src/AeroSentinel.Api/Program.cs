@@ -20,7 +20,7 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 }
 
-// await app.SeedWaypoints(); ALREADY DONE
+await app.SeedWaypoints(); 
 app.UseHttpsRedirection();
 app.Run();
 
