@@ -1,5 +1,3 @@
-
-
 namespace AeroSentinel.Infrastructure
 {
     public static class DependencyInjection
@@ -10,12 +8,12 @@ namespace AeroSentinel.Infrastructure
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlite("Data Source=Persistence/testingDB.db"));
 
-            //  services.AddScoped<IAircraftTelemetryRepository, AircraftTelemetryRepository>();
+            // services.AddScoped<IAircraftTelemetryRepository, AircraftTelemetryRepository>();
              services.AddScoped<IAircraftProfileRepository, AircraftProfileRepository>();
              services.AddScoped<ICryptographyService, CryptographyService>();
-             services.AddScoped<IReplayProtectionService, ReplayProtectionService>();
+             services.AddSingleton<IReplayProtectionService, ReplayProtectionService>();
+             services.AddSingleton<IMemoryCache, MemoryCache>();
              services.AddScoped<WaypointsCSVService>();
-
             
             return services;
 

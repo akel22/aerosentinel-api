@@ -5,6 +5,7 @@ public static class DependencyInjection
         services.AddMediatR(config => config.RegisterServicesFromAssembly(
             typeof(DependencyInjection).Assembly));//Scans the whole project dll for handlers and registers
 
+        
         return services;    
     }
 }

@@ -1,4 +1,5 @@
 using System;
+using AeroSentinel.Domain.Aggregates;
 using AeroSentinel.Domain.Exceptions;
 using AeroSentinel.Domain.ValueObjects;
 
@@ -10,6 +11,7 @@ public sealed class FlightTelemetry //Aggregate root
     public Guid MessageId { get; init;}
     public string ICAO24 { get; init;} = null!; //FK to Aircraft Profile root
     public Guid FlightPlanId { get; init;}
+    public FlightPlan FlightPlan { get; init;} = null!;
     public string Callsign { get; init;} = null!;
     public string Squawk {get;init; } = null!;
     public DateTime TimestampUtc { get; init;} 

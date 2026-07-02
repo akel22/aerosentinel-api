@@ -9,6 +9,11 @@ public sealed class AircraftPerformance
     public double MaxDescentRateFeetPerMinute { get; init; }
     public double MaxTurnRateDegreesPerSecond { get; init; }
 
+    private AircraftPerformance()
+    {
+        
+    }
+
     public AircraftPerformance(
         double cruiseSpeedKnots,
         double maxVelocityKnots,

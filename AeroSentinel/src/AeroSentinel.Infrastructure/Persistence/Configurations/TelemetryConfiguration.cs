@@ -31,7 +31,7 @@ namespace AeroSentinel.Infrastructure.Persistence.Configurations
                     
                 });
 
-             builder.OwnsOne(x => x.SpatialState, _ =>
+            builder.OwnsOne(x => x.SpatialState, _ =>
                 {
                     _.Property(x => x.Coordinates);
                     _.Property(x => x.BaroAltitudeFeet);
@@ -40,6 +40,9 @@ namespace AeroSentinel.Infrastructure.Persistence.Configurations
                     _.Property(x => x.TrackAngleDegrees);
                     
                 });
+
+             builder.HasOne(x => x.FlightPlan).WithMany().HasForeignKey(x => x.FlightPlanId);
+
         }
     }
 }

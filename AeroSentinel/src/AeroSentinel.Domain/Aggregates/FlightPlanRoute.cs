@@ -5,11 +5,11 @@ namespace AeroSentinel.Domain.Aggregates
     public sealed class FlightPlanRoute
     {
         public Guid FlightPlanId { get; init; } 
-        public FlightPlan FlightPlan {get; private set;} = null!;
+        public FlightPlan FlightPlan {get; init;} = null!;
          public int Sequence { get; private set; }
         public string WaypointId { get; init;} = null!;
 
-        public Waypoint Waypoint  {get; private set;} = null!;
+        public Waypoint Waypoint  {get; init;} = null!;
 
         private FlightPlanRoute()
         {

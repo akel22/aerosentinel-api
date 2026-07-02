@@ -4,7 +4,6 @@ namespace AeroSentinel.Domain.Aggregates
     {
         public Guid FlightPlanId { get; init; }
         public string ICAO24 { get; init; } = null!; //FK to AircraftProfile.ICAO24
-
         public string Callsign { get; init; } = null!;
         public string DepartureAirport { get; init; } = null!;
         public string DestinationAirport { get; init; } = null!;

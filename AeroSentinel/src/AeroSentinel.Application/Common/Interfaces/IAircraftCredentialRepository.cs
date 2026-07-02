@@ -1,5 +1,3 @@
-using AeroSentinel.Domain.Entities;
-
 namespace AeroSentinel.Application.Common.Interfaces;
 
 public interface IAircraftCredentialRepository

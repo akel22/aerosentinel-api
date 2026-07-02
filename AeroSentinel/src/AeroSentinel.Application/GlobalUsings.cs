@@ -4,10 +4,12 @@ global using MediatR;
 global using AeroSentinel.Application.Common.Interfaces;
 global using AeroSentinel.Application.Common.DTOs;
 global using System;
-global using AeroSentinel.Application.Telemetry.Commands;
+global using AeroSentinel.Application.AircraftTelemetry.Commands;
 global using AeroSentinel.Domain.Exceptions;
 global using Microsoft.Extensions.DependencyInjection;
-global using AeroSentinel.Domain.Extensions;
 global using System.Text.Json.Serialization;
+global using Microsoft.Extensions.Logging;
+global using AeroSentinel.Domain.ValueObjects;
+
 
 

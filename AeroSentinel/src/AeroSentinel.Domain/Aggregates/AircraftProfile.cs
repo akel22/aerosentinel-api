@@ -9,9 +9,7 @@ public sealed class AircraftProfile
     public AircraftType AircraftType { get;  init;} 
     public AircraftManufacturer? Manufacturer { get;  init;} 
     public AircraftPerformance? AircraftPerformance { get;  init;} 
-    public Guid CredentialId {get; init;} 
-
-    public AircraftCredential AircraftCredential {get; private set;} = null!;
+    public AircraftCredential AircraftCredential {get; private set;} = null!; //for relationship
  
     private AircraftProfile()
     {
@@ -22,8 +20,7 @@ public sealed class AircraftProfile
         string icao24,
         string registration,
         string aircraftType,
-        AircraftPerformance aircraftPerformance,
-        Guid credentialId
+        AircraftPerformance aircraftPerformance
         )
        
     {
@@ -45,8 +42,5 @@ public sealed class AircraftProfile
         aircraftPerformance.ValidatePerformanceEnvelope(Registration);
 
         AircraftPerformance = aircraftPerformance;
-
-        CredentialId = AircraftProfileValidation.RequireValidGuid(credentialId, nameof(credentialId));
-
     }
 }

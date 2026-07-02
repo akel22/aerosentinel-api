@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-
 namespace AeroSentinel.Domain.ValueObjects;
 public sealed class FlightIntent
 {

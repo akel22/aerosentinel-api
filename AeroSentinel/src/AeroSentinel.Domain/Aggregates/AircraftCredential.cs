@@ -4,7 +4,7 @@ public sealed class AircraftCredential
 {
     public Guid CredentialId {get; private set;}
     public string ICAO24 { get; init; } = null!;
-    public AircraftProfile AircraftProfile { get; private set; } = null!;
+    public AircraftProfile AircraftProfile { get; init; } = null!;
     public byte[] VerificationKey {get; init;} = null!;
 
     // public ReadOnlySpan<byte> VerificationKey =>

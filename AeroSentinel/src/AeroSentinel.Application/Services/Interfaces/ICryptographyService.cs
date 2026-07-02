@@ -1,4 +1,4 @@
-namespace AeroSentinel.Application.Security;
+namespace AeroSentinel.Application.Services.Interfaces;
 
 public interface ICryptographyService
 {

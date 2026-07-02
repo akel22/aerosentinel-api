@@ -6,9 +6,6 @@ namespace AeroSentinel.Infrastructure.Persistence.Configurations
         {
            builder.HasKey(x => x.ICAO24);
 
-           builder.HasOne(x => x.AircraftCredential).WithOne()
-                  .HasForeignKey<AircraftProfile>(x => x.CredentialId);
-
            builder.OwnsOne(x => x.AircraftPerformance, _ =>
             {
                 _.Property(x => x.CruiseSpeedKnots);
@@ -21,23 +18,6 @@ namespace AeroSentinel.Infrastructure.Persistence.Configurations
             });
 
             builder.Property(x=> x.AircraftType).HasConversion<string>();
-
-            builder.HasData(
-                new AircraftProfile(
-                    "A1B2C3",
-                    "RP-C1234",
-                    "A320",
-                        new AircraftPerformance(
-                            20,
-                            20,
-                            50,
-                            20,
-                            50,
-                            50
-                        ),
-                    Guid.Parse("9b5e8c6d-7d59-4c7b-bcb3-1d79e7c3e5d8")
-                )
-            );
 
 
         }

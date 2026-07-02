@@ -1,6 +1,3 @@
-using AeroSentinel.Application.Common.DTOs;
-using AeroSentinel.Application.Telemetry.Commands;
-
 namespace AeroSentinel.Infrastructure.Implementations.Services.Security;
 
 public sealed class CryptographyService : ICryptographyService
@@ -14,7 +11,6 @@ public sealed class CryptographyService : ICryptographyService
     (
         payload.Sequence,
         payload.ICAO24,
-        payload.CredentialId,
         payload.Callsign,
         payload.Squawk,
         payload.TimestampUTC,

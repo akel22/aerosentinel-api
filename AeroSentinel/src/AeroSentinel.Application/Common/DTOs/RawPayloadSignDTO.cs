@@ -3,7 +3,6 @@ namespace AeroSentinel.Application.Common.DTOs;
 public readonly record struct RawPayloadSignDTO(
     long Sequence,
     string ICAO24,
-    Guid CredentialId,
     string Callsign,
     string Squawk,
     DateTime TimestampUTC,

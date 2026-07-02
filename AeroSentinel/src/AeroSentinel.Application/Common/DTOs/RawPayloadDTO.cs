@@ -6,7 +6,6 @@ public record RawPayloadDTO(
     Guid FlightPlanId,
     long Sequence,
     string ICAO24,
-    Guid CredentialId,
     string Callsign,
     string Squawk,
     DateTime TimestampUTC,
