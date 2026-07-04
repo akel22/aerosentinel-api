@@ -4,9 +4,9 @@ public static class AircraftProfileValidation
     public static double RequirePositive(double variable, string variableName)
     {
         if (variable <= 0)
-            throw new ArgumentOutOfRangeException(
-                variableName,
-                $"{variableName} must be greater than zero.");
+            throw new AircraftPerformanceException(
+                variable.ToString(),
+                $"{variableName} must be greater than zero and valid measurement");
 
         return variable;
     }

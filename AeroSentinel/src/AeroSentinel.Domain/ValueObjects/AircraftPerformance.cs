@@ -52,6 +52,8 @@ public sealed class AircraftPerformance
                 registration,
                 "Cruise speed must be lower than maximum velocity.");
         }
+
+    
     }
 
 }

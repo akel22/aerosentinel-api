@@ -25,7 +25,11 @@ public static class MapEndpoints
             {
                 var icao24 = await sender.Send(command, cancellationToken);
                 
-                return Results.CreatedAtRoute(routeName, icao24, aircraftProfileDTO);
+                return Results.CreatedAtRoute(routeName, new { icao24 }, aircraftProfileDTO);
+            }
+            catch (DomainException exception)
+            {
+                return Results.BadRequest(new { error = exception.Message });
             }
             catch
             {

@@ -1,11 +1,14 @@
-public static class DependencyInjection
+namespace AeroSentinel.Application
 {
-    public static IServiceCollection AddApplication(this IServiceCollection services)
+    public static class DependencyInjection
     {
-        services.AddMediatR(config => config.RegisterServicesFromAssembly(
-            typeof(DependencyInjection).Assembly));//Scans the whole project dll for handlers and registers
+        public static IServiceCollection AddApplication(this IServiceCollection services)
+        {
+            services.AddMediatR(config => config.RegisterServicesFromAssembly(
+                typeof(DependencyInjection).Assembly));//Scans the whole project dll for handlers and registers
 
-        
-        return services;    
+
+            return services;
+        }
     }
 }

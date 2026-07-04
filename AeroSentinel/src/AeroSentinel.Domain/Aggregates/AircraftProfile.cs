@@ -39,8 +39,10 @@ public sealed class AircraftProfile
 
         Manufacturer = AircraftType.GetManufacturer();
 
+        AircraftPerformance = aircraftPerformance;
+
         aircraftPerformance.ValidatePerformanceEnvelope(Registration);
 
-        AircraftPerformance = aircraftPerformance;
+        
     }
 }

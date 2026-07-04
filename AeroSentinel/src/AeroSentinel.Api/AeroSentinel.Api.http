@@ -1,8 +1,22 @@
-# @AeroSentinel.Api_HostAddress = http://localhost:5253
+@AeroSentinel.Api_HostAddress = http://localhost:5253
 
 # GET {{AeroSentinel.Api_HostAddress}}/weatherforecast/
 # Accept: application/json
 
 # ###
 
+POST http://localhost:5253/profiles
+Content-Type: application/json
+Accept: application/json
 
+{
+  "icao24": "7588P2",
+  "registration": "RP-C8000",
+  "aircraftType": "A320",
+  "cruiseSpeedKnots": 450,
+  "maxVelocityKnots": 470,
+  "maxAltitudeFeet": 0,
+  "maxClimbRateFeetPerMinute": -10,
+  "maxDescentRateFeetPerMinute": 2500,
+  "maxTurnRateDegreesPerSecond": 3.0
+}

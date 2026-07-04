@@ -1,4 +1,4 @@
-namespace AeroSentinel.Infrastructure.Implementations.Services.Cache;
+namespace AeroSentinel.Infrastructure.Implementations.Services;
 
 public sealed class AircraftCredentialCacheService: IAircraftCredentialCacheService
 {
@@ -20,9 +20,9 @@ public sealed class AircraftCredentialCacheService: IAircraftCredentialCacheServ
         _logger = logger;
     }
 
-    public async Task<byte[]?>GetSharedVerificationAsync(Guid credentialId,CancellationToken cancellationToken)
+    public async Task<byte[]?>GetSharedVerificationAsync(string ICAO24,CancellationToken cancellationToken)
     {
-        var cacheKey = $"credential:{credentialId}";
+        var cacheKey = $"credential:{ICAO24}";
 
         if(_cache.TryGetValue(cacheKey, out byte[]? sharedKey))
         {
@@ -34,7 +34,7 @@ public sealed class AircraftCredentialCacheService: IAircraftCredentialCacheServ
         _logger.LogInformation("Credential cache miss");
 
         var credential = await _aircraftCredentialRepository.
-        GetAircraftCredentialAsync(credentialId, cancellationToken);
+        GetAircraftCredentialAsync(ICAO24, cancellationToken);
 
         if(credential is null) return null;
 

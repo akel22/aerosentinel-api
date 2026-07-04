@@ -1,3 +1,4 @@
+using AeroSentinel.Application;
 using AeroSentinel.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 
@@ -5,7 +6,6 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
-
 builder.Services.AddLogging();
 
 builder.Services.AddInfrastructure(builder.Configuration);
@@ -20,6 +20,8 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 }
 
-app.UseHttpsRedirection();
+// app.UseHttpsRedirection();
+
+app.MapHttpProfileEndpoints();
 app.Run();
 

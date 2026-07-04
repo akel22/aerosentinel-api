@@ -1,6 +1,6 @@
-namespace AeroSentinel.Application.Common.Interfaces;
+namespace AeroSentinel.Application.Services.Interfaces;
 
 public interface IAircraftCredentialCacheService
 {
-    Task<byte[]?> GetSharedVerificationAsync(Guid credentialId, CancellationToken cancellationToken);
+    Task<byte[]?> GetSharedVerificationAsync(string ICAO24, CancellationToken cancellationToken);
 }
