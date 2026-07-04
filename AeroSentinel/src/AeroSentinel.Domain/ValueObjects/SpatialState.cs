@@ -2,11 +2,16 @@ namespace AeroSentinel.Domain.ValueObjects;
 
 public sealed class SpatialState
 {
-    public AircraftGeoCoordinates Coordinates { get; } 
-    public double BaroAltitudeFeet { get; }
-    public double GeoAltitudeFeet { get; }
-    public double GroundSpeedKnots { get; }
-    public double TrackAngleDegrees { get; }
+    public AircraftGeoCoordinates? Coordinates { get; init;}
+    public double BaroAltitudeFeet { get; init; }
+    public double GeoAltitudeFeet { get; init; }
+    public double GroundSpeedKnots { get; init;}
+    public double TrackAngleDegrees { get; init;}
+
+    private SpatialState()
+    {
+        
+    }
 
     public SpatialState(AircraftGeoCoordinates coordinates, double baroAltitudeFeet, double geoAltitudeFeet, double groundSpeedKnots, double trackAngleDegrees)
     {

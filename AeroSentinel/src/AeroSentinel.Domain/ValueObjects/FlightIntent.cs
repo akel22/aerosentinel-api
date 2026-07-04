@@ -1,11 +1,17 @@
 namespace AeroSentinel.Domain.ValueObjects;
 public sealed class FlightIntent
 {
-    public double VerticalRateFpm { get; }
-    public double SelectedAltitudeFeet { get; }
-    public double IndicatedAirspeedKnots { get; }
-    public double MagneticHeadingDegrees { get; }
-    public double RollAngleDegrees { get; }
+    public double VerticalRateFpm { get; init;}
+    public double SelectedAltitudeFeet { get; init; }
+    public double IndicatedAirspeedKnots { get; init; }
+    public double MagneticHeadingDegrees { get; init;}
+    public double RollAngleDegrees { get; init;}
+
+    private FlightIntent()
+    {
+        
+    
+    }
 
     public FlightIntent(double verticalRateFpm, double selectedAltitudeFeet, double indicatedAirspeedKnots, double magneticHeadingDegrees, double rollAngleDegrees)
     {

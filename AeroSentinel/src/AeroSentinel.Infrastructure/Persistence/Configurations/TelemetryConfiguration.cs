@@ -33,13 +33,20 @@ namespace AeroSentinel.Infrastructure.Persistence.Configurations
 
             builder.OwnsOne(x => x.SpatialState, _ =>
                 {
-                    _.Property(x => x.Coordinates);
+                    _.OwnsOne(y => y.Coordinates, coor =>
+                    {
+                        coor.Property(y => y.Latitude);
+                        coor.Property(y => y.Longitude);
+
+                    });
+
                     _.Property(x => x.BaroAltitudeFeet);
                     _.Property(x => x.GeoAltitudeFeet);
                     _.Property(x => x.GroundSpeedKnots);
                     _.Property(x => x.TrackAngleDegrees);
                     
                 });
+        
 
              builder.HasOne(x => x.FlightPlan).WithMany().HasForeignKey(x => x.FlightPlanId);
 

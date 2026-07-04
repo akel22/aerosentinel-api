@@ -6,9 +6,11 @@ namespace AeroSentinel.Infrastructure
             IConfiguration configuration)
         {
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlite("Data Source=Persistence/testingDB.db"));
+                options.UseSqlite("Data Source=../AeroSentinel.Infrastructure/Persistence/Testing.db",
+                x => x.MigrationsAssembly("AeroSentinel.Infrastructure")));
+              
 
-            // services.AddScoped<IAircraftTelemetryRepository, AircraftTelemetryRepository>();
+            services.AddScoped<IAircraftTelemetryRepository, AircraftTelemetryRepository>();
              services.AddScoped<IAircraftProfileRepository, AircraftProfileRepository>();
              services.AddScoped<ICryptographyService, CryptographyService>();
              services.AddSingleton<IReplayProtectionService, ReplayProtectionService>();

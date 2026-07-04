@@ -1,9 +1,9 @@
 namespace AeroSentinel.Domain.ValueObjects;
 
-public readonly record struct AircraftGeoCoordinates
+public sealed class AircraftGeoCoordinates
 {
-    public double Latitude { get; }
-    public double Longitude { get; }
+    public double Latitude { get; init;}
+    public double Longitude { get; init;}
 
     public AircraftGeoCoordinates(double latitude, double longitude) 
     {
