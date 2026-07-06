@@ -43,9 +43,9 @@ public sealed class FlightTelemetry //Aggregate root
         long sequenceNumber,
         string signature)
     {
-        MessageId =  FlightTelemetryValidation.RequireValidGuid(Guid.NewGuid(), null);
+        MessageId =  FlightTelemetryValidation.RequireValidMessageId(Guid.NewGuid(), null);
 
-        FlightPlanId = FlightTelemetryValidation.RequireValidGuid(flightplanId, nameof(flightplanId));
+        FlightPlanId = FlightTelemetryValidation.RequireValidFlightPlanId(flightplanId, nameof(flightplanId));
 
         ICAO24 = AircraftProfileValidation.RequireValidICAO24(icao24, nameof(icao24));
 

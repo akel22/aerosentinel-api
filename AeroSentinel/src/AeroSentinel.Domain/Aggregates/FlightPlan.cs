@@ -19,7 +19,7 @@ namespace AeroSentinel.Domain.Aggregates
         public FlightPlan(string icao24, string callsign, string departureAirport, string destinationAirport, DateTime departureTimeUtc,
         DateTime estimatedArrivalTimeUtc)
         {
-            FlightPlanId =  FlightTelemetryValidation.RequireValidGuid(Guid.NewGuid(), null);
+            FlightPlanId =  FlightTelemetryValidation.RequireValidFlightPlanId(Guid.NewGuid(), null);
 
             ICAO24 = AircraftProfileValidation.RequireValidICAO24(icao24, nameof(icao24));//FK
 

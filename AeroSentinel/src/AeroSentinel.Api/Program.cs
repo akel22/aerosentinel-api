@@ -1,5 +1,7 @@
 using AeroSentinel.Application;
+using AeroSentinel.Domain.Entities;
 using AeroSentinel.Infrastructure;
+using AeroSentinel.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -23,5 +25,20 @@ if (app.Environment.IsDevelopment())
 // app.UseHttpsRedirection();
 
 app.MapHttpProfileEndpoints();
+app.MapHttpTelemetryEndpoints();
+
+app.MapPost("/credentials", async ([FromBody]CredentialDTO credentialDTO, 
+                            [FromServices]IAircraftCredentialRepository repository,
+                            CancellationToken cancellationToken)=>
+{
+    var credential = new AircraftCredential(credentialDTO.ICAO24);
+
+    await repository.SaveChangesAsync(credential, cancellationToken);
+
+    return Results.Ok();
+});
+
+
+
 app.Run();
 

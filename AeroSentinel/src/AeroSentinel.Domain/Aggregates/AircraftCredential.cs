@@ -1,3 +1,5 @@
+using System.Security.Cryptography;
+
 namespace AeroSentinel.Domain.Entities;
 
 public sealed class AircraftCredential
@@ -16,29 +18,17 @@ public sealed class AircraftCredential
         // ORM / serialization
     }
 
-    public AircraftCredential(Guid credentialId,
-        string icao24,
-        byte[] verificationKey)
+    public AircraftCredential(string icao24)
     {
 
-        CredentialId = credentialId;
+        CredentialId = AircraftCredentialValidation.RequireValidCredentialId(Guid.NewGuid(), null);
 
-        ICAO24 =
-            AircraftProfileValidation
-            .RequireValidICAO24(
-                icao24,
-                nameof(icao24));
+        ICAO24 = AircraftProfileValidation.RequireValidICAO24(icao24,nameof(icao24));
 
-        VerificationKey =
-            AircraftCredentialValidation
-            .RequireValidSecretVerificationKey(
-                verificationKey,
-                ICAO24);
+        VerificationKey = RandomNumberGenerator.GetBytes(32);
 
-        Status =
-            CredentialStatus.Active;
+        Status = CredentialStatus.Active;
 
-        CreatedUtc =
-            DateTime.UtcNow;
+        CreatedUtc = DateTime.UtcNow;
     }
 }

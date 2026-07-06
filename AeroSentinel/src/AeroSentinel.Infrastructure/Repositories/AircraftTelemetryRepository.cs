@@ -7,7 +7,6 @@ public sealed class AircraftTelemetryRepository : IAircraftTelemetryRepository
         _applicationDbContext = applicationDbContext;
 
     }
-
     public async Task<FlightTelemetry?> GetByCompositeIndexAsync(long sequence, Guid flightPlanId, CancellationToken cancellationToken = default)
     {
         var telemetry = await _applicationDbContext.flight_telemetry.
@@ -15,7 +14,7 @@ public sealed class AircraftTelemetryRepository : IAircraftTelemetryRepository
 
         if(telemetry is null)
         {
-            throw new InvalidMessageException(telemetry?.SequenceNumber, "Telemetry for this sequence is null");
+            throw new InvalidMessageException(telemetry?.SequenceNumber, null, "Telemetry for this sequence is null");
         }
 
         return telemetry;    
@@ -35,10 +34,29 @@ public sealed class AircraftTelemetryRepository : IAircraftTelemetryRepository
 
         if(telemetry is null)
         {
-            throw new InvalidMessageException(telemetry?.SequenceNumber, "Telemetry for this sequence is null");
+            throw new InvalidMessageException(telemetry?.SequenceNumber, null,  "Telemetry for this sequence is null");
         }
 
         return telemetry;    
+    }
+
+    public async Task<FlightTelemetry?> GetByMessageIdAsync(Guid messageId, CancellationToken cancellationToken = default)
+    {
+        var telemetry = await _applicationDbContext.flight_telemetry.FindAsync(messageId);
+
+        if(telemetry is null)
+        {
+            throw new InvalidMessageException(null, telemetry?.MessageId, "Telemetry for this Message ID is null");
+        }
+
+        return telemetry;    
+    }
+
+    public async Task<IEnumerable<FlightTelemetry?>> GetAllAsync(CancellationToken cancellationToken)
+    {
+        return await _applicationDbContext.flight_telemetry
+        .AsNoTracking().ToListAsync(cancellationToken);
+
     }
 
 }

@@ -17,12 +17,12 @@ public static class FlightTelemetryValidation
     private const double MaxCommercialGroundSpeedKnots = 600.0;
     private const double MaxCommercialVerticalRateFpm = 5000.0; // Dynamic structural cap
 
-    public static string RequireValidMessageId(string messageId, string propertyName)
+    public static Guid RequireValidMessageId(Guid messageId, string? propertyName)
     {
-        if (string.IsNullOrWhiteSpace(messageId))
-            throw new InvalidMessageException(null, $"{propertyName} cannot be empty.");
+        if (messageId == Guid.Empty)
+            throw new InvalidMessageException(null, messageId, $"{propertyName} cannot be empty.");
             
-        return messageId.Trim();
+        return messageId;
     }
 
     public static double RequireValidLatitude(double latitude, string propertyName)
@@ -65,7 +65,7 @@ public static class FlightTelemetryValidation
     public static long RequireValidSequenceNumber(long sequenceNumber, string propertyName)
     {
         if (sequenceNumber < 0)
-            throw new InvalidMessageException(null, $"{propertyName} must be an incremental non-negative sequence counter.");
+            throw new InvalidMessageException(null, null, $"{propertyName} must be an incremental non-negative sequence counter.");
 
         return sequenceNumber;
     }
@@ -185,7 +185,7 @@ public static class FlightTelemetryValidation
 
     }
 
-     public static Guid RequireValidGuid(Guid guid, string? propertyName){
+     public static Guid RequireValidFlightPlanId(Guid guid, string? propertyName){
 
         if(guid == Guid.Empty)
         {

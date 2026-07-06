@@ -5,6 +5,7 @@ public sealed class InvalidMessageException
 {
     public InvalidMessageException(
         long? sequence,
+        Guid? messageId,
         string reason)
         : base($"Invalid message identifier '{sequence}'. {reason}")
     {

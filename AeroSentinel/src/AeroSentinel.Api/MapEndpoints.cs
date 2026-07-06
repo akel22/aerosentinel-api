@@ -1,10 +1,3 @@
-using AeroSentinel.Application.AircraftTelemetry.Commands;
-using AeroSentinel.Application.Common.DTOs;
-using AeroSentinel.Application.Common.Interfaces;
-using AeroSentinel.Domain.Exceptions;
-using MediatR;
-using Microsoft.AspNetCore.Mvc;
-
 public static class MapEndpoints
 {
     public static void MapHttpProfileEndpoints(this WebApplication app)
@@ -31,10 +24,7 @@ public static class MapEndpoints
             {
                 return Results.BadRequest(new { error = exception.Message });
             }
-            catch
-            {
-                return Results.BadRequest();
-            }
+           
         });
 
         //GET REQUEST
@@ -95,5 +85,70 @@ public static class MapEndpoints
         });
 
 
+    }
+
+     public static void MapHttpTelemetryEndpoints(this WebApplication app)
+    {
+        var telemetry = app.MapGroup("/telemetry");
+
+        const string routeName = "GetTelemetry";
+
+        // POST REQUEST
+        telemetry.MapPost("/", async (
+            [FromBody] RawPayloadDTO rawPayloadDTO,
+            [FromServices] ISender sender,
+            CancellationToken cancellationToken) =>
+        {
+            var command = new SendTelemetryCommand(rawPayloadDTO);
+
+            try
+            {
+                var messageId = await sender.Send(command, cancellationToken);
+
+                return Results.CreatedAtRoute(
+                    routeName,
+                    new { messageId },
+                    rawPayloadDTO);
+            }
+            catch (DomainException exception)
+            {
+                return Results.BadRequest(new
+                {
+                    error = exception.Message
+                });
+            }
+        });
+
+        // GET ALL
+        telemetry.MapGet("/", async (
+            [FromServices] IAircraftTelemetryRepository aircraftTelemetryRepository,
+            CancellationToken cancellationToken) =>
+        {
+            var telemetryFrames = await aircraftTelemetryRepository.GetAllAsync(cancellationToken);
+
+            return Results.Ok(telemetryFrames);
+        });
+
+        // GET BY MESSAGE ID
+        telemetry.MapGet("/{messageId:guid}", async (
+            Guid messageId,
+            [FromServices] IAircraftTelemetryRepository aircraftTelemetryRepository,
+            CancellationToken cancellationToken) =>
+        {
+            try
+            {
+                var telemetry = await aircraftTelemetryRepository.GetByMessageIdAsync(messageId);
+
+                return Results.Ok(telemetry);
+            }
+            catch (DomainException exception)
+            {
+                return Results.NotFound(new
+                {
+                    error = exception.Message
+                });
+            }
+        })
+        .WithName(routeName);
     }
 }

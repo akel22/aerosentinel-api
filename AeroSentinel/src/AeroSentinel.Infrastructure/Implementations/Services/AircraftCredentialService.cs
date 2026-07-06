@@ -28,7 +28,7 @@ public sealed class AircraftCredentialCacheService: IAircraftCredentialCacheServ
         {
             _logger.LogInformation("Credential cache hit");
 
-            return sharedKey!.ToArray();
+            return [.. sharedKey!];
         }
 
         _logger.LogInformation("Credential cache miss");
@@ -38,7 +38,7 @@ public sealed class AircraftCredentialCacheService: IAircraftCredentialCacheServ
 
         if(credential is null) return null;
 
-        sharedKey = credential.VerificationKey.ToArray();
+        sharedKey = [.. credential.VerificationKey];
 
         var options = new MemoryCacheEntryOptions
             {
@@ -49,6 +49,6 @@ public sealed class AircraftCredentialCacheService: IAircraftCredentialCacheServ
 
         _cache.Set(cacheKey, sharedKey, options);
 
-        return sharedKey.ToArray();
+        return [.. sharedKey];
     }
 }

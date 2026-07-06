@@ -17,7 +17,8 @@ namespace AeroSentinel.Infrastructure.Persistence.Configurations
 
             });
 
-            builder.Property(x=> x.AircraftType).HasConversion<string>();
+            builder.Property(x=> x.AircraftType).HasConversion<string>().IsRequired();
+            builder.Property(x=> x.Manufacturer).HasConversion<string>().IsRequired();
 
 
         }

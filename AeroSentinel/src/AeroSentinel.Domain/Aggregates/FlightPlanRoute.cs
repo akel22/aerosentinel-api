@@ -17,7 +17,7 @@ namespace AeroSentinel.Domain.Aggregates
         }
         public FlightPlanRoute(Guid flightPlanId, string waypointId, int sequence)
         {
-            FlightPlanId = FlightTelemetryValidation.RequireValidGuid(Guid.NewGuid(), null);
+            FlightPlanId = FlightTelemetryValidation.RequireValidFlightPlanId(flightPlanId, nameof(flightPlanId));
             Sequence = RouteValidation.RequireValidSequence(sequence, nameof(sequence));
             WaypointId = RouteValidation.RequireValidWaypoint(waypointId, nameof(waypointId)); //VALIDATIONS
 

@@ -22,9 +22,9 @@ namespace AeroSentinel.Infrastructure.Repositories
 
         public async Task SaveChangesAsync(AircraftCredential credential, CancellationToken cancellationToken = default)
         {
-            await _applicationDbContext.AddAsync(credential);
+            await _applicationDbContext.AddAsync(credential, cancellationToken);
 
-            await _applicationDbContext.SaveChangesAsync();
+            await _applicationDbContext.SaveChangesAsync(cancellationToken);
 
         }
 

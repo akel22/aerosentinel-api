@@ -9,6 +9,7 @@ public sealed class CryptographyService : ICryptographyService
 
         var hashTarget = new RawPayloadSignDTO
     (
+        payload.FlightPlanId,
         payload.Sequence,
         payload.ICAO24,
         payload.Callsign,

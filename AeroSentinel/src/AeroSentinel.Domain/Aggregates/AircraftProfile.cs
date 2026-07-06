@@ -24,18 +24,13 @@ public sealed class AircraftProfile
         )
        
     {
-        ICAO24 = AircraftProfileValidation
-            .RequireValidICAO24(icao24, nameof(icao24));
+        ICAO24 = AircraftProfileValidation.RequireValidICAO24(icao24, nameof(icao24));
 
-        Registration = AircraftProfileValidation
-            .RequirePhilippineRegistration(
-                registration,
-                nameof(registration));
+        Registration = AircraftProfileValidation.RequirePhilippineRegistration(
+                registration, nameof(registration));
 
-        AircraftType = AircraftProfileValidation
-            .RequireValidAircraftTypeCode(
-                aircraftType,
-                nameof(aircraftType));
+        AircraftType = AircraftProfileValidation.RequireValidAircraftTypeCode(
+                aircraftType, nameof(aircraftType));
 
         Manufacturer = AircraftType.GetManufacturer();
 
