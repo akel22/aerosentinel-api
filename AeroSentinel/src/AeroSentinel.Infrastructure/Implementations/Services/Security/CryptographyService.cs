@@ -34,16 +34,15 @@ public sealed class CryptographyService : ICryptographyService
 
         // 2. Compute the HMAC-SHA256 digest using the shared secret key
         using var hmac = new HMACSHA256(secretKey);
+
         byte[] computedHashBytes = hmac.ComputeHash(messageBytes);
-        
-        string locallyComputedSignature = Convert.ToHexString(computedHashBytes);
+                
         string incomingSignature = payload.Signature.ToUpperInvariant().Trim();
 
         // 3. Constant-Time Byte Comparison to prevent timing side-channel attacks
-        byte[] incomingSignatureBytes = Encoding.UTF8.GetBytes(incomingSignature);
-        byte[] computedSignatureBytes = Encoding.UTF8.GetBytes(locallyComputedSignature);
+        byte[] incomingSignatureBytes = Convert.FromHexString(incomingSignature);
 
-        return CryptographicOperations.FixedTimeEquals(incomingSignatureBytes, computedSignatureBytes);
+        return CryptographicOperations.FixedTimeEquals(incomingSignatureBytes, computedHashBytes);
         //scans the whole bytes before stopping, not stopping the nanosecond it is wrong
     }
          

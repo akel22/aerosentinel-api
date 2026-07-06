@@ -29,7 +29,7 @@ Accept: application/json
 
 {
   "flightPlanId": "3f7d9c1a-c8df-48b4-91d6-f84d50f4ef61",
-  "icao24": "A1B2C3",
+  "icao24": "758802",
   "callsign": "PAL123",
   "squawk": "2145",
   "timestampUtc": "2026-07-06T08:30:00Z",
