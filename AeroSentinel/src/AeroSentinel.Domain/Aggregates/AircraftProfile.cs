@@ -1,4 +1,5 @@
 using System;
+using AeroSentinel.Domain.Aggregates;
 
 namespace AeroSentinel.Domain.Entities;
 

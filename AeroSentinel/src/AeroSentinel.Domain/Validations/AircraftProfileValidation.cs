@@ -1,4 +1,5 @@
-namespace AeroSentinel.Domain.Entities.Validations;
+
+namespace AeroSentinel.Domain.Validations;
 public static class AircraftProfileValidation
 {
     public static double RequirePositive(double variable, string variableName)
@@ -44,7 +45,7 @@ public static class AircraftProfileValidation
         }
 
         ICAO24 = ICAO24.Trim().ToUpperInvariant();
-        
+                
           if (!Regex.IsMatch(ICAO24, @"^75[89A-Fa-f][0-9A-Fa-f]{3}$"))
         {
             throw new InvalidICAOCodeException(ICAO24,

@@ -6,6 +6,8 @@ namespace AeroSentinel.Infrastructure.Persistence.Configurations
         {
            builder.HasKey(x => x.ICAO24);
 
+           builder.HasIndex(x => x.Registration).IsUnique();
+
            builder.OwnsOne(x => x.AircraftPerformance, _ =>
             {
                 _.Property(x => x.CruiseSpeedKnots);

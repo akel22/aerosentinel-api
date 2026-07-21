@@ -1,6 +1,5 @@
-using System.Security.Cryptography;
 
-namespace AeroSentinel.Domain.Entities;
+namespace AeroSentinel.Domain.Aggregates;
 
 public sealed class AircraftCredential
 {
@@ -13,6 +12,7 @@ public sealed class AircraftCredential
     //     _secretVerificationKey.AsSpan();
     public CredentialStatus Status { get; private set; }
     public DateTime CreatedUtc { get; private set; }
+
     private AircraftCredential()
     {
         // ORM / serialization
@@ -31,4 +31,6 @@ public sealed class AircraftCredential
 
         CreatedUtc = DateTime.UtcNow;
     }
+
+
 }

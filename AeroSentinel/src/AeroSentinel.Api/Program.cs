@@ -1,4 +1,5 @@
 using AeroSentinel.Application;
+using AeroSentinel.Domain.Aggregates;
 using AeroSentinel.Domain.Entities;
 using AeroSentinel.Infrastructure;
 using AeroSentinel.Infrastructure.Repositories;
@@ -32,7 +33,7 @@ app.MapPost("/credentials", async ([FromBody]CredentialDTO credentialDTO,
                             CancellationToken cancellationToken)=>
 {
     var credential = new AircraftCredential(credentialDTO.ICAO24);
-
+    
     await repository.SaveChangesAsync(credential, cancellationToken);
 
     return Results.Ok();

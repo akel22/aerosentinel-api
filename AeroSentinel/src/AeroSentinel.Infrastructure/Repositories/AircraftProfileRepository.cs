@@ -20,12 +20,7 @@ public sealed class AircraftProfileRepository : IAircraftProfileRepository
     {
         var profile = await _applicationDbContext.aircraft_profile
             .AsNoTracking()
-            .FirstOrDefaultAsync(profile => profile.ICAO24 == icao24, cancellationToken);
-
-        if (profile is null)
-        {
-            throw new InvalidAircraftIdentifierException(icao24, "A profile with this ICAO24 does not exist");
-        }
+            .FirstOrDefaultAsync(profile => profile.ICAO24 == icao24, cancellationToken) ?? throw new InvalidAircraftIdentifierException(icao24, "A profile with this ICAO24 does not exist");
 
         return profile;
     }
