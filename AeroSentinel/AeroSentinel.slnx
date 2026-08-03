@@ -1,5 +1,8 @@
 <Solution>
   <Folder Name="/src/">
+    <Project Path="src/AeroSentinel.Api/AeroSentinel.Api.csproj" />
+    <Project Path="src/AeroSentinel.Application/AeroSentinel.Application.csproj" />
     <Project Path="src/AeroSentinel.Domain/AeroSentinel.Domain.csproj" />
+    <Project Path="src/AeroSentinel.Infrastructure/AeroSentinel.Infrastructure.csproj" />
   </Folder>
 </Solution>

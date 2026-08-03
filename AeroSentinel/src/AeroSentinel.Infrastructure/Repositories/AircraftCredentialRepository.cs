@@ -1,3 +1,5 @@
+using AeroSentinel.Domain.Extensions;
+
 namespace AeroSentinel.Infrastructure.Repositories
 {
     public sealed class AircraftCredentialRepository : IAircraftCredentialRepository
@@ -15,6 +17,13 @@ namespace AeroSentinel.Infrastructure.Repositories
             {
                 throw new AircraftCredentialException(
                 credential?.ICAO24, credential?.CredentialId, "Credential is null");
+            }
+
+            if (credential.Status == CredentialStatus.Inactive){
+
+                throw new AircraftCredentialException(
+                 credential?.ICAO24, credential?.CredentialId, $"Inactive Credential for {credential?.ICAO24}"
+                );
             }
 
             return credential;
@@ -35,8 +44,6 @@ namespace AeroSentinel.Infrastructure.Repositories
             await _applicationDbContext.AddAsync(credential, cancellationToken);
 
             await _applicationDbContext.SaveChangesAsync(cancellationToken);
-
-           
 
         }
 

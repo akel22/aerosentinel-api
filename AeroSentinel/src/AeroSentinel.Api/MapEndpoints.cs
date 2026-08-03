@@ -95,28 +95,15 @@ public static class MapEndpoints
 
         // POST REQUEST
         telemetry.MapPost("/", async (
-            [FromBody] RawPayloadDTO rawPayloadDTO,
-            [FromServices] ISender sender,
+            [FromBody] RawPayloadDTO payload,
+            ChannelWriter<SendTelemetryCommand> writer,
             CancellationToken cancellationToken) =>
         {
-            var command = new SendTelemetryCommand(rawPayloadDTO);
+            var command = new SendTelemetryCommand(payload);
 
-            try
-            {
-                var messageId = await sender.Send(command, cancellationToken);
+            await writer.WriteAsync(command, cancellationToken);
 
-                return Results.CreatedAtRoute(
-                    routeName,
-                    new { messageId },
-                    rawPayloadDTO);
-            }
-            catch (DomainException exception)
-            {
-                return Results.BadRequest(new
-                {
-                    error = exception.Message
-                });
-            }
+            return Results.Accepted();
         });
 
         // GET ALL

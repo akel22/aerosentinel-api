@@ -18,8 +18,23 @@ namespace AeroSentinel.Infrastructure
              services.AddScoped<IAircraftCredentialCacheService, AircraftCredentialCacheService>();
              services.AddSingleton<IMemoryCache, MemoryCache>();
              services.AddScoped<WaypointsCSVService>();
+
             
-            return services;
+             services.AddSingleton(_ =>
+                Channel.CreateBounded<SendTelemetryCommand>(new BoundedChannelOptions(100)
+                {
+                    FullMode = BoundedChannelFullMode.Wait,
+                    SingleWriter = false,
+                    SingleReader = true
+                }));
+
+             services.AddSingleton(provider => provider.GetRequiredService<Channel<SendTelemetryCommand>>().Reader);
+             services.AddSingleton(provider => provider.GetRequiredService<Channel<SendTelemetryCommand>>().Writer);
+
+             services.AddHostedService<FlightTelemetryConsumerService>();
+                        
+        
+        return services;
 
         }
 

@@ -1,6 +1,6 @@
 namespace AeroSentinel.Infrastructure.Implementations.Services;
 
-public sealed class AircraftCredentialCacheService: IAircraftCredentialCacheService
+public sealed class AircraftCredentialCacheService : IAircraftCredentialCacheService
 {
     private readonly IMemoryCache _cache;
 
@@ -20,11 +20,11 @@ public sealed class AircraftCredentialCacheService: IAircraftCredentialCacheServ
         _logger = logger;
     }
 
-    public async Task<byte[]?>GetSharedVerificationAsync(string ICAO24,CancellationToken cancellationToken)
+    public async Task<byte[]?> GetSharedVerificationAsync(string ICAO24, CancellationToken cancellationToken)
     {
         var cacheKey = $"credential:{ICAO24}";
 
-        if(_cache.TryGetValue(cacheKey, out byte[]? sharedKey))
+        if (_cache.TryGetValue(cacheKey, out byte[]? sharedKey))
         {
             _logger.LogInformation("Credential cache hit");
 
@@ -33,19 +33,22 @@ public sealed class AircraftCredentialCacheService: IAircraftCredentialCacheServ
 
         _logger.LogInformation("Credential cache miss");
 
-        var credential = await _aircraftCredentialRepository.
-        GetAircraftCredentialAsync(ICAO24, cancellationToken);
+        var credential = await _aircraftCredentialRepository
+            .GetAircraftCredentialAsync(ICAO24, cancellationToken);
 
-        if(credential is null) return null;
+        if (credential is null)
+        {
+            return null;
+        }
 
         sharedKey = [.. credential.VerificationKey];
 
         var options = new MemoryCacheEntryOptions
-            {
-                SlidingExpiration = CacheDuration,
+        {
+            SlidingExpiration = CacheDuration,
 
-                Size = 1
-            };
+            Size = 1
+        };
 
         _cache.Set(cacheKey, sharedKey, options);
 

@@ -1,9 +1,3 @@
-using AeroSentinel.Application;
-using AeroSentinel.Domain.Aggregates;
-using AeroSentinel.Domain.Entities;
-using AeroSentinel.Infrastructure;
-using AeroSentinel.Infrastructure.Repositories;
-using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,7 +11,6 @@ builder.Services.AddApplication();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
@@ -28,18 +21,17 @@ if (app.Environment.IsDevelopment())
 app.MapHttpProfileEndpoints();
 app.MapHttpTelemetryEndpoints();
 
-app.MapPost("/credentials", async ([FromBody]CredentialDTO credentialDTO, 
-                            [FromServices]IAircraftCredentialRepository repository,
-                            CancellationToken cancellationToken)=>
+app.MapPost("/credentials", async (
+    [FromBody] CredentialDTO credentialDTO,
+    [FromServices] IAircraftCredentialRepository repository,
+    CancellationToken cancellationToken) =>
 {
     var credential = new AircraftCredential(credentialDTO.ICAO24);
-    
+
     await repository.SaveChangesAsync(credential, cancellationToken);
 
     return Results.Ok();
 });
-
-
 
 app.Run();
 

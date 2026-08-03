@@ -11,8 +11,7 @@ public enum TelemetryStatus
 public enum CredentialStatus
 {
     Active,
-    Suspended,
-    Revoked
+    Inactive
 }
 
 
