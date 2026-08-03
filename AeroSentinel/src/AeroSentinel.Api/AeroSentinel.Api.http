@@ -51,3 +51,39 @@ Accept: application/json
 {
   "icao24" : "758802"
 }
+
+### Create a flight plan
+# @name createFlightPlan
+POST http://localhost:5253/flight-plans
+Content-Type: application/json
+Accept: application/json
+
+{
+  "icao24": "758802",
+  "callsign": "PAL123",
+  "departureAirport": "RPLL",
+  "destinationAirport": "RPVM",
+  "departureTimeUtc": "2026-08-03T09:00:00Z",
+  "estimatedArrivalTimeUtc": "2026-08-03T10:30:00Z"
+}
+
+### Add the first route waypoint
+# The VS Code REST Client resolves the flight-plan ID from the preceding response.
+POST http://localhost:5253/flight-plans/{{createFlightPlan.response.body.$.flightPlanId}}/routes
+Content-Type: application/json
+Accept: application/json
+
+{
+  "waypointId": "ABLBG",
+  "sequence": 1
+}
+
+### Add the second route waypoint
+POST http://localhost:5253/flight-plans/{{createFlightPlan.response.body.$.flightPlanId}}/routes
+Content-Type: application/json
+Accept: application/json
+
+{
+  "waypointId": "ABMBS",
+  "sequence": 2
+}

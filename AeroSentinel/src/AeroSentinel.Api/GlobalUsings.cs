@@ -10,3 +10,5 @@ global using AeroSentinel.Domain.Aggregates;
 global using AeroSentinel.Domain.Entities;
 global using AeroSentinel.Infrastructure;
 global using AeroSentinel.Infrastructure.Implementations.Services;
+global using AeroSentinel.Infrastructure.Persistence;
+global using Microsoft.EntityFrameworkCore;

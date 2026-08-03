@@ -1,4 +1,6 @@
 
+using AeroSentinel.Api;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
@@ -20,6 +22,7 @@ if (app.Environment.IsDevelopment())
 
 app.MapHttpProfileEndpoints();
 app.MapHttpTelemetryEndpoints();
+app.MapHttpFlightPlanEndpoints();
 
 app.MapPost("/credentials", async (
     [FromBody] CredentialDTO credentialDTO,

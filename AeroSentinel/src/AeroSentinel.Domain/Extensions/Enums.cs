@@ -4,7 +4,7 @@ public enum TelemetryStatus
 {
     Verified,
     Compromised,
-    Spoofed = 3,    
+    Spoofed,    
     PendingVerification
 }
 
