@@ -29,15 +29,15 @@ public sealed class AircraftTelemetryRepository : IAircraftTelemetryRepository
 
     public async Task<FlightTelemetry?> GetLatestFlightTelemetryAsync(string callsign, DateTime timestampUtc, CancellationToken cancellationToken = default)
     {
-        var telemetry = await _applicationDbContext.flight_telemetry.
-            FirstOrDefaultAsync(x => x.Callsign == callsign && x.TimestampUtc == timestampUtc, cancellationToken);
 
-        if(telemetry is null)
-        {
-            throw new InvalidMessageException(telemetry?.SequenceNumber, null,  "Telemetry for this sequence is null");
-        }
+        var latestTelemetry =  await _applicationDbContext.flight_telemetry
+            .AsNoTracking()
+            .Where(x => x.Callsign == callsign)
+            .OrderByDescending(x => x.TimestampUtc)
+            .FirstOrDefaultAsync(cancellationToken);
 
-        return telemetry;    
+
+        return latestTelemetry;
     }
 
     public async Task<FlightTelemetry?> GetByMessageIdAsync(Guid messageId, CancellationToken cancellationToken = default)

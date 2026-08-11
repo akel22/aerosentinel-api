@@ -31,7 +31,7 @@ class TelemetryGenerator:
             "ICAO24": self._icao24,
             "Callsign": self._callsign,
             "Squawk": "2145",
-            "TimestampUTC": datetime.now(timezone.utc).isoformat(timespec="milliseconds").replace("+00:00", "Z"),
+            "TimestampUTC": datetime.now(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z"),
             "Latitude": latitude,
             "Longitude": longitude,
             "BaroAltitudeFeet": altitude,

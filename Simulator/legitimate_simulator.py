@@ -21,7 +21,7 @@ def main() -> None:
         payload = generator.next_payload()
         payload["Signature"] = sign_payload(payload, SECRET_KEY_HEX)
         response = post_telemetry(API_BASE_URL, payload)
-        print(f"sequence={payload['Sequence']} status={response.status_code} body={response.text}")
+        print(f"sequence=[{payload['Sequence']}] status=[ACCEPTED]{response.status_code} body={response.text}")
         time.sleep(INTERVAL_SECONDS)
 
 

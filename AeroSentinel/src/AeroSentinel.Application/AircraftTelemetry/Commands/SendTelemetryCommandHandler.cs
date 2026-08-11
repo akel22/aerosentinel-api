@@ -42,51 +42,64 @@ public class SendTelemetryCommandHandler : IRequestHandler<SendTelemetryCommand,
             payload.Callsign,
             payload.TimestampUTC, cancellationToken);
 
-        long? lastAcceptedSequence = recentTelemetry?.SequenceNumber;
+        if(recentTelemetry is not null)
+        {
 
-        _replayProtectionService.ValidateSequence(
-            payload.TimestampUTC,
-            payload.Sequence,
-            lastAcceptedSequence);
+            long? lastAcceptedSequence = recentTelemetry?.SequenceNumber;
 
-        var coordinates = new AircraftGeoCoordinates(payload.Latitude, payload.Longitude);
-        var spatialState = new SpatialState(
-            coordinates,
-            payload.BaroAltitudeFeet,
-            payload.GeoAltitudeFeet,
-            payload.GroundSpeedKnots,
-            payload.TrackAngleDegrees
-        );
+            _replayProtectionService.ValidateSequence(
+                payload.TimestampUTC,
+                payload.Sequence,
+                lastAcceptedSequence);
+        }
 
-        var flightIntent = new FlightIntent(
-            payload.VerticalRateFpm,
-            payload.SelectedAltitudeFeet,
-            payload.IndicatedAirspeedKnots,
-            payload.MagneticHeadingDegrees,
-            payload.RollAngleDegrees
-        );
+            _logger.LogInformation(
+            "Telemetry coordinates received: ICAO24={ICAO24}, Latitude={Latitude}, Longitude={Longitude}",
+            payload.ICAO24,
+            payload.Latitude,
+            payload.Longitude);
+
+            var coordinates = new AircraftGeoCoordinates(payload.Latitude, payload.Longitude);
+
+            var spatialState = new SpatialState(
+                coordinates,
+                payload.BaroAltitudeFeet,
+                payload.GeoAltitudeFeet,
+                payload.GroundSpeedKnots,
+                payload.TrackAngleDegrees
+            );
+
+            var flightIntent = new FlightIntent(
+                payload.VerticalRateFpm,
+                payload.SelectedAltitudeFeet,
+                payload.IndicatedAirspeedKnots,
+                payload.MagneticHeadingDegrees,
+                payload.RollAngleDegrees
+            );
 
 
 
-        var flightTelemetry = new FlightTelemetry(
-            payload.FlightPlanId,
-            payload.ICAO24!,
-            payload.Callsign!,
-            payload.Squawk!,
-            payload.TimestampUTC,
-            spatialState,
-            flightIntent,
-            payload.Sequence,
-            payload.Signature
-        );
+            var flightTelemetry = new FlightTelemetry(
+                payload.FlightPlanId,
+                payload.ICAO24!,
+                payload.Callsign!,
+                payload.Squawk!,
+                payload.TimestampUTC,
+                spatialState,
+                flightIntent,
+                payload.Sequence,
+                payload.Signature
+            );
 
-        flightTelemetry.MarkAsVerified();
+            flightTelemetry.MarkAsVerified();
 
-        // 5. Fixed: Actively persist the aggregate state to your data store repository
-        await _aircraftTelemetryRepository.SaveChangesAsync(flightTelemetry, cancellationToken);
+            // 5. Fixed: Actively persist the aggregate state to your data store repository
+            await _aircraftTelemetryRepository.SaveChangesAsync(flightTelemetry, cancellationToken);
 
-        _logger.LogInformation($"Telemetry accepted for {payload.ICAO24} Sequence {payload.Sequence}");
+            _logger.LogInformation($"Telemetry accepted for {payload.ICAO24} Sequence {payload.Sequence}");
 
-        return flightTelemetry.MessageId;
+            return flightTelemetry.MessageId;
+        
+        
     }
 }

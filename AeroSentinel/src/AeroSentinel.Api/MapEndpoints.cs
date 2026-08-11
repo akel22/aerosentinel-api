@@ -94,11 +94,17 @@ public static class MapEndpoints
         const string routeName = "GetTelemetry";
 
         // POST REQUEST
-        telemetry.MapPost("/", async (
+        telemetry.MapPost("", async (
             [FromBody] RawPayloadDTO payload,
-            ChannelWriter<SendTelemetryCommand> writer,
+            [FromServices]ChannelWriter<SendTelemetryCommand> writer,
+            [FromServices]ILogger<WebApplication> logger,
             CancellationToken cancellationToken) =>
         {
+            logger.LogInformation(
+            "Endpoint: Lat={Lat}, Lon={Lon}",
+            payload.Latitude,
+            payload.Longitude);
+
             var command = new SendTelemetryCommand(payload);
 
             await writer.WriteAsync(command, cancellationToken);

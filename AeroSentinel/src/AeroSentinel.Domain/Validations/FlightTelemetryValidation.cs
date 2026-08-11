@@ -1,4 +1,5 @@
 using System;
+using AeroSentinel.Domain.Aggregates;
 using AeroSentinel.Domain.Exceptions;
 using AeroSentinel.Domain.ValueObjects;
 

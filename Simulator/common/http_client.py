@@ -5,7 +5,7 @@ from __future__ import annotations
 from typing import Any
 
 import requests
-
+   
 
 def post_telemetry(api_base_url: str, payload: dict[str, Any], timeout_seconds: float = 10) -> requests.Response:
     response = requests.post(

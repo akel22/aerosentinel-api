@@ -16,7 +16,7 @@ namespace AeroSentinel.Infrastructure
              services.AddScoped<ICryptographyService, CryptographyService>();
              services.AddSingleton<IReplayProtectionService, ReplayProtectionService>();
              services.AddScoped<IAircraftCredentialCacheService, AircraftCredentialCacheService>();
-             services.AddSingleton<IMemoryCache, MemoryCache>();
+             services.AddMemoryCache(options => options.SizeLimit = 1_024);
              services.AddScoped<WaypointsCSVService>();
 
             
