@@ -49,7 +49,7 @@ Content-Type: application/json
 Accept: application/json
 
 {
-  "icao24" : "758802"
+  "icao24" : "758822"
 }
 
 ### Create a flight plan
@@ -59,10 +59,10 @@ Content-Type: application/json
 Accept: application/json
 
 {
-  "icao24": "758802",
-  "callsign": "PAL123",
-  "departureAirport": "RPLL",
-  "destinationAirport": "RPVM",
+  "icao24": "758822",
+  "callsign": "CEB123",
+  "departureAirport": "RPVM",
+  "destinationAirport": "RPLL",
   "departureTimeUtc": "2026-08-03T09:00:00Z",
   "estimatedArrivalTimeUtc": "2026-08-03T10:30:00Z"
 }
@@ -74,7 +74,7 @@ Content-Type: application/json
 Accept: application/json
 
 {
-  "waypointId": "ABLBG",
+  "waypointId": "ALDIN",
   "sequence": 1
 }
 

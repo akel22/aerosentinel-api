@@ -8,7 +8,7 @@ public sealed class AircraftGeoCoordinates
     public AircraftGeoCoordinates(double latitude, double longitude) 
     {
         Latitude = FlightTelemetryValidation.RequireValidLatitude(latitude, nameof(latitude));
-        Longitude = FlightTelemetryValidation.RequireValidLongitude(Longitude, nameof(longitude));
+        Longitude = FlightTelemetryValidation.RequireValidLongitude(longitude, nameof(longitude));
         
     }
 }
