@@ -1,6 +1,89 @@
-@AeroSentinel.Api_HostAddress = http://localhost:5253
 
-GET {{AeroSentinel.Api_HostAddress}}/weatherforecast/
+POST http://localhost:5253/profiles
+Content-Type: application/json
 Accept: application/json
 
+{
+  "icao24": "758802",
+  "registration": "RP-C8000",
+  "aircraftType": "A320",
+  "cruiseSpeedKnots": 450,
+  "maxVelocityKnots": 470,
+  "maxAltitudeFeet": 5,
+  "maxClimbRateFeetPerMinute": 10,
+  "maxDescentRateFeetPerMinute": 2500,
+  "maxTurnRateDegreesPerSecond": 3.0
+}
+
 ###
+
+POST http://localhost:5253/telemetry
+Content-Type: application/json
+Accept: application/json
+
+{
+  "flightPlanId": "3f7d9c1a-c8df-48b4-91d6-f84d50f4ef61",
+  "icao24": "758802",
+  "callsign": "PAL123",
+  "squawk": "2145",
+  "timestampUtc": "2026-07-06T08:30:00Z",
+  "latitude": 14.599500,
+  "longitude": 120.984200,
+  "baroAltitudeFeet": 34000,
+  "geoAltitudeFeet": 33980,
+  "groundSpeedKnots": 445,
+  "trackAngleDegrees": 182.5,
+  "verticalRateFpm": -500,
+  "selectedAltitudeFeet": 32000,
+  "indicatedAirspeedKnots": 285,
+  "magneticHeadingDegrees": 181.0,
+  "rollAngleDegrees": -2.8,
+  "sequence": 1,
+  "signature": "A7F2C4B8D2E13A91F3C82DAB4E129D8A6F92B8E11A4DCC7F2B9E41D1A0F45E22"
+}
+
+###
+
+POST http://localhost:5253/credentials
+Content-Type: application/json
+Accept: application/json
+
+{
+  "icao24" : "758822"
+}
+
+### Create a flight plan
+# @name createFlightPlan
+POST http://localhost:5253/flight-plans
+Content-Type: application/json
+Accept: application/json
+
+{
+  "icao24": "758822",
+  "callsign": "CEB123",
+  "departureAirport": "RPVM",
+  "destinationAirport": "RPLL",
+  "departureTimeUtc": "2026-08-03T09:00:00Z",
+  "estimatedArrivalTimeUtc": "2026-08-03T10:30:00Z"
+}
+
+### Add the first route waypoint
+# The VS Code REST Client resolves the flight-plan ID from the preceding response.
+POST http://localhost:5253/flight-plans/{{createFlightPlan.response.body.$.flightPlanId}}/routes
+Content-Type: application/json
+Accept: application/json
+
+{
+  "waypointId": "ALDIN",
+  "sequence": 1
+}
+
+### Add the second route waypoint
+POST http://localhost:5253/flight-plans/{{createFlightPlan.response.body.$.flightPlanId}}/routes
+Content-Type: application/json
+Accept: application/json
+
+{
+  "waypointId": "ABMBS",
+  "sequence": 2
+}

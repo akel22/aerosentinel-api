@@ -1,22 +1,41 @@
+
+using AeroSentinel.Api;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+builder.Services.AddLogging();
 
-// Tell MediatR to scan your Application Class Library project for handlers
-builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(AeroSentinel.Application.Common.DTOs.TelemetryPayloadDto).Assembly));
+builder.Services.AddInfrastructure(builder.Configuration);
+
+builder.Services.AddApplication();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
 }
 
-app.UseHttpsRedirection();
+// app.UseHttpsRedirection();
 
+app.MapHttpProfileEndpoints();
+app.MapHttpTelemetryEndpoints();
+app.MapHttpFlightPlanEndpoints();
+app.MapHttpDashboardEndpoints();
+
+app.MapPost("/credentials", async (
+    [FromBody] CredentialDTO credentialDTO,
+    [FromServices] IAircraftCredentialRepository repository,
+    CancellationToken cancellationToken) =>
+{
+    var credential = new AircraftCredential(credentialDTO.ICAO24);
+
+    await repository.SaveChangesAsync(credential, cancellationToken);
+
+    return Results.Ok();
+});
 
 app.Run();
 

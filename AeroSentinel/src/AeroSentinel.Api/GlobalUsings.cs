@@ -1,0 +1,14 @@
+global using AeroSentinel.Application.Common.DTOs;
+global using AeroSentinel.Application.AircraftTelemetry.Commands;
+global using AeroSentinel.Application.Common.Interfaces;
+global using AeroSentinel.Domain.Exceptions;
+global using MediatR;
+global using Microsoft.AspNetCore.Mvc;
+global using System.Threading.Channels;
+global using AeroSentinel.Application;
+global using AeroSentinel.Domain.Aggregates;
+global using AeroSentinel.Domain.Entities;
+global using AeroSentinel.Infrastructure;
+global using AeroSentinel.Infrastructure.Implementations.Services;
+global using AeroSentinel.Infrastructure.Persistence;
+global using Microsoft.EntityFrameworkCore;

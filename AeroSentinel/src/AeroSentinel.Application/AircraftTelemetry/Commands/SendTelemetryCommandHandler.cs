@@ -1,41 +1,105 @@
-
 namespace AeroSentinel.Application.AircraftTelemetry.Commands;
 
 public class SendTelemetryCommandHandler : IRequestHandler<SendTelemetryCommand, Guid>
 {
-    private readonly IAircraftCredentialRepository _aircraftCredentialRepository;
-    private readonly IAircraftProfileRepository _aircraftProfileRepository;
     private readonly IAircraftTelemetryRepository _aircraftTelemetryRepository;
-    public SendTelemetryCommandHandler(IAircraftCredentialRepository aircraftCredentialRepository,
-            IAircraftProfileRepository aircraftProfileRepository,
-            IAircraftTelemetryRepository aircraftTelemetryRepository)
+    private readonly ICryptographyService _cryptoService;
+
+    private readonly IAircraftCredentialCacheService _aircraftCredentialCacheService;
+    private readonly IReplayProtectionService _replayProtectionService;
+    private readonly ILogger<SendTelemetryCommandHandler> _logger;
+
+    public SendTelemetryCommandHandler(
+        IAircraftTelemetryRepository aircraftTelemetryRepository,
+        ICryptographyService cryptoService,
+        IAircraftCredentialCacheService aircraftCredentialCacheService,
+        IReplayProtectionService replayProtectionService,
+        ILogger<SendTelemetryCommandHandler> logger)
     {
-        _aircraftCredentialRepository = aircraftCredentialRepository;
-        _aircraftProfileRepository = aircraftProfileRepository;
         _aircraftTelemetryRepository = aircraftTelemetryRepository;
+        _cryptoService = cryptoService;
+        _aircraftCredentialCacheService = aircraftCredentialCacheService;
+        _replayProtectionService = replayProtectionService;
+        _logger = logger;
     }
 
-    public async Task<Guid> Handle(SendTelemetryCommand command, CancellationToken cancellationToken)
+    public async Task<Guid> Handle(SendTelemetryCommand request, CancellationToken cancellationToken)
     {
-       var rawPayload = command.Payload;
+        var payload = request.Payload;
 
-       await _aircraftCredentialRepository.GetByICAO24Async(rawPayload.Icao24);
+        var sharedKey = await _aircraftCredentialCacheService.GetSharedVerificationAsync(payload.ICAO24,
+        cancellationToken);
 
-       
+        if (sharedKey is null) throw new InvalidVerificationKeyException(sharedKey, "Credential cannot be found");
 
-       var telemetry = new FlightTelemetry(
-        rawPayload.Icao24,
-        rawPayload.Callsign,
-        rawPayload.Timestamp,
-        rawPayload.Latitude,
-        rawPayload.Longitude,
-        rawPayload.Altitude,
-        rawPayload.GroundSpeedKnots,
-        rawPayload.TrackDegrees,
-        rawPayload.VerticalRatePerMinute
+        var isValid = _cryptoService.VerifyPayloadSignature(payload, sharedKey);
 
-       );
+        if(!isValid)
+        {
+            throw new SignatureException(payload.Signature, "The incoming telemetry is spoofed");
+        }
+        var recentTelemetry = await _aircraftTelemetryRepository.GetLatestFlightTelemetryAsync(
+            payload.Callsign,
+            payload.TimestampUTC, cancellationToken);
 
-      
+        if(recentTelemetry is not null)
+        {
+
+            long? lastAcceptedSequence = recentTelemetry?.SequenceNumber;
+
+            _replayProtectionService.ValidateSequence(
+                payload.TimestampUTC,
+                payload.Sequence,
+                lastAcceptedSequence);
+        }
+
+            _logger.LogInformation(
+            "Telemetry coordinates received: ICAO24={ICAO24}, Latitude={Latitude}, Longitude={Longitude}",
+            payload.ICAO24,
+            payload.Latitude,
+            payload.Longitude);
+
+            var coordinates = new AircraftGeoCoordinates(payload.Latitude, payload.Longitude);
+
+            var spatialState = new SpatialState(
+                coordinates,
+                payload.BaroAltitudeFeet,
+                payload.GeoAltitudeFeet,
+                payload.GroundSpeedKnots,
+                payload.TrackAngleDegrees
+            );
+
+            var flightIntent = new FlightIntent(
+                payload.VerticalRateFpm,
+                payload.SelectedAltitudeFeet,
+                payload.IndicatedAirspeedKnots,
+                payload.MagneticHeadingDegrees,
+                payload.RollAngleDegrees
+            );
+
+
+
+            var flightTelemetry = new FlightTelemetry(
+                payload.FlightPlanId,
+                payload.ICAO24!,
+                payload.Callsign!,
+                payload.Squawk!,
+                payload.TimestampUTC,
+                spatialState,
+                flightIntent,
+                payload.Sequence,
+                payload.Signature
+            );
+
+            flightTelemetry.MarkAsVerified();
+
+            // 5. Fixed: Actively persist the aggregate state to your data store repository
+            await _aircraftTelemetryRepository.SaveChangesAsync(flightTelemetry, cancellationToken);
+
+            _logger.LogInformation($"Telemetry accepted for {payload.ICAO24} Sequence {payload.Sequence}");
+
+            return flightTelemetry.MessageId;
+        
+        
     }
 }

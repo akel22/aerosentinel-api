@@ -2,9 +2,9 @@ public sealed class InvalidVerificationKeyException
     : DomainException
 {
     public InvalidVerificationKeyException(
-        string? aircraftId,
+        byte[]? sharedKey,
         string reason)
-        : base($"Invalid verification key for aircraft '{aircraftId}'. {reason}")
+        : base($"Invalid verification key: ['{sharedKey}']. {reason}")
     {
     }
 }

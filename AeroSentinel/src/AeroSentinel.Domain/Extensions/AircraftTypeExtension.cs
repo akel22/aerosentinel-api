@@ -1,5 +1,3 @@
-using AeroSentinel.Domain.Enums;
-
 namespace AeroSentinel.Domain.Extensions;
 
 public static class AircraftTypeExtension

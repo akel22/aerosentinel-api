@@ -1,10 +1,26 @@
+using System.Text.Json.Serialization;
+
 namespace AeroSentinel.Application.Common.DTOs;
+
 public record RawPayloadDTO(
-    string Icao24, 
-    string Callsign, 
-    double Latitude, 
+    Guid FlightPlanId,
+    long Sequence,
+    string ICAO24,
+    string Callsign,
+    string Squawk,
+    DateTime TimestampUTC,
+    double Latitude,
     double Longitude,
-     double Altitude, 
-     double Velocity, 
-     double Heading, 
-     DateTime Timestamp);
+    double BaroAltitudeFeet,
+    double GeoAltitudeFeet,
+    double GroundSpeedKnots,
+    double TrackAngleDegrees,
+    double VerticalRateFpm,
+    double SelectedAltitudeFeet,
+    double IndicatedAirspeedKnots,
+    double MagneticHeadingDegrees,
+    double RollAngleDegrees,
+
+    // The signature itself is excluded from the hashing process internally
+    string Signature
+);

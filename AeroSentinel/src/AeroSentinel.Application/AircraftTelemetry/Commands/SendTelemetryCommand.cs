@@ -1,6 +1,2 @@
-namespace AeroSentinel.Application.Telemetry.Commands;
-
-/// <summary>
-/// CQRS Command wrapper that routes the streaming ingestion payload into the application pipeline.
-/// </summary>
+namespace AeroSentinel.Application.AircraftTelemetry.Commands;
 public record SendTelemetryCommand(RawPayloadDTO Payload) : IRequest<Guid>;
