@@ -23,6 +23,7 @@ if (app.Environment.IsDevelopment())
 app.MapHttpProfileEndpoints();
 app.MapHttpTelemetryEndpoints();
 app.MapHttpFlightPlanEndpoints();
+app.MapHttpDashboardEndpoints();
 
 app.MapPost("/credentials", async (
     [FromBody] CredentialDTO credentialDTO,

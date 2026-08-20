@@ -9,6 +9,14 @@ namespace AeroSentinel.Infrastructure.Repositories
         {
             _applicationDbContext = applicationDbContext;
         }
+
+        public async Task<IReadOnlyList<AircraftCredential>> GetAllAsync(CancellationToken cancellationToken = default)
+        {
+            return await _applicationDbContext.aircraft_credential
+                .AsNoTracking()
+                .ToListAsync(cancellationToken);
+        }
+
         async public Task<AircraftCredential?> GetAircraftCredentialAsync(string ICAO24, CancellationToken cancellationToken)
         {
             var credential = await _applicationDbContext.aircraft_credential.FirstOrDefaultAsync(c => c.ICAO24 == ICAO24, cancellationToken: cancellationToken);

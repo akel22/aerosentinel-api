@@ -1,16 +1,26 @@
-import { aircraftStatus } from '../../data/mockDashboardData'
+import type { AircraftStatusRow } from '../../data/liveDashboardData'
 
-const statusStyles = {
-  Active: 'border-emerald-500/30 bg-emerald-500/10 text-emerald-200',
-  Warning: 'border-amber-500/30 bg-amber-500/10 text-amber-200',
-} as const
+type AircraftStatusTableProps = {
+  rows: AircraftStatusRow[]
+}
 
-const authStyles = {
+const statusStyles: Record<string, string> = {
+  Verified: 'border-emerald-500/30 bg-emerald-500/10 text-emerald-200',
+  Spoofed: 'border-rose-500/30 bg-rose-500/10 text-rose-200',
+  'Pending Verification': 'border-amber-500/30 bg-amber-500/10 text-amber-200',
+  'Compromised': 'border-amber-500/30 bg-amber-500/10 text-amber-200',
+  Unknown: 'border-slate-600 bg-slate-800 text-slate-200',
+}
+
+const authStyles: Record<string, string> = {
   Verified: 'border-cyan-500/30 bg-cyan-500/10 text-cyan-200',
   'Verification Failed': 'border-rose-500/30 bg-rose-500/10 text-rose-200',
-} as const
+  Spoofed: 'border-rose-500/30 bg-rose-500/10 text-rose-200',
+  'Pending Verification': 'border-amber-500/30 bg-amber-500/10 text-amber-200',
+  Unknown: 'border-slate-600 bg-slate-800 text-slate-200',
+}
 
-export function AircraftStatusTable() {
+export function AircraftStatusTable({ rows }: AircraftStatusTableProps) {
   return (
     <div className="rounded-sm border border-slate-700 bg-[#0c1624] p-4">
       <div className="mb-4 flex items-center justify-between gap-3">
@@ -36,8 +46,8 @@ export function AircraftStatusTable() {
             </tr>
           </thead>
           <tbody>
-            {aircraftStatus.map((aircraft) => (
-              <tr key={aircraft.callsign} className="bg-[#09131f] text-slate-200">
+            {rows.map((aircraft) => (
+              <tr key={`${aircraft.icao24}-${aircraft.callsign}`} className="bg-[#09131f] text-slate-200">
                 <td className="rounded-l-sm border border-r-0 border-slate-700 px-3 py-3 font-medium text-slate-100">
                   {aircraft.callsign}
                 </td>
@@ -45,7 +55,7 @@ export function AircraftStatusTable() {
                   {aircraft.icao24}
                 </td>
                 <td className="border border-l-0 border-r-0 border-slate-700 px-3 py-3">
-                  <span className={`inline-flex items-center rounded-sm border px-2 py-1 text-[10px] font-medium uppercase tracking-[0.12em] ${statusStyles[aircraft.status]}`}>
+                  <span className={`inline-flex items-center rounded-sm border px-2 py-1 text-[10px] font-medium uppercase tracking-[0.12em] ${statusStyles[aircraft.status] ?? statusStyles.Unknown}`}>
                     {aircraft.status}
                   </span>
                 </td>
@@ -53,7 +63,7 @@ export function AircraftStatusTable() {
                   {aircraft.lastTelemetry}
                 </td>
                 <td className="border border-l-0 border-r-0 border-slate-700 px-3 py-3">
-                  <span className={`inline-flex items-center rounded-sm border px-2 py-1 text-[10px] font-medium uppercase tracking-[0.12em] ${authStyles[aircraft.authentication]}`}>
+                  <span className={`inline-flex items-center rounded-sm border px-2 py-1 text-[10px] font-medium uppercase tracking-[0.12em] ${authStyles[aircraft.authentication] ?? authStyles.Unknown}`}>
                     {aircraft.authentication}
                   </span>
                 </td>
