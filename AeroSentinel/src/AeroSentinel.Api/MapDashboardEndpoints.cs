@@ -1,5 +1,4 @@
 using System.Globalization;
-using AeroSentinel.Domain.Extensions;
 
 namespace AeroSentinel.Api;
 
@@ -11,78 +10,92 @@ public static class MapDashboardEndpoints
             IAircraftProfileRepository profileRepository,
             IAircraftTelemetryRepository telemetryRepository,
             IAircraftCredentialRepository credentialRepository,
+            ApplicationDbContext dbContext,
             CancellationToken cancellationToken) =>
         {
             var profiles = await profileRepository.GetAllAsync(cancellationToken);
+
             var telemetry = (await telemetryRepository.GetAllAsync(cancellationToken))
                 .Where(frame => frame is not null)
                 .Select(frame => frame!)
                 .OrderByDescending(frame => frame.TimestampUtc)
                 .ToList();
-            var credentials = await credentialRepository.GetAllAsync(cancellationToken);
-            var verified = telemetry.Count(frame => frame.Status == TelemetryStatus.Verified);
-            var failed = telemetry.Count - verified;
-            var latestByAircraft = telemetry
-                .GroupBy(frame => frame.ICAO24, StringComparer.OrdinalIgnoreCase)
-                .ToDictionary(group => group.Key, group => group.First(), StringComparer.OrdinalIgnoreCase);
 
-            var failedTelemetry = telemetry
-                .Where(frame => frame.Status != TelemetryStatus.Verified)
-                .Select(frame => new FailedTelemetryDTO(
-                    frame.MessageId.ToString(),
-                    frame.Callsign,
-                    frame.ICAO24,
-                    FormatTimestamp(frame.TimestampUtc),
-                    "Authentication",
-                    frame.Status.ToString(),
-                    frame.FailureReason ?? "Telemetry verification failed"))
-                .ToList();
+            var credentials = await credentialRepository.GetAllAsync(cancellationToken);
+            
+            var flightPlans = await dbContext.flight_plan
+                .AsNoTracking()
+                .OrderByDescending(plan => plan.EstimatedArrivalTimeUtc)
+                .Take(10)
+                .ToListAsync(cancellationToken);
 
             var snapshot = new DashboardSnapshotDTO(
                 DateTime.UtcNow,
                 new DashboardSummaryDTO(
                     profiles.Count,
                     telemetry.Count,
-                    verified,
-                    failed,
+                    0,
+                    0,
                     credentials.Count,
-                    telemetry.Count == 0 ? 0 : verified * 100d / telemetry.Count,
-                    latestByAircraft.Values.Count(frame => frame.Status.ToString() == "Verified")),
+                    0,
+                    profiles.Count),
+                [.. telemetry
+                    .Take(12)
+                    .Select(frame => new TelemetryTrendPointDTO(
+                        FormatTimestamp(frame.TimestampUtc),
+                        1))],
+                [.. telemetry
+                    .Take(10)
+                    .Select(tel => new AircraftStatusDTO(
+                        tel.Callsign,
+                        tel.ICAO24,
+                        tel.Status.ToString(),
+                        tel.TimestampUtc.ToString(),
+                        tel.Squawk,
+                        tel.SpatialState.GeoAltitudeFeet,
+                        tel.SpatialState.GroundSpeedKnots))],
                 telemetry
-                    .GroupBy(frame => new { frame.TimestampUtc.Date, frame.TimestampUtc.Hour })
-                    .OrderBy(group => group.Key.Date)
-                    .ThenBy(group => group.Key.Hour)
-                    .Select(group => new TelemetryTrendPointDTO($"{group.Key.Hour:00}:00", group.Count()))
-                    .ToList(),
-                profiles.Select(profile =>
-                {
-                    latestByAircraft.TryGetValue(profile.ICAO24, out var latest);
-                    return new AircraftStatusDTO(
-                        latest?.Callsign ?? "N/A",
-                        profile.ICAO24,
-                        latest?.Status.ToString() ?? "Unknown",
-                        latest is null ? "No recent telemetry" : FormatTimestamp(latest.TimestampUtc),
-                        latest?.Status.ToString() ?? "Unknown",
-                        latest is null ? "n/a" : $"{latest.SpatialState.BaroAltitudeFeet:N0} ft",
-                        latest is null ? "n/a" : $"{latest.SpatialState.GroundSpeedKnots:N0} kt");
-                }).ToList(),
-                failedTelemetry.Count == 0
-                    ? [new SecurityEventDTO(1, "No failed telemetry records detected", "System", "Current snapshot", "INFO")]
-                    : failedTelemetry.Select((frame, index) => new SecurityEventDTO(
+                    .Take(10)
+                    .Select((frame, index) => new SecurityEventDTO(
                         index + 1,
-                        "Telemetry verification failure",
-                        frame.Aircraft,
-                        frame.Timestamp,
-                        "CRITICAL")).ToList(),
-                failedTelemetry,
-                telemetry.Take(10).Select(frame => new LatestTelemetryDTO(
-                    frame.MessageId,
-                    frame.Callsign,
-                    frame.ICAO24,
-                    frame.Status.ToString(),
-                    frame.TimestampUtc,
-                    frame.SequenceNumber,
-                    frame.FailureReason ?? string.Empty)).ToList());
+                        frame.Status.ToString(),
+                        frame.Callsign,
+                        FormatTimestamp(frame.TimestampUtc),
+                        "CRITICAL"))
+                    .ToList(),
+                telemetry
+                    .Take(10)
+                    .Select(frame => new FailedTelemetryDTO(
+                        frame.MessageId.ToString(),
+                        frame.Callsign,
+                        frame.ICAO24,
+                        FormatTimestamp(frame.TimestampUtc),
+                        "Authentication",
+                        frame.Status.ToString(),
+                        frame.FailureReason ?? string.Empty))
+                    .ToList(),
+                telemetry
+                    .Take(10)
+                    .Select(frame => new LatestTelemetryDTO(
+                        frame.MessageId,
+                        frame.Callsign,
+                        frame.ICAO24,
+                        frame.Status.ToString(),
+                        frame.TimestampUtc,
+                        frame.SequenceNumber,
+                        frame.FailureReason ?? string.Empty))
+                    .ToList(),
+                flightPlans
+                    .Select(plan => new FinishedFlightDTO(
+                        plan.FlightPlanId,
+                        plan.Callsign,
+                        plan.ICAO24,
+                        plan.DepartureAirport,
+                        plan.DestinationAirport,
+                        plan.EstimatedArrivalTimeUtc,
+                        plan.EstimatedArrivalTimeUtc,
+                        0))
+                    .ToList());
 
             return Results.Ok(snapshot);
         });

@@ -1,3 +1,5 @@
+using AeroSentinel.Domain.Extensions;
+
 namespace AeroSentinel.Application.Common.DTOs;
 
 public sealed record DashboardSnapshotDTO(
@@ -7,7 +9,8 @@ public sealed record DashboardSnapshotDTO(
     IReadOnlyList<AircraftStatusDTO> Aircraft,
     IReadOnlyList<SecurityEventDTO> SecurityEvents,
     IReadOnlyList<FailedTelemetryDTO> FailedTelemetryLog,
-    IReadOnlyList<LatestTelemetryDTO> LatestTelemetry);
+    IReadOnlyList<LatestTelemetryDTO> LatestTelemetry,
+    IReadOnlyList<FinishedFlightDTO> FinishedFlights);
 
 public sealed record DashboardSummaryDTO(
     int RegisteredAircraft,
@@ -26,8 +29,8 @@ public sealed record AircraftStatusDTO(
     string Status,
     string LastTelemetry,
     string Authentication,
-    string Altitude,
-    string Speed);
+    double Altitude,
+    double Speed);
 
 public sealed record SecurityEventDTO(
     int Id,
@@ -53,3 +56,13 @@ public sealed record LatestTelemetryDTO(
     DateTime TimestampUtc,
     long SequenceNumber,
     string FailureReason);
+
+public sealed record FinishedFlightDTO(
+    Guid FlightPlanId,
+    string Callsign,
+    string Icao24,
+    string DepartureAirport,
+    string DestinationAirport,
+    DateTime EstimatedArrivalTimeUtc,
+    DateTime ActualArrivalTimeUtc,
+    int ArrivalVarianceMinutes);
