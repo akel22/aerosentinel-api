@@ -6,11 +6,11 @@ import { MoreDotIcon } from "../../icons";
 import { useState } from "react";
 import { TelemetryTrendPoint } from "../../services/api";
 
-interface MonthlySalesChartProps {
+interface TelemetryActivityProps {
   telemetryTrend?: TelemetryTrendPoint[];
 }
 
-export default function MonthlySalesChart({ telemetryTrend = [] }: MonthlySalesChartProps) {
+export default function TelemetryActivity({ telemetryTrend = [] }: TelemetryActivityProps) {
   // Default data if no telemetry trend provided
   const defaultCategories = ["00:00", "01:00", "02:00", "03:00", "04:00", "05:00", "06:00", "07:00", "08:00", "09:00", "10:00", "11:00"];
   const defaultData = [10, 20, 15, 25, 18, 22, 28, 32, 26, 30, 24, 28];

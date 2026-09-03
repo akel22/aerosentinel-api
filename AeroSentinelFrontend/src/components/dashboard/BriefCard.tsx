@@ -7,11 +7,11 @@ import {
 import Badge from "../ui/badge/Badge";
 import { DashboardSummary } from "../../services/api";
 
-interface EcommerceMetricsProps {
+interface BriefCardProps {
   dashboardData?: DashboardSummary;
 }
 
-export default function EcommerceMetrics({ dashboardData }: EcommerceMetricsProps) {
+export default function BriefCard({ dashboardData }: BriefCardProps) {
   // Default values if no data is provided
   const aircraftCount = dashboardData?.aircraftProfilesCount || 0;
   const verifiedTelemetry = dashboardData?.verifiedTelemetry || 0;
@@ -81,7 +81,7 @@ export default function EcommerceMetrics({ dashboardData }: EcommerceMetricsProp
             </h4>
           </div>
 
-          <Badge color={failedTelemetry > 0 ? "error" : "success"}>
+          <Badge color={failedTelemetry > 0 ? "warning" : "info"}>
             {failedTelemetry > 0 ? <ArrowUpIcon /> : <ArrowDownIcon />}
             {failedTelemetry > 0 ? "Alert" : "Good"}
           </Badge>

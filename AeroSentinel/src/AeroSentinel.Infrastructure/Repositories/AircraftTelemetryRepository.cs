@@ -1,3 +1,5 @@
+using AeroSentinel.Domain.Extensions;
+
 namespace AeroSentinel.Infrastructure.Repositories;
 public sealed class AircraftTelemetryRepository : IAircraftTelemetryRepository
 {
@@ -27,17 +29,17 @@ public sealed class AircraftTelemetryRepository : IAircraftTelemetryRepository
        await _applicationDbContext.SaveChangesAsync();
     }
 
-    public async Task<FlightTelemetry?> GetLatestFlightTelemetryAsync(string callsign, DateTime timestampUtc, CancellationToken cancellationToken = default)
+    public async Task<FlightTelemetry?> GetLastFlightTelemetryAsync(string callsign, DateTime timestampUtc, CancellationToken cancellationToken = default)
     {
 
-        var latestTelemetry =  await _applicationDbContext.flight_telemetry
-            .AsNoTracking()
-            .Where(x => x.Callsign == callsign)
-            .OrderByDescending(x => x.TimestampUtc)
-            .FirstOrDefaultAsync(cancellationToken);
+        var lastTelemetry = await _applicationDbContext.flight_telemetry
+        .AsNoTracking()
+        .Where(x => x.Callsign == callsign && x.Status == TelemetryStatus.Finished)
+        .OrderByDescending(x => x.TimestampUtc)    
+        .FirstOrDefaultAsync();
 
 
-        return latestTelemetry;
+        return lastTelemetry;
     }
 
     public async Task<FlightTelemetry?> GetByMessageIdAsync(Guid messageId, CancellationToken cancellationToken = default)

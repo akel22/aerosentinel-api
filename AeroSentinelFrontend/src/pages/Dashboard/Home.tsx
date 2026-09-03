@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import EcommerceMetrics from "../../components/ecommerce/EcommerceMetrics";
-import MonthlySalesChart from "../../components/ecommerce/MonthlySalesChart";
-import StatisticsChart from "../../components/ecommerce/StatisticsChart";
-import MonthlyTarget from "../../components/ecommerce/MonthlyTarget";
-import RecentOrders from "../../components/ecommerce/RecentOrders";
-import DemographicCard from "../../components/ecommerce/DemographicCard";
+import EcommerceMetrics from "../../components/dashboard/BriefCard";
+import MonthlySalesChart from "../../components/dashboard/TelemetryActivity";
+import StatisticsChart from "../../components/dashboard/AircraftStatusOverview";
+import MonthlyTarget from "../../components/dashboard/VerificationCard";
+import RecentOrders from "../../components/dashboard/RecentFlights";
+import DemographicCard from "../../components/dashboard/AircraftStatus";
 import PageMeta from "../../components/common/PageMeta";
 import { dashboardApi, DashboardSnapshot } from "../../services/api";
 

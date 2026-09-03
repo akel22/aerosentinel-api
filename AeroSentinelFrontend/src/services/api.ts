@@ -15,7 +15,7 @@ export interface TelemetryTrendPoint {
   count: number;
 }
 
-export interface AircraftStatus {
+export interface LatestAircraftStatus {
   callsign: string;
   icao24: string;
   status: string;
@@ -68,7 +68,7 @@ export interface DashboardSnapshot {
   timestamp: string;
   summary: DashboardSummary;
   telemetryTrend: TelemetryTrendPoint[];
-  aircraftStatus: AircraftStatus[];
+  aircraftStatus: LatestAircraftStatus[];
   securityEvents: SecurityEvent[];
   failedTelemetry: FailedTelemetry[];
   latestTelemetry: LatestTelemetry[];

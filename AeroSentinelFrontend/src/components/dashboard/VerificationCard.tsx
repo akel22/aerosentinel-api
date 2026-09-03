@@ -5,11 +5,11 @@ import { Dropdown } from "../ui/dropdown/Dropdown";
 import { DropdownItem } from "../ui/dropdown/DropdownItem";
 import { MoreDotIcon } from "../../icons";
 
-interface MonthlyTargetProps {
+interface VerificationCardProps {
   verificationPercentage?: number;
 }
 
-export default function MonthlyTarget({ verificationPercentage = 75.55 }: MonthlyTargetProps) {
+export default function VerificationCard({ verificationPercentage = 75.55 }: VerificationCardProps) {
   const series = [Math.min(verificationPercentage, 100)];
   const options: ApexOptions = {
     colors: ["#465FFF"],

@@ -13,6 +13,7 @@ namespace AeroSentinel.Infrastructure
             services.AddScoped<IAircraftTelemetryRepository, AircraftTelemetryRepository>();
              services.AddScoped<IAircraftProfileRepository, AircraftProfileRepository>();
              services.AddScoped<IAircraftCredentialRepository, AircraftCredentialRepository>();
+             services.AddScoped<IFlightPlanRepository, FlightPlanRepository>();
              services.AddScoped<ICryptographyService, CryptographyService>();
              services.AddSingleton<IReplayProtectionService, ReplayProtectionService>();
              services.AddScoped<IAircraftCredentialCacheService, AircraftCredentialCacheService>();

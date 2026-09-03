@@ -2,14 +2,14 @@ import { useState } from "react";
 import { Dropdown } from "../ui/dropdown/Dropdown";
 import { DropdownItem } from "../ui/dropdown/DropdownItem";
 import { MoreDotIcon } from "../../icons";
-import { AircraftStatus } from "../../services/api";
+import { LatestAircraftStatus } from "../../services/api";
 import Badge from "../ui/badge/Badge";
 
 interface DemographicCardProps {
-  aircraftStatus?: AircraftStatus[];
+  aircraftStatus?: LatestAircraftStatus[];
 }
 
-export default function DemographicCard({ aircraftStatus = [] }: DemographicCardProps) {
+export default function AircraftStatus({ aircraftStatus = [] }: DemographicCardProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   function toggleDropdown() {

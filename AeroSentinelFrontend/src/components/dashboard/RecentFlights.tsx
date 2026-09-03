@@ -12,16 +12,14 @@ import type {
   FinishedFlight,
 } from "../../services/api";
 
-interface RecentOrdersProps {
+interface RecentFlightsProps {
   finishedFlights?: FinishedFlight[];
   failedTelemetry?: FailedTelemetry[];
 }
 
-export default function RecentOrders({
-  finishedFlights = [],
-  failedTelemetry = [],
-}: RecentOrdersProps) {
+export default function RecentFlights({finishedFlights = [], failedTelemetry = []}: RecentFlightsProps) {
   // Show finished flights first, then failed telemetry
+  
   const allFlights = [
     ...finishedFlights.map((flight) => ({
       id: flight.flightPlanId,
