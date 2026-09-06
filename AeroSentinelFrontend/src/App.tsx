@@ -1,8 +1,10 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router";
 import AppLayout from "./layout/AppLayout";
 import { ScrollToTop } from "./components/common/ScrollToTop";
-import Home from "./pages/Dashboard/Home";
-import NotFound from "./pages/OtherPage/NotFound";
+import Home from "./Main/Dashboard";
+import NotFound from "./ReusablePages/NotFound";
+import UserProfiles from "./Main/UserProfile";
+import WaypointsPage from "./Main/WaypointsPage";
 
 const FleetPage = () => (
   <div className="aero-shell p-6">
@@ -16,17 +18,6 @@ const FleetPage = () => (
   </div>
 );
 
-const FlightOpsPage = () => (
-  <div className="aero-shell p-6">
-    <div className="aero-card p-8">
-      <p className="text-xs uppercase tracking-[0.28em] text-cyan-300">Flight operations</p>
-      <h2 className="mt-3 text-3xl font-semibold text-white">Dispatch and route control</h2>
-      <p className="mt-3 max-w-2xl text-slate-300">
-        Coordinate delayed flights, live route compliance, and ETD/ETA health signals from a single command surface.
-      </p>
-    </div>
-  </div>
-);
 
 const TelemetryPage = () => (
   <div className="aero-shell p-6">
@@ -52,18 +43,6 @@ const SecurityPage = () => (
   </div>
 );
 
-const IncidentsPage = () => (
-  <div className="aero-shell p-6">
-    <div className="aero-card p-8">
-      <p className="text-xs uppercase tracking-[0.28em] text-cyan-300">Incidents</p>
-      <h2 className="mt-3 text-3xl font-semibold text-white">Operational incident log</h2>
-      <p className="mt-3 max-w-2xl text-slate-300">
-        Track escalations, failed telemetry, and operational anomalies before they impact critical flight operations.
-      </p>
-    </div>
-  </div>
-);
-
 export default function App() {
   return (
     <>
@@ -73,10 +52,10 @@ export default function App() {
           <Route element={<AppLayout />}>
             <Route index path="/" element={<Home />} />
             <Route path="/fleet" element={<FleetPage />} />
-            <Route path="/flight-ops" element={<FlightOpsPage />} />
+            <Route path="/profile" element={<UserProfiles />} />
             <Route path="/telemetry" element={<TelemetryPage />} />
             <Route path="/security" element={<SecurityPage />} />
-            <Route path="/incidents" element={<IncidentsPage />} />
+            <Route path="/incidents" element={<WaypointsPage />} />
           </Route>
 
           <Route path="*" element={<NotFound />} />

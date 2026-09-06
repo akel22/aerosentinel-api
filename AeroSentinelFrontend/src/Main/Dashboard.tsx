@@ -1,12 +1,17 @@
 import { useEffect, useState } from "react";
-import EcommerceMetrics from "../../components/dashboard/BriefCard";
-import MonthlySalesChart from "../../components/dashboard/TelemetryActivity";
-import StatisticsChart from "../../components/dashboard/AircraftStatusOverview";
-import MonthlyTarget from "../../components/dashboard/VerificationCard";
-import RecentOrders from "../../components/dashboard/RecentFlights";
-import DemographicCard from "../../components/dashboard/AircraftStatus";
-import PageMeta from "../../components/common/PageMeta";
-import { dashboardApi, DashboardSnapshot } from "../../services/api";
+import EcommerceMetrics from "../components/dashboard/BriefCard";
+import MonthlySalesChart from "../components/dashboard/TelemetryActivity";
+import StatisticsChart from "../components/dashboard/AircraftStatusOverview";
+import MonthlyTarget from "../components/dashboard/VerificationCard";
+import RecentOrders from "../components/dashboard/RecentFlights";
+import DemographicCard from "../components/dashboard/AircraftStatus";
+import PageMeta from "../components/common/PageMeta";
+import { dashboardApi, DashboardSnapshot } from "../services/api";
+import TelemetryActivity from "../components/dashboard/TelemetryActivity";
+import VerificationCard from "../components/dashboard/VerificationCard";
+import AircraftStatus from "../components/dashboard/AircraftStatus";
+import RecentFlights from "../components/dashboard/RecentFlights";
+import BriefCard from "../components/dashboard/BriefCard";
 
 export default function Home() {
   const [dashboardData, setDashboardData] = useState<DashboardSnapshot | null>(null);
@@ -31,7 +36,7 @@ export default function Home() {
 
     fetchData();
     // Optionally refresh data every 15 seconds
-    const interval = setInterval(fetchData, 15000);
+    const interval = setInterval(fetchData, 5000);
 
     return () => clearInterval(interval);
   }, []);
@@ -76,25 +81,25 @@ export default function Home() {
       />
       <div className="grid grid-cols-12 gap-4 md:gap-6">
         <div className="col-span-12 space-y-6 xl:col-span-7">
-          <EcommerceMetrics dashboardData={summary} />
+          <BriefCard dashboardData={summary} />
 
-          <MonthlySalesChart telemetryTrend={telemetryTrend} />
+          <TelemetryActivity telemetryTrend={telemetryTrend} />
         </div>
 
         <div className="col-span-12 xl:col-span-5">
-          <MonthlyTarget verificationPercentage={summary?.verificationPercentage} />
+          <VerificationCard verificationPercentage={summary?.verificationPercentage} />
         </div>
 
         <div className="col-span-12">
-          <StatisticsChart aircraftStatus={aircraftStatus} />
+          <AircraftStatus aircraftStatus={aircraftStatus} />
         </div>
 
         <div className="col-span-12 xl:col-span-5">
-          <DemographicCard aircraftStatus={aircraftStatus} />
+          <AircraftStatus aircraftStatus={aircraftStatus} />
         </div>
 
         <div className="col-span-12 xl:col-span-7">
-          <RecentOrders finishedFlights={finishedFlights} failedTelemetry={failedTelemetry} />
+          <RecentFlights finishedFlights={finishedFlights} failedTelemetry={failedTelemetry} />
         </div>
       </div>
     </>

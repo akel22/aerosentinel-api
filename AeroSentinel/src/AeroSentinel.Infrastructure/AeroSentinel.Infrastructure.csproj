@@ -1,12 +1,19 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <ItemGroup>
-    <ProjectReference Include="..\AeroSentinel.Application\AeroSentinel.Application.csproj" />
-  </ItemGroup>
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <UserSecretsId>31c86f6e-c4cb-4fbf-8f82-1e938989671d</UserSecretsId>
+  </PropertyGroup>
 
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
-</ItemGroup>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AeroSentinel.Application\AeroSentinel.Application.csproj" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="CsvHelper" Version="33.1.0" />
@@ -20,18 +27,10 @@
     <PackageReference Include="SQLitePCLRaw.bundle_e_sqlite3" Version="2.1.12" />
   </ItemGroup>
 
-    <ItemGroup>
-  <None Update="SeedData\PhilippineAircraftWaypoints_Final.csv">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-  </None>
-</ItemGroup>
-
-
-  <PropertyGroup>
-    <TargetFramework>net10.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-    <UserSecretsId>31c86f6e-c4cb-4fbf-8f82-1e938989671d</UserSecretsId>
-  </PropertyGroup>
+  <ItemGroup>
+    <None Update="SeedData\PhilippineAircraftWaypoints_Final.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 
 </Project>

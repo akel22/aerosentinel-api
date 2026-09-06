@@ -20,9 +20,19 @@ public static class MapEndpoints
 
             var command = new SendTelemetryCommand(payload);
 
-            await writer.WriteAsync(command, cancellationToken);
+            try
+            {
+                await writer.WriteAsync(command, cancellationToken);
+
+            }
+            catch
+            {
+                return Results.BadRequest();
+            }
 
             return Results.Accepted();
+            
+     
         });
 
         // GET ALL

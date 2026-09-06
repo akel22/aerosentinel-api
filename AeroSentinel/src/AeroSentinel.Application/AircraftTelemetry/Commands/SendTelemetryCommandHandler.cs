@@ -37,6 +37,7 @@ public class SendTelemetryCommandHandler : IRequestHandler<SendTelemetryCommand,
         if(!isValid)
         {
             throw new SignatureException(payload.Signature, "The incoming telemetry is spoofed");
+            
         }
         var recentTelemetry = await _aircraftTelemetryRepository.GetLastFlightTelemetryAsync(
             payload.Callsign,

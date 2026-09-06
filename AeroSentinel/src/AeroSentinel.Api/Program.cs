@@ -41,6 +41,8 @@ app.MapHttpTelemetryEndpoints();
 app.MapHttpFlightPlanEndpoints();
 app.MapHttpDashboardEndpoints();
 
+// await app.SeedWaypoints();
+
 // app.MapPost("/credentials", async (
 //     [FromBody] CredentialDTO credentialDTO,
 //     [FromServices] IAircraftCredentialRepository repository,

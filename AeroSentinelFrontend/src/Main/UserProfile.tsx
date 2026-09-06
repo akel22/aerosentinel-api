@@ -4,7 +4,7 @@ import UserInfoCard from "../components/UserProfile/UserInfoCard";
 import UserAddressCard from "../components/UserProfile/UserAddressCard";
 import PageMeta from "../components/common/PageMeta";
 
-export default function UserProfiles() {
+export default function UserProfile() {
   return (
     <>
       <PageMeta

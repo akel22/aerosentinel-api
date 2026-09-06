@@ -19,7 +19,9 @@ public static class MapFlightPlanEndpoints
                     request.DepartureAirport,
                     request.DestinationAirport,
                     request.DepartureTimeUtc,
-                    request.EstimatedArrivalTimeUtc);
+                    request.EstimatedArrivalTimeUtc,
+                    request.ActualArrivalTimeUtc,
+                    request.FlightStatus);
 
                 await dbContext.flight_plan.AddAsync(flightPlan, cancellationToken);
                 await dbContext.SaveChangesAsync(cancellationToken);

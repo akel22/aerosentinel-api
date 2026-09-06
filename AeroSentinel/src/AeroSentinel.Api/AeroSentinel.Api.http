@@ -23,7 +23,7 @@ Accept: application/json
 
 {
   "flightPlanId": "3f7d9c1a-c8df-48b4-91d6-f84d50f4ef61",
-  "icao24": "758802",
+  "icao24": "758001",
   "callsign": "PAL123",
   "squawk": "2145",
   "timestampUtc": "2026-07-06T08:30:00Z",
@@ -59,7 +59,7 @@ Content-Type: application/json
 Accept: application/json
 
 {
-  "icao24": "758822",
+  "icao24": "758001",
   "callsign": "CEB123",
   "departureAirport": "RPVM",
   "destinationAirport": "RPLL",

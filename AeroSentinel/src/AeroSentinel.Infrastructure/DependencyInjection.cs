@@ -6,7 +6,7 @@ namespace AeroSentinel.Infrastructure
             IConfiguration configuration)
         {
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlite("Data Source=../AeroSentinel.Infrastructure/Persistence/Testing.db",
+                options.UseNpgsql("Host=localhost;Port=5432;Database=testdb2;Username=postgres;Password=ezekiel-admin22",
                 x => x.MigrationsAssembly("AeroSentinel.Infrastructure")));
               
 

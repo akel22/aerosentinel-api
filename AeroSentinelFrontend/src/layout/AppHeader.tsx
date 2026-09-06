@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useSidebar } from "../context/SidebarContext";
 import { ThemeToggleButton } from "../components/common/ThemeToggleButton";
-import NotificationDropdown from "../components/header/NotificationDropdown";
 import UserDropdown from "../components/header/UserDropdown";
 
 const AppHeader: React.FC = () => {

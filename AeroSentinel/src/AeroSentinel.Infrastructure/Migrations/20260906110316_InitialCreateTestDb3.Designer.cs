@@ -3,47 +3,90 @@ using System;
 using AeroSentinel.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
 namespace AeroSentinel.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260906110316_InitialCreateTestDb3")]
+    partial class InitialCreateTestDb3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "10.0.9");
+            modelBuilder
+                .HasAnnotation("ProductVersion", "10.0.10")
+                .HasAnnotation("Relational:MaxIdentifierLength", 63);
+
+            NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+
+            modelBuilder.Entity("AeroSentinel.Domain.Aggregates.AircraftCredential", b =>
+                {
+                    b.Property<Guid>("CredentialId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedUtc")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("ICAO24")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<byte[]>("VerificationKey")
+                        .IsRequired()
+                        .HasColumnType("bytea");
+
+                    b.HasKey("CredentialId");
+
+                    b.HasIndex("ICAO24")
+                        .IsUnique();
+
+                    b.ToTable("aircraft_credential");
+                });
 
             modelBuilder.Entity("AeroSentinel.Domain.Aggregates.FlightPlan", b =>
                 {
                     b.Property<Guid>("FlightPlanId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("ActualArrivalTimeUtc")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Callsign")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("text");
 
                     b.Property<string>("DepartureAirport")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("DepartureTimeUtc")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("DestinationAirport")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("EstimatedArrivalTimeUtc")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("FlightStatus")
+                        .HasColumnType("integer");
 
                     b.Property<string>("ICAO24")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("text");
 
                     b.HasKey("FlightPlanId");
 
@@ -53,14 +96,14 @@ namespace AeroSentinel.Infrastructure.Migrations
             modelBuilder.Entity("AeroSentinel.Domain.Aggregates.FlightPlanRoute", b =>
                 {
                     b.Property<Guid>("FlightPlanId")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("uuid");
 
                     b.Property<int>("Sequence")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("integer");
 
                     b.Property<string>("WaypointId")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("text");
 
                     b.HasKey("FlightPlanId", "Sequence");
 
@@ -72,66 +115,40 @@ namespace AeroSentinel.Infrastructure.Migrations
             modelBuilder.Entity("AeroSentinel.Domain.Aggregates.Waypoint", b =>
                 {
                     b.Property<string>("WaypointId")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("text");
 
                     b.Property<double>("Latitude")
-                        .HasColumnType("REAL");
+                        .HasColumnType("double precision");
 
                     b.Property<double>("Longitude")
-                        .HasColumnType("REAL");
+                        .HasColumnType("double precision");
 
                     b.HasKey("WaypointId");
 
                     b.ToTable("waypoint");
                 });
 
-            modelBuilder.Entity("AeroSentinel.Domain.Entities.AircraftCredential", b =>
-                {
-                    b.Property<Guid>("CredentialId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("CreatedUtc")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("ICAO24")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<byte[]>("VerificationKey")
-                        .IsRequired()
-                        .HasColumnType("BLOB");
-
-                    b.HasKey("CredentialId");
-
-                    b.HasIndex("ICAO24")
-                        .IsUnique();
-
-                    b.ToTable("aircraft_credential");
-                });
-
             modelBuilder.Entity("AeroSentinel.Domain.Entities.AircraftProfile", b =>
                 {
                     b.Property<string>("ICAO24")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("text");
 
                     b.Property<string>("AircraftType")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("text");
 
                     b.Property<string>("Manufacturer")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("text");
 
                     b.Property<string>("Registration")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("text");
 
                     b.HasKey("ICAO24");
+
+                    b.HasIndex("Registration")
+                        .IsUnique();
 
                     b.ToTable("aircraft_profile");
                 });
@@ -140,39 +157,39 @@ namespace AeroSentinel.Infrastructure.Migrations
                 {
                     b.Property<Guid>("MessageId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Callsign")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("text");
 
                     b.Property<string>("FailureReason")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("text");
 
                     b.Property<Guid>("FlightPlanId")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("uuid");
 
                     b.Property<string>("ICAO24")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("text");
 
                     b.Property<long>("SequenceNumber")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("bigint");
 
                     b.Property<string>("Signature")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("text");
 
                     b.Property<string>("Squawk")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("text");
 
                     b.Property<string>("Status")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("TimestampUtc")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("MessageId");
 
@@ -182,6 +199,17 @@ namespace AeroSentinel.Infrastructure.Migrations
                         .IsUnique();
 
                     b.ToTable("flight_telemetry");
+                });
+
+            modelBuilder.Entity("AeroSentinel.Domain.Aggregates.AircraftCredential", b =>
+                {
+                    b.HasOne("AeroSentinel.Domain.Entities.AircraftProfile", "AircraftProfile")
+                        .WithOne("AircraftCredential")
+                        .HasForeignKey("AeroSentinel.Domain.Aggregates.AircraftCredential", "ICAO24")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AircraftProfile");
                 });
 
             modelBuilder.Entity("AeroSentinel.Domain.Aggregates.FlightPlanRoute", b =>
@@ -203,41 +231,30 @@ namespace AeroSentinel.Infrastructure.Migrations
                     b.Navigation("Waypoint");
                 });
 
-            modelBuilder.Entity("AeroSentinel.Domain.Entities.AircraftCredential", b =>
-                {
-                    b.HasOne("AeroSentinel.Domain.Entities.AircraftProfile", "AircraftProfile")
-                        .WithOne("AircraftCredential")
-                        .HasForeignKey("AeroSentinel.Domain.Entities.AircraftCredential", "ICAO24")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("AircraftProfile");
-                });
-
             modelBuilder.Entity("AeroSentinel.Domain.Entities.AircraftProfile", b =>
                 {
                     b.OwnsOne("AeroSentinel.Domain.Entities.AircraftPerformance", "AircraftPerformance", b1 =>
                         {
                             b1.Property<string>("AircraftProfileICAO24")
-                                .HasColumnType("TEXT");
+                                .HasColumnType("text");
 
                             b1.Property<double>("CruiseSpeedKnots")
-                                .HasColumnType("REAL");
+                                .HasColumnType("double precision");
 
                             b1.Property<double>("MaxAltitudeFeet")
-                                .HasColumnType("REAL");
+                                .HasColumnType("double precision");
 
                             b1.Property<double>("MaxClimbRateFeetPerMinute")
-                                .HasColumnType("REAL");
+                                .HasColumnType("double precision");
 
                             b1.Property<double>("MaxDescentRateFeetPerMinute")
-                                .HasColumnType("REAL");
+                                .HasColumnType("double precision");
 
                             b1.Property<double>("MaxTurnRateDegreesPerSecond")
-                                .HasColumnType("REAL");
+                                .HasColumnType("double precision");
 
                             b1.Property<double>("MaxVelocityKnots")
-                                .HasColumnType("REAL");
+                                .HasColumnType("double precision");
 
                             b1.HasKey("AircraftProfileICAO24");
 
@@ -261,22 +278,22 @@ namespace AeroSentinel.Infrastructure.Migrations
                     b.OwnsOne("AeroSentinel.Domain.ValueObjects.FlightIntent", "FlightIntent", b1 =>
                         {
                             b1.Property<Guid>("FlightTelemetryMessageId")
-                                .HasColumnType("TEXT");
+                                .HasColumnType("uuid");
 
                             b1.Property<double>("IndicatedAirspeedKnots")
-                                .HasColumnType("REAL");
+                                .HasColumnType("double precision");
 
                             b1.Property<double>("MagneticHeadingDegrees")
-                                .HasColumnType("REAL");
+                                .HasColumnType("double precision");
 
                             b1.Property<double>("RollAngleDegrees")
-                                .HasColumnType("REAL");
+                                .HasColumnType("double precision");
 
                             b1.Property<double>("SelectedAltitudeFeet")
-                                .HasColumnType("REAL");
+                                .HasColumnType("double precision");
 
                             b1.Property<double>("VerticalRateFpm")
-                                .HasColumnType("REAL");
+                                .HasColumnType("double precision");
 
                             b1.HasKey("FlightTelemetryMessageId");
 
@@ -289,19 +306,19 @@ namespace AeroSentinel.Infrastructure.Migrations
                     b.OwnsOne("AeroSentinel.Domain.ValueObjects.SpatialState", "SpatialState", b1 =>
                         {
                             b1.Property<Guid>("FlightTelemetryMessageId")
-                                .HasColumnType("TEXT");
+                                .HasColumnType("uuid");
 
                             b1.Property<double>("BaroAltitudeFeet")
-                                .HasColumnType("REAL");
+                                .HasColumnType("double precision");
 
                             b1.Property<double>("GeoAltitudeFeet")
-                                .HasColumnType("REAL");
+                                .HasColumnType("double precision");
 
                             b1.Property<double>("GroundSpeedKnots")
-                                .HasColumnType("REAL");
+                                .HasColumnType("double precision");
 
                             b1.Property<double>("TrackAngleDegrees")
-                                .HasColumnType("REAL");
+                                .HasColumnType("double precision");
 
                             b1.HasKey("FlightTelemetryMessageId");
 
@@ -313,13 +330,13 @@ namespace AeroSentinel.Infrastructure.Migrations
                             b1.OwnsOne("AeroSentinel.Domain.ValueObjects.AircraftGeoCoordinates", "Coordinates", b2 =>
                                 {
                                     b2.Property<Guid>("SpatialStateFlightTelemetryMessageId")
-                                        .HasColumnType("TEXT");
+                                        .HasColumnType("uuid");
 
                                     b2.Property<double>("Latitude")
-                                        .HasColumnType("REAL");
+                                        .HasColumnType("double precision");
 
                                     b2.Property<double>("Longitude")
-                                        .HasColumnType("REAL");
+                                        .HasColumnType("double precision");
 
                                     b2.HasKey("SpatialStateFlightTelemetryMessageId");
 
