@@ -4,5 +4,7 @@ namespace AeroSentinel.Application.Common.Interfaces;
 
 public interface IFlightPlanRepository
 {
-    Task<IReadOnlyList<FlightPlan>> GetLatestAsync(int count, CancellationToken cancellationToken = default);
+    Task<IReadOnlyList<FlightPlan>> GetFininishedFlightsAsync(CancellationToken cancellationToken = default);
+
+    
 }

@@ -12,7 +12,7 @@ export interface DashboardSummary {
 
 export interface TelemetryTrendPoint {
   hour: string;
-  count: number;
+  count: number;  
 }
 
 export interface LatestAircraftStatus {
@@ -61,7 +61,7 @@ export interface FinishedFlight {
   destinationAirport: string;
   estimatedArrivalTimeUtc: string;
   actualArrivalTimeUtc: string;
-  delayMinutes: number;
+  delayMinutes: number; 
 }
 
 export interface DashboardSnapshot {
@@ -76,9 +76,11 @@ export interface DashboardSnapshot {
 }
 
 // API Service
-const API_BASE_URL = "http://localhost:5253"; // AeroSentinel API port
+// API Service
+export const API_BASE_URL = "http://localhost:5253"; // AeroSentinel API port
 
 export const dashboardApi = {
+  //can also be written as getDashboardSnapshot = async (): Promise<DashboardSnapshot>
   async getDashboardSnapshot(): Promise<DashboardSnapshot> {
     try {
       const response = await fetch(`${API_BASE_URL}/dashboard`, {
@@ -92,29 +94,14 @@ export const dashboardApi = {
         throw new Error(`API error: ${response.status}`);
       }
 
-      // Map the response based on your backend's actual field names
+      // 1. Read the JSON from the response
       const data = await response.json();
+      console.log("Dashboard data fetched successfully:", data);
       
-        console.log("Dashboard data fetched successfully:", data);
-      
-      return {
-        timestamp: data.generatedAt,
-        summary: {
-          aircraftProfilesCount: data.summary?.registeredAircraft || 0,
-          totalTelemetry: data.summary?.telemetryFrames || 0,
-          verifiedTelemetry: data.summary?.verifiedFrames || 0,
-          failedTelemetry: data.summary?.failedFrames || 0,
-          credentialsCount: data.summary?.credentialedAircraft || 0,
-          verificationPercentage: data.summary?.authenticationRate || 0,
-          activeAircraft: data.summary?.activeAircraft || 0,
-        },
-        telemetryTrend: data.telemetryTrend || [],
-        aircraftStatus: data.aircraft || [],
-        securityEvents: data.securityEvents || [],
-        failedTelemetry: data.failedTelemetryLog || [],
-        latestTelemetry: data.latestTelemetry || [],
-        finishedFlights: data.finishedFlights || [],
-      };
+      // 2. Return it directly! The .NET backend automatically converted 
+      // your PascalCase C# properties into camelCase JSON over the wire.
+      return data as DashboardSnapshot;
+
     } catch (error) {
         const errorMessage = error instanceof Error ? error.message : String(error);
         console.error("Failed to fetch dashboard data from " + API_BASE_URL + "/dashboard:", errorMessage);

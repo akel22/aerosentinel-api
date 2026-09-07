@@ -1,10 +1,4 @@
 import { useEffect, useState } from "react";
-import EcommerceMetrics from "../components/dashboard/BriefCard";
-import MonthlySalesChart from "../components/dashboard/TelemetryActivity";
-import StatisticsChart from "../components/dashboard/AircraftStatusOverview";
-import MonthlyTarget from "../components/dashboard/VerificationCard";
-import RecentOrders from "../components/dashboard/RecentFlights";
-import DemographicCard from "../components/dashboard/AircraftStatus";
 import PageMeta from "../components/common/PageMeta";
 import { dashboardApi, DashboardSnapshot } from "../services/api";
 import TelemetryActivity from "../components/dashboard/TelemetryActivity";

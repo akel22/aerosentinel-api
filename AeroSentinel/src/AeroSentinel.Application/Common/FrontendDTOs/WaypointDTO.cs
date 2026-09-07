@@ -1,0 +1,1 @@
+public sealed record WaypointDTO(string WaypointId, double Latitude, double Longitude);

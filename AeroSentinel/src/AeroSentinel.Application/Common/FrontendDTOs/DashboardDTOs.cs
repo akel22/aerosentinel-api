@@ -1,23 +1,33 @@
+using System;
+using System.Collections.Generic;
 using AeroSentinel.Domain.Extensions;
 
 namespace AeroSentinel.Application.Common.DTOs;
 
 public sealed record DashboardSnapshotDTO(
+    DateTime Timestamp,
     DashboardSummaryDTO Summary,
-    IReadOnlyList<AircraftStatusDTO> Aircraft,
+    IReadOnlyList<TelemetryTrendPointDTO> TelemetryTrend,
+    IReadOnlyList<LatestAircraftStatusDTO> AircraftStatus,
+    IReadOnlyList<SecurityEventDTO> SecurityEvents,
+    IReadOnlyList<FailedTelemetryDTO> FailedTelemetry,
     IReadOnlyList<LatestTelemetryDTO> LatestTelemetry,
     IReadOnlyList<FinishedFlightDTO> FinishedFlights);
 
 public sealed record DashboardSummaryDTO(
-    int RegisteredAircraft,
-    int TelemetryFrames,
-    int VerifiedFrames,
-    int FailedFrames,
-    int CredentialedAircraft,
-    double AuthenticationRate,
+    int AircraftProfilesCount,
+    int TotalTelemetry,
+    int VerifiedTelemetry,
+    int FailedTelemetry,
+    int CredentialsCount,
+    double VerificationPercentage,
     int ActiveAircraft);
 
-public sealed record AircraftStatusDTO(
+public sealed record TelemetryTrendPointDTO(
+    string Hour,
+    int Count);
+
+public sealed record LatestAircraftStatusDTO(
     string Callsign,
     string Icao24,
     string Status,
@@ -26,12 +36,28 @@ public sealed record AircraftStatusDTO(
     double Altitude,
     double Speed);
 
+public sealed record SecurityEventDTO(
+    int Id,
+    string Event,
+    string Aircraft,
+    DateTime Timestamp,
+    string Severity);
+
+public sealed record FailedTelemetryDTO(
+    Guid MessageId,
+    string Callsign,
+    string Icao24,
+    DateTime Timestamp,
+    string Type,
+    string Status,
+    string Reason);
+
 public sealed record LatestTelemetryDTO(
     Guid MessageId,
     string Callsign,
     string Icao24,
     string Status,
-    DateTime TimestampUtc,
+    DateTime Timestamp,
     long SequenceNumber,
     string FailureReason);
 
@@ -43,4 +69,4 @@ public sealed record FinishedFlightDTO(
     string DestinationAirport,
     DateTime EstimatedArrivalTimeUtc,
     DateTime ActualArrivalTimeUtc,
-    TimeOnly ArrivalVarianceMinutes);
+    string DelayMinutes);

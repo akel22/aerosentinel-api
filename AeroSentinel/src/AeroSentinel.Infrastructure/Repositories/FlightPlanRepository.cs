@@ -1,3 +1,5 @@
+using AeroSentinel.Domain.Extensions;
+
 namespace AeroSentinel.Infrastructure.Repositories;
 
 public sealed class FlightPlanRepository : IFlightPlanRepository
@@ -9,14 +11,9 @@ public sealed class FlightPlanRepository : IFlightPlanRepository
         _applicationDbContext = applicationDbContext;
     }
 
-    public async Task<IReadOnlyList<FlightPlan>> GetLatestAsync(
-        int count,
-        CancellationToken cancellationToken = default)
+    public async Task<IReadOnlyList<FlightPlan>> GetFininishedFlightsAsync(CancellationToken cancellationToken = default)
     {
-        return await _applicationDbContext.flight_plan
-            .AsNoTracking()
-            .OrderByDescending(plan => plan.EstimatedArrivalTimeUtc)
-            .Take(count)
-            .ToListAsync(cancellationToken);
+        return await _applicationDbContext.flight_plan.Where(x => x.FlightStatus == FlightStatus.Finished)
+        .ToListAsync(cancellationToken: cancellationToken);
     }
 }

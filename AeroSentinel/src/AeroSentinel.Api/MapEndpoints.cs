@@ -7,7 +7,7 @@ public static class MapEndpoints
         const string routeName = "GetTelemetry";
 
         // POST REQUEST
-        telemetry.MapPost("", async (
+        telemetry.MapPost("/", async (
             [FromBody] RawPayloadDTO payload,
             [FromServices]ChannelWriter<SendTelemetryCommand> writer,
             [FromServices]ILogger<WebApplication> logger,

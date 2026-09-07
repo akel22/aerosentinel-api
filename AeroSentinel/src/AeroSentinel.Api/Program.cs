@@ -40,20 +40,9 @@ app.UseCors();
 app.MapHttpTelemetryEndpoints();
 app.MapHttpFlightPlanEndpoints();
 app.MapHttpDashboardEndpoints();
+app.MapHttpWaypointEndpoints();
 
 // await app.SeedWaypoints();
-
-// app.MapPost("/credentials", async (
-//     [FromBody] CredentialDTO credentialDTO,
-//     [FromServices] IAircraftCredentialRepository repository,
-//     CancellationToken cancellationToken) =>
-// {
-//     var credential = new AircraftCredential(credentialDTO.ICAO24);
-
-//     await repository.SaveChangesAsync(credential, cancellationToken);
-
-//     return Results.Ok();
-// });
 
 app.Run();
 

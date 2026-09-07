@@ -10,9 +10,11 @@ namespace AeroSentinel.Infrastructure
                 x => x.MigrationsAssembly("AeroSentinel.Infrastructure")));
               
 
-            services.AddScoped<IAircraftTelemetryRepository, AircraftTelemetryRepository>();
+             services.AddScoped<IAircraftTelemetryRepository, AircraftTelemetryRepository>();
              services.AddScoped<IAircraftProfileRepository, AircraftProfileRepository>();
              services.AddScoped<IAircraftCredentialRepository, AircraftCredentialRepository>();
+             services.AddScoped<IWaypointRepository, WaypointRepository>();
+
              services.AddScoped<IFlightPlanRepository, FlightPlanRepository>();
              services.AddScoped<ICryptographyService, CryptographyService>();
              services.AddSingleton<IReplayProtectionService, ReplayProtectionService>();

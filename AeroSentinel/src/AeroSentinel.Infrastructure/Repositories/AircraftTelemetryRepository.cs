@@ -42,6 +42,12 @@ public sealed class AircraftTelemetryRepository : IAircraftTelemetryRepository
         return lastTelemetry;
     }
 
+    public async Task<FlightTelemetry?> GetLastFlightTelemetryTimestampAsync(CancellationToken cancellationtoken = default)
+    {
+        return await _applicationDbContext.flight_telemetry.
+        OrderByDescending(t => t.TimestampUtc).FirstOrDefaultAsync();   
+     }
+
     public async Task<FlightTelemetry?> GetByMessageIdAsync(Guid messageId, CancellationToken cancellationToken = default)
     {
         var telemetry = await _applicationDbContext.flight_telemetry.FindAsync(messageId);

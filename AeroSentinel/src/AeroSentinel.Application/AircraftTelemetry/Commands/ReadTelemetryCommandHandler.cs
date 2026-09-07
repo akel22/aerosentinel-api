@@ -31,32 +31,36 @@ public class ReadTelemetryCommandHandler : IRequestHandler<ReadTelemetryCommand,
             .Select(frame => frame!)
             .OrderByDescending(frame => frame.TimestampUtc)
             .ToList();
+        
+        var telemetryLatestTimestamp = await _aircraftTelemetryRepository.GetLastFlightTelemetryTimestampAsync(cancellationToken);
+
+        var finishedFlights = await _flightPlanRepository.GetFininishedFlightsAsync(cancellationToken);
 
         var credentials = await _aircraftCredentialRepository.GetAllAsync(cancellationToken);
 
-        var flightPlans = await _flightPlanRepository.GetLatestAsync(10, cancellationToken);
-
         // Define constants/configuration parameters for pagination limits if needed
        // Helper calculation for rate percentages avoiding divide-by-zero
-        double authRate = telemetry.Count > 0 
-            ? Math.Round((double)telemetry.Count(x => x.Status == TelemetryStatus.Finished) / telemetry.Count * 100, 2) 
-            : 0.0;
+        double verifPercent = telemetry.Count > 0 ? 
+            Math.Round((double)(telemetry.Count(x => x.Status == TelemetryStatus.Ongoing ||
+                x.Status == TelemetryStatus.Finished) / telemetry.Count) * 100, 2) : 0.0;
 
         return new DashboardSnapshotDTO(
+            
+        Timestamp : telemetryLatestTimestamp!.TimestampUtc,
 
         Summary: new DashboardSummaryDTO(
-            RegisteredAircraft: profiles.Count,
-            TelemetryFrames: telemetry.Count,
-            VerifiedFrames: telemetry.Count(x => x.Status == TelemetryStatus.Ongoing || x.Status == TelemetryStatus.Finished),
-            FailedFrames: telemetry.Count(x => x.Status == TelemetryStatus.Spoofed),
-            CredentialedAircraft: credentials.Count,
-            AuthenticationRate: authRate,
+            AircraftProfilesCount: profiles.Count,
+            TotalTelemetry: telemetry.Count,
+            VerifiedTelemetry: telemetry.Count(x => x.Status == TelemetryStatus.Ongoing || x.Status == TelemetryStatus.Finished),
+            FailedTelemetry: telemetry.Count(x => x.Status == TelemetryStatus.Spoofed),
+            CredentialsCount: credentials.Count,
+            VerificationPercentage: verifPercent,
             ActiveAircraft: profiles.Count
-        ),
+        ), [],
 
-        Aircraft: [.. telemetry
+        AircraftStatus: [.. telemetry
             .DistinctBy(x => x.Callsign)
-            .Select(frame => new AircraftStatusDTO(
+            .Select(frame => new LatestAircraftStatusDTO(
                 Callsign: frame.Callsign,
                 Icao24: frame.ICAO24,
                 Status: frame.Status.ToString(),
@@ -64,37 +68,34 @@ public class ReadTelemetryCommandHandler : IRequestHandler<ReadTelemetryCommand,
                 Authentication: frame.Status.ToString(),
                 Altitude: frame.SpatialState.GeoAltitudeFeet,
                 Speed: frame.SpatialState.GroundSpeedKnots
-            ))],
+            ))],[],[],
 
 
-        LatestTelemetry: [.. telemetry
-            .OrderByDescending(x => x.TimestampUtc)
-            .Select(frame => new LatestTelemetryDTO(
-                MessageId: frame.MessageId,
-                Callsign: frame.Callsign,
-                Icao24: frame.ICAO24,
-                Status: frame.Status.ToString(),
-                TimestampUtc: frame.TimestampUtc,
-                SequenceNumber: frame.SequenceNumber,
-                FailureReason: frame.FailureReason ?? string.Empty
-            ))],
+        LatestTelemetry: [new LatestTelemetryDTO(
+                MessageId: telemetryLatestTimestamp.MessageId,
+                Callsign: telemetryLatestTimestamp.Callsign,
+                Icao24: telemetryLatestTimestamp.ICAO24,
+                Status: telemetryLatestTimestamp.Status.ToString(),
+                Timestamp: telemetryLatestTimestamp.TimestampUtc,
+                SequenceNumber: telemetryLatestTimestamp.SequenceNumber,
+                FailureReason: telemetryLatestTimestamp.FailureReason ?? string.Empty
+            )],
 
-        FinishedFlights: [.. flightPlans
-            .Where(x => x.FlightStatus == FlightStatus.Finished)
-            .Select(plan => new FinishedFlightDTO(
-                FlightPlanId: plan.FlightPlanId,
-                Callsign: plan.Callsign,
-                Icao24: plan.ICAO24,
-                DepartureAirport: plan.DepartureAirport,
-                DestinationAirport: plan.DestinationAirport,
-                EstimatedArrivalTimeUtc: plan.EstimatedArrivalTimeUtc,
-                ActualArrivalTimeUtc: plan.ActualArrivalTimeUtc,
-                ArrivalVarianceMinutes: TimeOnly.FromTimeSpan(
-                    plan.ActualArrivalTimeUtc > plan.EstimatedArrivalTimeUtc 
-                        ? plan.ActualArrivalTimeUtc - plan.EstimatedArrivalTimeUtc 
-                        : plan.EstimatedArrivalTimeUtc - plan.ActualArrivalTimeUtc)
-            ))]
+        FinishedFlights: [.. finishedFlights.Select(flight => new FinishedFlightDTO(
+                FlightPlanId: flight.FlightPlanId,
+                Callsign: flight.Callsign,
+                Icao24: flight.ICAO24,
+                DepartureAirport: flight.DepartureAirport,
+                DestinationAirport: flight.DestinationAirport,
+                EstimatedArrivalTimeUtc: flight.EstimatedArrivalTimeUtc,
+                ActualArrivalTimeUtc: flight.ActualArrivalTimeUtc,
+                DelayMinutes: TimeOnly.FromTimeSpan(
+                    flight.ActualArrivalTimeUtc > flight.EstimatedArrivalTimeUtc 
+                        ? flight.ActualArrivalTimeUtc - flight.EstimatedArrivalTimeUtc 
+                        : flight.EstimatedArrivalTimeUtc - flight.ActualArrivalTimeUtc).
+                        ToShortTimeString()))]
         );
+    
 }
 
     private static string FormatTimestamp(DateTime timestamp) =>
