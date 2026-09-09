@@ -1,147 +1,131 @@
-import { useState, useEffect } from "react";
-import { useModal } from "../../hooks/useModal";
-import { Modal } from "../ui/modal";
-import Button from "../ui/button/Button";
-import Input from "../form/input/InputField";
-import Label from "../form/Label";
+import { useState } from "react";
+import EditProfileModal from "./Modals/EditProfileModal";
+import { PencilIcon } from "../../icons";
 
-export default function UserInfoCard() {
-  const { isOpen, openModal, closeModal } = useModal();
-  const [isAnimating, setIsAnimating] = useState(false);
+export interface UserHeaderData {
+  name: string;
+  role: string;
+  organization: string;
+  status: string;
+  clearanceLevel: string;
+  avatarUrl: string;
+}
 
-  const [formData, setFormData] = useState({
-    firstName: "Musharof",
-    lastName: "Chowdhury",
-    email: "randomuser@pimjo.com",
-    phone: "+09 363 398 46",
-    bio: "Team Manager"
-  });
+interface UserInfoCardProps {
+  data?: UserHeaderData;
+  onUpdate?: (updated: UserHeaderData) => void;
+}
 
-  useEffect(() => {
-    if (isOpen) {
-      const timer = setTimeout(() => setIsAnimating(true), 10);
-      return () => clearTimeout(timer);
+export default function UserInfoCard({ data, onUpdate }: UserInfoCardProps) {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  
+  const [headerData, setHeaderData] = useState<UserHeaderData>(
+    data || {
+      name: "Musharof Chowdhury",
+      role: "Operations Officer",
+      organization: "Aircraft Control Center",
+      status: "Active Duty",
+      clearanceLevel: "Level 4 Clearance",
+      avatarUrl: "/images/user/admin.jpg",
     }
-  }, [isOpen]);
+  );
 
-  const handleClose = () => {
-    setIsAnimating(false);
-    setTimeout(() => {
-      closeModal();
-    }, 10);
-  };
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleSave = () => {
-    handleClose();
+  const handleSave = (updatedForm: Record<string, string>) => {
+    const nextData: UserHeaderData = {
+      ...headerData,
+      name: updatedForm.name || headerData.name,
+      role: updatedForm.role || headerData.role,
+      organization: updatedForm.organization || headerData.organization,
+    };
+    setHeaderData(nextData);
+    if (onUpdate) onUpdate(nextData);
   };
 
   return (
     <>
-      <div className="p-5 transition-all duration-300 border border-gray-200 rounded-2xl dark:border-gray-800 lg:p-6 hover:shadow-lg dark:hover:border-gray-700">
-        <div className="flex flex-row items-center justify-between mb-6">
-          <h4 className="text-lg font-semibold text-gray-800 dark:text-white/90">
-            Personal Information
-          </h4>
-          <button
-            onClick={openModal}
-            className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 transition-colors bg-transparent border border-gray-300 rounded-full hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800 dark:hover:text-white"
-          >
-            <svg className="fill-current" width="14" height="14" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path fillRule="evenodd" clipRule="evenodd" d="M15.0911 2.78206C14.2125 1.90338 12.7878 1.90338 11.9092 2.78206L4.57524 10.116C4.26682 10.4244 4.0547 10.8158 3.96468 11.2426L3.31231 14.3352C3.25997 14.5833 3.33653 14.841 3.51583 15.0203C3.69512 15.1996 3.95286 15.2761 4.20096 15.2238L7.29355 14.5714C7.72031 14.4814 8.11172 14.2693 8.42013 13.9609L15.7541 6.62695C16.6327 5.74827 16.6327 4.32365 15.7541 3.44497L15.0911 2.78206ZM12.9698 3.84272C13.2627 3.54982 13.7376 3.54982 14.0305 3.84272L14.6934 4.50563C14.9863 4.79852 14.9863 5.2734 14.6934 5.56629L14.044 6.21573L12.3204 4.49215L12.9698 3.84272ZM11.2597 5.55281L5.6359 11.1766C5.53309 11.2794 5.46238 11.4099 5.43238 11.5522L5.01758 13.5185L6.98394 13.1037C7.1262 13.0737 7.25666 13.003 7.35947 12.9002L12.9833 7.27639L11.2597 5.55281Z" fill=""/>
-            </svg>
-            Edit
-          </button>
+      <div className="relative overflow-hidden rounded-lg border border-gray-200 bg-white">
+        {/* Cover Banner */}
+        <div className="relative h-24 w-full bg-gray-50 sm:h-32 border-b border-gray-200">
+          <div className="absolute top-4 right-4 flex items-center gap-1.5 rounded-md bg-white px-2.5 py-1 text-xs font-medium text-gray-700 border border-gray-200 shadow-sm">
+            <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+            <span className="tracking-wide uppercase text-[10px]">{headerData.status}</span>
+          </div>
         </div>
 
-        <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-7 2xl:gap-x-32">
-          <div>
-            <p className="mb-1 text-xs font-medium text-gray-500 uppercase dark:text-gray-400">First Name</p>
-            <p className="text-sm font-medium text-gray-900 dark:text-white/90">{formData.firstName}</p>
+        {/* Profile Card Main Body */}
+        <div className="px-5 pb-6 pt-0 lg:px-7">
+          <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between -mt-10 sm:-mt-12 mb-4 gap-4">
+            {/* Avatar container */}
+            <div className="relative group">
+              <div className="relative h-20 w-20 sm:h-24 sm:w-24 overflow-hidden rounded-lg border-4 border-white bg-white shadow-sm">
+                <img
+                  src={headerData.avatarUrl}
+                  alt={headerData.name}
+                  className="h-full w-full object-cover"
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).src =
+                      "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80";
+                  }}
+                />
+              </div>
+            </div>
+
+            {/* Primary Action Button */}
+            <button
+              onClick={() => setIsModalOpen(true)}
+              className="inline-flex items-center justify-center gap-2 rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-200 sm:w-auto"
+            >
+              <PencilIcon className="h-4 w-4 text-gray-500" />
+              <span>Edit Profile</span>
+            </button>
           </div>
 
-          <div>
-            <p className="mb-1 text-xs font-medium text-gray-500 uppercase dark:text-gray-400">Last Name</p>
-            <p className="text-sm font-medium text-gray-900 dark:text-white/90">{formData.lastName}</p>
-          </div>
+          {/* User Details */}
+          <div className="space-y-4">
+            <div>
+              <div className="flex flex-wrap items-center gap-2 mb-1">
+                <h3 className="text-xl font-semibold text-gray-900 tracking-tight">
+                  {headerData.name}
+                </h3>
+                <span className="inline-flex items-center rounded-md bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-600 border border-gray-200">
+                  {headerData.clearanceLevel}
+                </span>
+              </div>
 
-          <div>
-            <p className="mb-1 text-xs font-medium text-gray-500 uppercase dark:text-gray-400">Email address</p>
-            <p className="text-sm font-medium text-gray-900 dark:text-white/90">{formData.email}</p>
-          </div>
+              <p className="text-sm text-gray-600 flex items-center gap-2">
+                <span>{headerData.role}</span>
+                <span className="text-gray-300">•</span>
+                <span className="text-gray-900">{headerData.organization}</span>
+              </p>
+            </div>
 
-          <div>
-            <p className="mb-1 text-xs font-medium text-gray-500 uppercase dark:text-gray-400">Phone</p>
-            <p className="text-sm font-medium text-gray-900 dark:text-white/90">{formData.phone}</p>
-          </div>
-
-          <div>
-            <p className="mb-1 text-xs font-medium text-gray-500 uppercase dark:text-gray-400">Bio</p>
-            <p className="text-sm font-medium text-gray-900 dark:text-white/90">{formData.bio}</p>
+            {/* Quick System Stats */}
+            <div className="flex flex-wrap gap-6 pt-4 border-t border-gray-100 text-sm text-gray-600">
+              <div className="flex items-center gap-2">
+                <span className="font-medium text-gray-500">Station</span>
+                <span className="text-gray-900">BASE ALPHA-1</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="font-medium text-gray-500">System Role</span>
+                <span className="text-gray-900">OPERATIONS OFFICER</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
-      <Modal 
-        isOpen={isOpen} 
-        onClose={handleClose} 
-        className={`max-w-[700px] m-4 !bg-black/30 backdrop-blur-sm transition-all duration-300 ease-out ${
-          isAnimating ? "opacity-100" : "opacity-0 pointer-events-none"
-        }`}
-      >
-        <div 
-          className={`relative w-full max-w-[700px] overflow-hidden rounded-3xl bg-white shadow-2xl dark:bg-gray-900 border border-gray-100 dark:border-gray-800 transition-all duration-300 ease-out transform ${
-            isAnimating ? "opacity-100 scale-100 translate-y-0" : "opacity-0 scale-95 translate-y-4"
-          }`}
-        >
-          <div className="px-6 py-5 text-white bg-gradient-to-r from-brand-500 to-indigo-600">
-            <h4 className="text-xl font-bold tracking-tight">Edit Personal Information</h4>
-            <p className="mt-1 text-xs text-brand-100">Update your internal staff profile details.</p>
-          </div>
-
-          <form className="flex flex-col p-6 lg:p-8">
-            <div className="grid grid-cols-1 gap-x-6 gap-y-5 lg:grid-cols-2">
-              <div className="col-span-2 lg:col-span-1">
-                <Label className="font-medium text-gray-700 dark:text-gray-300">First Name</Label>
-                <Input type="text" name="firstName" value={formData.firstName} onChange={handleChange} />
-              </div>
-
-              <div className="col-span-2 lg:col-span-1">
-                <Label className="font-medium text-gray-700 dark:text-gray-300">Last Name</Label>
-                <Input type="text" name="lastName" value={formData.lastName} onChange={handleChange} />
-              </div>
-
-              <div className="col-span-2 lg:col-span-1">
-                <Label className="font-medium text-gray-700 dark:text-gray-300">Email Address</Label>
-                <Input type="text" name="email" value={formData.email} onChange={handleChange} />
-              </div>
-
-              <div className="col-span-2 lg:col-span-1">
-                <Label className="font-medium text-gray-700 dark:text-gray-300">Phone</Label>
-                <Input type="text" name="phone" value={formData.phone} onChange={handleChange} />
-              </div>
-
-              <div className="col-span-2">
-                <Label className="font-medium text-gray-700 dark:text-gray-300">Bio</Label>
-                <Input type="text" name="bio" value={formData.bio} onChange={handleChange} />
-              </div>
-            </div>
-
-            <div className="flex items-center justify-end gap-3 pt-6 mt-6 border-t border-gray-100 dark:border-gray-800">
-              <Button size="sm" variant="outline"  onClick={handleClose} className="transition-transform rounded-xl active:scale-95">
-                Cancel
-              </Button>
-              <Button size="sm" onClick={handleSave} className="text-white transition-transform shadow-sm rounded-xl bg-brand-500 hover:bg-brand-600 active:scale-95">
-                Save Changes
-              </Button>
-            </div>
-          </form>
-        </div>
-      </Modal>
+      {/* Reusable Edit Modal */}
+      <EditProfileModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onSave={handleSave}
+        type="info"
+        initialData={{
+          name: headerData.name,
+          role: headerData.role,
+          organization: headerData.organization,
+        }}
+      />
     </>
   );
 }

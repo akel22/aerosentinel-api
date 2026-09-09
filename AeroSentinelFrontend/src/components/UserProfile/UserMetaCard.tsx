@@ -1,68 +1,169 @@
 import { useState } from "react";
-import { useModal } from "../../hooks/useModal";
-import EditProfileModal from "./Modals/EditProfileModal"; // Adjust path as needed
+import EditProfileModal from "./Modals/EditProfileModal";
+import { PencilIcon, CopyIcon, CheckLineIcon } from "../../icons";
 
-export default function UserMetaCard() {
-  const { isOpen, openModal, closeModal } = useModal();
-  
-  // State lifted up to reflect changes on the card immediately after saving
-  const [userData, setUserData] = useState({
-    firstName: "Admin",
-    email: "example@email.com",
-    phone: "+63 917 123 4567"
-  });
+export interface UserPersonalMeta {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  bio: string;
+}
 
-  const handleSave = (updatedData: typeof userData) => {
-    console.log("Saving changes...", updatedData);
-    setUserData(updatedData);
+interface UserMetaCardProps {
+  data?: UserPersonalMeta;
+  onUpdate?: (updated: UserPersonalMeta) => void;
+}
+
+export default function UserMetaCard({ data, onUpdate }: UserMetaCardProps) {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [copiedField, setCopiedField] = useState<string | null>(null);
+
+  const [personalData, setPersonalData] = useState<UserPersonalMeta>(
+    data || {
+      firstName: "Musharof",
+      lastName: "Chowdhury",
+      email: "randomuser@pimjo.com",
+      phone: "+09 363 398 46",
+      bio: "Team Manager & Lead Aircraft Operations Controller.",
+    }
+  );
+
+  const handleCopy = (text: string, fieldName: string) => {
+    navigator.clipboard.writeText(text);
+    setCopiedField(fieldName);
+    setTimeout(() => setCopiedField(null), 2000);
+  };
+
+  const handleSave = (updatedForm: Record<string, string>) => {
+    const nextData: UserPersonalMeta = {
+      ...personalData,
+      firstName: updatedForm.firstName || personalData.firstName,
+      lastName: updatedForm.lastName || personalData.lastName,
+      email: updatedForm.email || personalData.email,
+      phone: updatedForm.phone || personalData.phone,
+      bio: updatedForm.bio || personalData.bio,
+    };
+    setPersonalData(nextData);
+    if (onUpdate) onUpdate(nextData);
   };
 
   return (
     <>
-      <div className="p-5 transition-all duration-300 border border-gray-200 rounded-2xl dark:border-gray-800 lg:p-6 hover:shadow-lg dark:hover:border-gray-700">
-        <div className="flex flex-col gap-5 xl:flex-row xl:items-center xl:justify-between">
-          <div className="flex flex-col items-center w-full gap-6 xl:flex-row">
-            <div className="relative w-20 h-20 overflow-hidden border-2 rounded-full shadow-md border-brand-500">
-              <img 
-                src="/images/user/admin.jpg" 
-                alt="user profile" 
-                className="object-cover w-full h-full" 
-              />
-            </div>
-            
-            <div>
-              <h4 className="mb-2 text-lg font-semibold text-center text-gray-800 dark:text-white/90 xl:text-left">
-                {userData.firstName} 
-              </h4>
-              <div className="flex flex-col items-center gap-1 text-center xl:flex-row xl:gap-3 xl:text-left">
-                <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
-                  Operations Officer
-                </p>
-                <div className="hidden h-3.5 w-px bg-gray-300 dark:bg-gray-700 xl:block"></div>
-                <p className="text-sm text-gray-500 dark:text-gray-400">
-                  Aircraft Control Center
-                </p>
-              </div>
-            </div>
+      <div className="rounded-lg border border-gray-200 bg-white p-6">
+        {/* Card Header */}
+        <div className="flex items-center justify-between mb-6 pb-4 border-b border-gray-200">
+          <div>
+            <h4 className="text-base font-semibold text-gray-900">
+              Personal Information
+            </h4>
+            <p className="text-sm text-gray-500 mt-1">
+              Staff member bio and verified contact details
+            </p>
           </div>
-          
+
           <button
-            onClick={openModal}
-            className="flex w-full items-center justify-center gap-2 rounded-xl bg-brand-500 px-5 py-3 text-sm font-medium text-white shadow-md transition-all duration-300 hover:bg-brand-600 hover:-translate-y-0.5 active:translate-y-0 active:scale-95 lg:inline-flex lg:w-auto"
+            onClick={() => setIsModalOpen(true)}
+            className="flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-gray-600 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50"
           >
-            <svg className="fill-current" width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path fillRule="evenodd" clipRule="evenodd" d="M15.0911 2.78206C14.2125 1.90338 12.7878 1.90338 11.9092 2.78206L4.57524 10.116C4.26682 10.4244 4.0547 10.8158 3.96468 11.2426L3.31231 14.3352C3.25997 14.5833 3.33653 14.841 3.51583 15.0203C3.69512 15.1996 3.95286 15.2761 4.20096 15.2238L7.29355 14.5714C7.72031 14.4814 8.11172 14.2693 8.42013 13.9609L15.7541 6.62695C16.6327 5.74827 16.6327 4.32365 15.7541 3.44497L15.0911 2.78206ZM12.9698 3.84272C13.2627 3.54982 13.7376 3.54982 14.0305 3.84272L14.6934 4.50563C14.9863 4.79852 14.9863 5.2734 14.6934 5.56629L14.044 6.21573L12.3204 4.49215L12.9698 3.84272ZM11.2597 5.55281L5.6359 11.1766C5.53309 11.2794 5.46238 11.4099 5.43238 11.5522L5.01758 13.5185L6.98394 13.1037C7.1262 13.0737 7.25666 13.003 7.35947 12.9002L12.9833 7.27639L11.2597 5.55281Z" fill=""/>
-            </svg>
-            Edit Profile
+            <PencilIcon className="h-4 w-4 text-gray-500" />
+            <span>Edit</span>
           </button>
+        </div>
+
+        {/* Info Grid */}
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+          {/* First Name */}
+          <div>
+            <p className="text-xs font-medium text-gray-500 mb-1">
+              First Name
+            </p>
+            <p className="text-sm text-gray-900">
+              {personalData.firstName}
+            </p>
+          </div>
+
+          {/* Last Name */}
+          <div>
+            <p className="text-xs font-medium text-gray-500 mb-1">
+              Last Name
+            </p>
+            <p className="text-sm text-gray-900">
+              {personalData.lastName}
+            </p>
+          </div>
+
+          {/* Email */}
+          <div className="relative group">
+            <div className="flex items-center gap-2 mb-1">
+              <p className="text-xs font-medium text-gray-500">
+                Email Address
+              </p>
+              <button
+                onClick={() => handleCopy(personalData.email, "email")}
+                className="text-gray-400 hover:text-gray-600"
+                title="Copy Email"
+              >
+                {copiedField === "email" ? (
+                  <CheckLineIcon className="h-3.5 w-3.5 text-gray-600" />
+                ) : (
+                  <CopyIcon className="h-3.5 w-3.5" />
+                )}
+              </button>
+            </div>
+            <p className="text-sm text-gray-900">
+              {personalData.email}
+            </p>
+          </div>
+
+          {/* Phone */}
+          <div className="relative group">
+            <div className="flex items-center gap-2 mb-1">
+              <p className="text-xs font-medium text-gray-500">
+                Phone Number
+              </p>
+              <button
+                onClick={() => handleCopy(personalData.phone, "phone")}
+                className="text-gray-400 hover:text-gray-600"
+                title="Copy Phone"
+              >
+                {copiedField === "phone" ? (
+                  <CheckLineIcon className="h-3.5 w-3.5 text-gray-600" />
+                ) : (
+                  <CopyIcon className="h-3.5 w-3.5" />
+                )}
+              </button>
+            </div>
+            <p className="text-sm text-gray-900">
+              {personalData.phone}
+            </p>
+          </div>
+
+          {/* Bio */}
+          <div className="sm:col-span-2">
+            <p className="text-xs font-medium text-gray-500 mb-1">
+              Bio / Duty Notes
+            </p>
+            <p className="text-sm text-gray-900">
+              {personalData.bio}
+            </p>
+          </div>
         </div>
       </div>
 
-      <EditProfileModal 
-        isOpen={isOpen} 
-        onClose={closeModal} 
-        onSave={handleSave} 
-        initialData={userData} 
+      {/* Reusable Edit Modal */}
+      <EditProfileModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onSave={handleSave}
+        type="personal"
+        initialData={{
+          firstName: personalData.firstName,
+          lastName: personalData.lastName,
+          email: personalData.email,
+          phone: personalData.phone,
+          bio: personalData.bio,
+        }}
       />
     </>
   );
