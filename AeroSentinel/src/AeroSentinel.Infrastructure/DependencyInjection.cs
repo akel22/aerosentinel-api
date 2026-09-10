@@ -9,8 +9,9 @@ namespace AeroSentinel.Infrastructure
                 options.UseNpgsql("Host=localhost;Port=5432;Database=testdb2;Username=postgres;Password=ezekiel-admin22",
                 x => x.MigrationsAssembly("AeroSentinel.Infrastructure")));
               
+             services.AddScoped<IAircraftTelemetryRepository, MongoAircraftTelemetryRepository>();
 
-             services.AddScoped<IAircraftTelemetryRepository, AircraftTelemetryRepository>();
+            //  services.AddScoped<IAircraftTelemetryRepository, AircraftTelemetryRepository>();
              services.AddScoped<IAircraftProfileRepository, AircraftProfileRepository>();
              services.AddScoped<IAircraftCredentialRepository, AircraftCredentialRepository>();
              services.AddScoped<IWaypointRepository, WaypointRepository>();

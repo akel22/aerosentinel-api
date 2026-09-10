@@ -42,6 +42,7 @@ public enum AircraftManufacturer
 public enum FlightStatus 
 {
     Ongoing,
-    Finished
+    Finished,
+    Cancelled
 
 }

@@ -43,6 +43,18 @@ const SecurityPage = () => (
   </div>
 );
 
+const AnalyticsPage = () => (
+  <div className="aero-shell p-6">
+    <div className="aero-card p-8">
+      <p className="text-xs uppercase tracking-[0.28em] text-cyan-300">Analytics</p>
+      <h2 className="mt-3 text-3xl font-semibold text-white">Data analytics dashboard</h2>
+      <p className="mt-3 max-w-2xl text-slate-300">
+        Monitor key performance indicators, flight data trends, and operational metrics across the aerial network.
+      </p>
+    </div>
+  </div>
+);
+
 export default function App() {
   return (
     <>
@@ -55,6 +67,7 @@ export default function App() {
             <Route path="/profile" element={<UserProfiles />} />
             <Route path="/telemetry" element={<TelemetryPage />} />
             <Route path="/security" element={<SecurityPage />} />
+            <Route path="/analytics" element={<AnalyticsPage />} />
             <Route path="/incidents" element={<WaypointsPage />} />
           </Route>
 

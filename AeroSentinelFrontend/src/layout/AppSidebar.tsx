@@ -22,7 +22,7 @@ const navItems: NavItem[] = [
   },
   {
     icon: <UserCircleIcon />,
-    name: "User Profile",
+    name: "Settings",
     path: "/profile",
   },
   {
@@ -36,7 +36,7 @@ const navItems: NavItem[] = [
     path: "/telemetry",
   },
   {
-    icon: null, // Replace with your security/lock icon
+    icon: null, // Replace with your security/lock icon 
     name: "Security",
     path: "/security",
   },
@@ -67,8 +67,8 @@ const AppSidebar: React.FC = () => {
           >
             <span
               className={`menu-item-icon-size ${isActive(nav.path)
-                  ? "menu-item-icon-active"
-                  : "menu-item-icon-inactive"
+                ? "menu-item-icon-active"
+                : "menu-item-icon-inactive"
                 }`}
             >
               {nav.icon}
@@ -134,8 +134,8 @@ const AppSidebar: React.FC = () => {
             <div>
               <h2
                 className={`mb-4 text-xs uppercase flex leading-[20px] text-gray-400 ${!isExpanded && !isHovered
-                    ? "lg:justify-center"
-                    : "justify-start"
+                  ? "lg:justify-center"
+                  : "justify-start"
                   }`}
               >
                 {isExpanded || isHovered || isMobileOpen ? (
@@ -151,8 +151,8 @@ const AppSidebar: React.FC = () => {
               <div>
                 <h2
                   className={`mb-4 text-xs uppercase flex leading-[20px] text-gray-400 ${!isExpanded && !isHovered
-                      ? "lg:justify-center"
-                      : "justify-start"
+                    ? "lg:justify-center"
+                    : "justify-start"
                     }`}
                 >
                   {isExpanded || isHovered || isMobileOpen ? (
