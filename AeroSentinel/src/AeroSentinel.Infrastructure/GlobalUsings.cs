@@ -25,11 +25,9 @@ global using System.Threading.Channels;
 global using AeroSentinel.Application.AircraftTelemetry.Commands;
 global using MediatR;
 global using Microsoft.Extensions.Hosting;
-global using AeroSentinel.Domain.Entities;
 global using AeroSentinel.Domain.ValueObjects;
 global using MongoDB.Bson;
 global using MongoDB.Bson.Serialization;
 global using MongoDB.Bson.Serialization.Serializers;
-global using AeroSentinel.Application.
-global using AeroSentinel.Domain.Entities;
 global using MongoDB.Driver;
+global using AeroSentinel.Domain.Extensions;

@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("AeroSentinel.Infrastructure")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+73a5201112ca74cf32c690537fb026114751dbc5")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+264f1f3851c7e7b37730855650f4aecf75b1f1fe")]
 [assembly: System.Reflection.AssemblyProductAttribute("AeroSentinel.Infrastructure")]
 [assembly: System.Reflection.AssemblyTitleAttribute("AeroSentinel.Infrastructure")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

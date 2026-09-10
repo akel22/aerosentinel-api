@@ -1,10 +1,4 @@
-namespace AeroSentinel.Infrastructure.Repositories;
-
-using AeroSentinel.Domain.Entities;
-using AeroSentinel.Domain.Enums;
-using AeroSentinel.Domain.Exceptions;
-using AeroSentinel.Domain.Repositories; // or IAircraftTelemetryRepository namespace
-using MongoDB.Driver;
+namespace AeroSentinel.Infrastructure.MongoDB.Repositories;
 
 public sealed class MongoAircraftTelemetryRepository : IAircraftTelemetryRepository
 {

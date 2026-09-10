@@ -1,3 +1,6 @@
+using AeroSentinel.Infrastructure.MongoDB;
+using AeroSentinel.Infrastructure.MongoDB.Repositories;
+
 namespace AeroSentinel.Infrastructure
 {
     public static class DependencyInjection
@@ -5,9 +8,21 @@ namespace AeroSentinel.Infrastructure
         public static IServiceCollection AddInfrastructure(this IServiceCollection services,
             IConfiguration configuration)
         {
+
+            MongoDbMapping.ConfigureMappings();
+
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseNpgsql("Host=localhost;Port=5432;Database=testdb2;Username=postgres;Password=ezekiel-admin22",
                 x => x.MigrationsAssembly("AeroSentinel.Infrastructure")));
+                            
+                var mongoClient = new MongoClient(configuration["MongoDbSettings:ConnectionString"]
+                );
+
+                var mongoDatabase = mongoClient.GetDatabase(
+                    configuration["MongoDbSettings:DatabaseName"]
+                );
+
+                services.AddSingleton<IMongoDatabase>(mongoDatabase);
               
              services.AddScoped<IAircraftTelemetryRepository, MongoAircraftTelemetryRepository>();
 

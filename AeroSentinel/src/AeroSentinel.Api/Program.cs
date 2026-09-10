@@ -8,8 +8,9 @@ builder.Services.AddOpenApi();
 builder.Services.AddLogging();
 
 builder.Services.AddInfrastructure(builder.Configuration);
-
 builder.Services.AddApplication();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
 // Add CORS to allow frontend requests
 var allowedOrigins = builder.Configuration.GetSection("AllowedOrigins").Get<string[]>() 
@@ -32,6 +33,8 @@ if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
 }
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
 

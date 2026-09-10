@@ -1,6 +1,6 @@
-namespace AeroSentinel.Infrastructure;
+namespace AeroSentinel.Infrastructure.MongoDB;
 
-public static class MongoDbMappings
+public static class MongoDbMapping
 {
     public static void ConfigureMappings()
     {
