@@ -9,6 +9,17 @@ public static class MongoDbMapping
             return;
         }
 
+        var pack = new ConventionPack
+        {
+            new CamelCaseElementNameConvention()
+        };
+
+        ConventionRegistry.Register(
+            "CamelCase",
+            pack,
+            _ => true
+        );
+
         // 1. Map Value Objects first
         ConfigureValueObjects();
 
@@ -51,22 +62,24 @@ public static class MongoDbMapping
         });
     }
 
-    private static void ConfigureValueObjects()
+   private static void ConfigureValueObjects()
+{
+    if (!BsonClassMap.IsClassMapRegistered(typeof(SpatialState)))
     {
-        if (!BsonClassMap.IsClassMapRegistered(typeof(SpatialState)))
+        BsonClassMap.RegisterClassMap<SpatialState>(map =>
         {
-            BsonClassMap.RegisterClassMap<SpatialState>(map =>
-            {
-                map.AutoMap();
-            });
-        }
-
-        if (!BsonClassMap.IsClassMapRegistered(typeof(FlightIntent)))
-        {
-            BsonClassMap.RegisterClassMap<FlightIntent>(map =>
-            {
-                map.AutoMap();
-            });
-        }
+            map.AutoMap();
+            map.SetIgnoreExtraElements(true);
+        });
     }
+
+    if (!BsonClassMap.IsClassMapRegistered(typeof(FlightIntent)))
+    {
+        BsonClassMap.RegisterClassMap<FlightIntent>(map =>
+        {
+            map.AutoMap();
+            map.SetIgnoreExtraElements(true);
+        });
+    }
+}
 }

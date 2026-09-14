@@ -6,6 +6,7 @@ import VerificationCard from "../components/dashboard/VerificationCard";
 import AircraftStatus from "../components/dashboard/AircraftStatus";
 import RecentFlights from "../components/dashboard/RecentFlights";
 import BriefCard from "../components/dashboard/BriefCard";
+import PageBreadcrumb from "../components/common/PageBreadCrumb";
 
 export default function Home() {
   const [dashboardData, setDashboardData] = useState<DashboardSnapshot | null>(null);
@@ -73,6 +74,7 @@ export default function Home() {
         title="Aviation Telemetry Dashboard | AeroSentinel"
         description="Real-time aviation telemetry monitoring and flight tracking dashboard"
       />
+      
       <div className="grid grid-cols-12 gap-4 md:gap-6">
         <div className="col-span-12 space-y-6 xl:col-span-7">
           <BriefCard dashboardData={summary} />

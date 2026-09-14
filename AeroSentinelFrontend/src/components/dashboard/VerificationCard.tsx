@@ -81,9 +81,6 @@ export default function VerificationCard({ verificationPercentage = 75.55 }: Ver
             />
           </div>
 
-          <span className="absolute left-1/2 top-full -translate-x-1/2 -translate-y-[95%] rounded-full bg-success-50 px-3 py-1 text-xs font-medium text-success-600 dark:bg-success-500/15 dark:text-success-500">
-            {verificationPercentage > 80 ? "+Excellent" : verificationPercentage > 60 ? "+Good" : "-Needs Attention"}
-          </span>
         </div>
         <p className="mx-auto mt-10 w-full max-w-[380px] text-center text-sm text-gray-500 sm:text-base">
           Your telemetry verification rate is currently at {verificationPercentage.toFixed(2)}%. Keep monitoring to ensure consistent performance.

@@ -5,7 +5,7 @@ import Input from "../../form/input/InputField";
 import Label from "../../form/Label";
 import { PencilIcon } from "../../../icons";
 
-export type ModalType = "info" | "personal" | "address";
+export type ModalType = "info" | "personal" | "account";
 
 interface EditProfileModalProps {
   isOpen: boolean;
@@ -58,17 +58,13 @@ export default function EditProfileModal({
       case "info":
         return {
           title: "Edit Profile Header",
-          subtitle: "Update identity summary, officer title, and command post details.",
+          subtitle: "Update administrator name, operational role, and station.",
         };
       case "personal":
+      case "account":
         return {
-          title: "Edit Personal Details",
-          subtitle: "Modify staff contact information and bio.",
-        };
-      case "address":
-        return {
-          title: "Edit Address & Station",
-          subtitle: "Update facility assignment, location codes, and tax identification.",
+          title: "Edit Operational Details",
+          subtitle: "Update contact details, station assignment, radio frequency, and clearance ID.",
         };
     }
   };
@@ -84,31 +80,30 @@ export default function EditProfileModal({
         isAnimating ? "opacity-100 scale-100" : "opacity-0 scale-95"
       }`}
     >
-      <div className="relative w-full overflow-hidden rounded-3xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800/80 shadow-2xl transition-all">
-        {/* Header Banner */}
-        <div className="relative px-6 py-6 text-white bg-gradient-to-r from-brand-600 via-indigo-600 to-slate-900 overflow-hidden">
-          <div className="absolute -right-6 -bottom-6 w-32 h-32 bg-white/5 rounded-full pointer-events-none" />
+      <div className="relative w-full overflow-hidden rounded-2xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 shadow-xl">
+        {/* Solid Color Header Header */}
+        <div className="px-6 py-5 text-white bg-slate-900 border-b border-slate-800">
           <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/10 border border-white/20">
-              <PencilIcon className="w-5 h-5 text-white" />
+            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-slate-800 border border-slate-700">
+              <PencilIcon className="w-4 h-4 text-white" />
             </div>
             <div>
-              <h4 className="text-xl font-bold tracking-tight text-white">{title}</h4>
-              <p className="mt-0.5 text-xs text-blue-100/80 font-normal">{subtitle}</p>
+              <h4 className="text-lg font-semibold tracking-tight text-white">{title}</h4>
+              <p className="text-xs text-slate-400 font-normal">{subtitle}</p>
             </div>
           </div>
         </div>
 
         {/* Form Body */}
-        <form onSubmit={handleSubmit} className="p-6 lg:p-8 flex flex-col">
+        <form onSubmit={handleSubmit} className="p-6 flex flex-col">
           <div className="space-y-5 max-h-[460px] overflow-y-auto pr-1">
             {type === "info" && (
               <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
                 <div className="sm:col-span-2">
-                  <Label className="font-semibold text-xs uppercase tracking-wider text-gray-700 dark:text-gray-300">
+                  <Label className="font-medium text-xs text-gray-700 dark:text-gray-300">
                     Full Name
                   </Label>
-                  <div className="relative mt-1">
+                  <div className="mt-1">
                     <Input
                       type="text"
                       name="name"
@@ -120,7 +115,7 @@ export default function EditProfileModal({
                 </div>
 
                 <div>
-                  <Label className="font-semibold text-xs uppercase tracking-wider text-gray-700 dark:text-gray-300">
+                  <Label className="font-medium text-xs text-gray-700 dark:text-gray-300">
                     Operational Title
                   </Label>
                   <Input
@@ -133,7 +128,7 @@ export default function EditProfileModal({
                 </div>
 
                 <div>
-                  <Label className="font-semibold text-xs uppercase tracking-wider text-gray-700 dark:text-gray-300">
+                  <Label className="font-medium text-xs text-gray-700 dark:text-gray-300">
                     Station / Department
                   </Label>
                   <Input
@@ -147,117 +142,83 @@ export default function EditProfileModal({
               </div>
             )}
 
-            {type === "personal" && (
+            {(type === "personal" || type === "account") && (
               <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
                 <div>
-                  <Label className="font-semibold text-xs uppercase tracking-wider text-gray-700 dark:text-gray-300">
-                    First Name
-                  </Label>
-                  <Input
-                    type="text"
-                    name="firstName"
-                    value={formData.firstName || ""}
-                    onChange={handleChange}
-                  />
-                </div>
-
-                <div>
-                  <Label className="font-semibold text-xs uppercase tracking-wider text-gray-700 dark:text-gray-300">
-                    Last Name
-                  </Label>
-                  <Input
-                    type="text"
-                    name="lastName"
-                    value={formData.lastName || ""}
-                    onChange={handleChange}
-                  />
-                </div>
-
-                <div>
-                  <Label className="font-semibold text-xs uppercase tracking-wider text-gray-700 dark:text-gray-300">
-                    Email Address
+                  <Label className="font-medium text-xs text-gray-700 dark:text-gray-300">
+                    Ops Email
                   </Label>
                   <Input
                     type="email"
-                    name="email"
-                    value={formData.email || ""}
+                    name="opsEmail"
+                    value={formData.opsEmail || ""}
                     onChange={handleChange}
+                    placeholder="e.g. m.chowdhury@primeair.ph"
                   />
                 </div>
 
                 <div>
-                  <Label className="font-semibold text-xs uppercase tracking-wider text-gray-700 dark:text-gray-300">
-                    Phone Number
+                  <Label className="font-medium text-xs text-gray-700 dark:text-gray-300">
+                    Hotline / Direct Line
                   </Label>
                   <Input
                     type="text"
-                    name="phone"
-                    value={formData.phone || ""}
+                    name="commandLine"
+                    value={formData.commandLine || ""}
                     onChange={handleChange}
-                  />
-                </div>
-
-                <div className="sm:col-span-2">
-                  <Label className="font-semibold text-xs uppercase tracking-wider text-gray-700 dark:text-gray-300">
-                    Bio / Assignment Summary
-                  </Label>
-                  <Input
-                    type="text"
-                    name="bio"
-                    value={formData.bio || ""}
-                    onChange={handleChange}
-                  />
-                </div>
-              </div>
-            )}
-
-            {type === "address" && (
-              <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
-                <div>
-                  <Label className="font-semibold text-xs uppercase tracking-wider text-gray-700 dark:text-gray-300">
-                    Country
-                  </Label>
-                  <Input
-                    type="text"
-                    name="country"
-                    value={formData.country || ""}
-                    onChange={handleChange}
+                    placeholder="e.g. +63 (2) 8876-1234"
                   />
                 </div>
 
                 <div>
-                  <Label className="font-semibold text-xs uppercase tracking-wider text-gray-700 dark:text-gray-300">
-                    City / State
+                  <Label className="font-medium text-xs text-gray-700 dark:text-gray-300">
+                    Airspace / Station
                   </Label>
                   <Input
                     type="text"
-                    name="cityState"
-                    value={formData.cityState || ""}
+                    name="stationSector"
+                    value={formData.stationSector || ""}
                     onChange={handleChange}
+                    placeholder="e.g. Manila FIR (RPLL - NAIA Hub)"
                   />
                 </div>
 
                 <div>
-                  <Label className="font-semibold text-xs uppercase tracking-wider text-gray-700 dark:text-gray-300">
-                    Postal Code
+                  <Label className="font-medium text-xs text-gray-700 dark:text-gray-300">
+                    Dispatch Unit ID
                   </Label>
                   <Input
                     type="text"
-                    name="postalCode"
-                    value={formData.postalCode || ""}
+                    name="dispatchId"
+                    value={formData.dispatchId || ""}
                     onChange={handleChange}
+                    placeholder="e.g. MNL-DISPATCH-01"
                   />
                 </div>
 
                 <div>
-                  <Label className="font-semibold text-xs uppercase tracking-wider text-gray-700 dark:text-gray-300">
-                    Tax / Facility ID
+                  <Label className="font-medium text-xs text-gray-700 dark:text-gray-300">
+                    Radio Frequency
                   </Label>
                   <Input
                     type="text"
-                    name="taxId"
-                    value={formData.taxId || ""}
+                    name="commsFrequency"
+                    value={formData.commsFrequency || ""}
                     onChange={handleChange}
+                    placeholder="e.g. VHF 124.10 MHz (Manila Tower)"
+                  />
+                </div>
+
+                <div>
+                  <Label className="font-medium text-xs text-gray-700 dark:text-gray-300">
+                    Admin Clearance ID
+                  </Label>
+                  <Input
+                    type="text"
+                    name="clearanceCert"
+                    value={formData.clearanceCert || ""}
+                    onChange={handleChange}
+                    placeholder="e.g. CAAP Admin Badge #8841"
                   />
                 </div>
               </div>
@@ -265,20 +226,20 @@ export default function EditProfileModal({
           </div>
 
           {/* Action Footer */}
-          <div className="flex items-center justify-end gap-3 pt-6 mt-6 border-t border-gray-100 dark:border-gray-800">
+          <div className="flex items-center justify-end gap-3 pt-5 mt-6 border-t border-gray-100 dark:border-gray-800">
             <Button
               type="button"
               size="sm"
               variant="outline"
               onClick={handleClose}
-              className="rounded-xl border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 transition-all active:scale-95"
+              className="rounded-lg border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800"
             >
               Cancel
             </Button>
             <Button
               type="submit"
               size="sm"
-              className="rounded-xl bg-brand-500 hover:bg-brand-600 text-white shadow-md shadow-brand-500/25 transition-all active:scale-95 font-medium px-5"
+              className="rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium px-4 shadow-none"
             >
               Save Changes
             </Button>

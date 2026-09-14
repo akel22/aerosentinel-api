@@ -31,3 +31,6 @@ global using MongoDB.Bson.Serialization;
 global using MongoDB.Bson.Serialization.Serializers;
 global using MongoDB.Driver;
 global using AeroSentinel.Domain.Extensions;
+global using MongoDB.Bson.Serialization.Conventions;
+global using AeroSentinel.Infrastructure.MongoDB;
+global using AeroSentinel.Infrastructure.MongoDB.Repositories;

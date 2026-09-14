@@ -1,10 +1,4 @@
-import {
-  ArrowDownIcon,
-  ArrowUpIcon,
-  BoxIconLine,
-  GroupIcon,
-} from "../../icons";
-import Badge from "../ui/badge/Badge";
+import { BoxIconLine, GroupIcon } from "../../icons";
 import { DashboardSummary } from "../../services/api";
 
 interface BriefCardProps {
@@ -35,10 +29,6 @@ export default function BriefCard({ dashboardData }: BriefCardProps) {
               {aircraftCount}
             </h4>
           </div>
-          <Badge color="success">
-            <ArrowUpIcon />
-            Active
-          </Badge>
         </div>
       </div>
       {/* Aircraft Profiles Card End */}
@@ -57,11 +47,6 @@ export default function BriefCard({ dashboardData }: BriefCardProps) {
               {verifiedTelemetry}
             </h4>
           </div>
-
-          <Badge color="success">
-            <ArrowUpIcon />
-            {failedTelemetry > 0 ? `${Math.round((verifiedTelemetry / (verifiedTelemetry + failedTelemetry)) * 100)}%` : "100%"}
-          </Badge>
         </div>
       </div>
       {/* Verified Telemetry Card End */}
@@ -81,10 +66,6 @@ export default function BriefCard({ dashboardData }: BriefCardProps) {
             </h4>
           </div>
 
-          <Badge color={failedTelemetry > 0 ? "warning" : "info"}>
-            {failedTelemetry > 0 ? <ArrowUpIcon /> : <ArrowDownIcon />}
-            {failedTelemetry > 0 ? "Alert" : "Good"}
-          </Badge>
         </div>
       </div>
       {/* Failed Telemetry Card End */}
@@ -103,11 +84,6 @@ export default function BriefCard({ dashboardData }: BriefCardProps) {
               {activeAircraft}
             </h4>
           </div>
-
-          <Badge color="success">
-            <ArrowUpIcon />
-            Online
-          </Badge>
         </div>
       </div>
       {/* Active Aircraft Card End */}

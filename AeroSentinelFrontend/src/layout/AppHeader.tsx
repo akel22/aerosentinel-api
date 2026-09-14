@@ -1,7 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 import { useSidebar } from "../context/SidebarContext";
-import { ThemeToggleButton } from "../components/common/ThemeToggleButton";
-import UserDropdown from "../components/header/UserDropdown";
 
 const AppHeader: React.FC = () => {
   const [isApplicationMenuOpen] = useState(false);
@@ -67,17 +65,13 @@ const AppHeader: React.FC = () => {
           </div>
 
           <div className="flex items-center gap-3">
-            <ThemeToggleButton />
-            <UserDropdown />
           </div>
         </div>
 
         <div
           className={`${isApplicationMenuOpen ? "flex" : "hidden"} w-full items-center justify-end gap-3 px-2 pb-3 lg:hidden`}
         >
-          <ThemeToggleButton />
-          <UserDropdown />
-        </div>
+           </div>
       </div>
     </header>
   );
