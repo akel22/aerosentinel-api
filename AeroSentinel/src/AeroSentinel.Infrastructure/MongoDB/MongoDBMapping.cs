@@ -55,7 +55,7 @@ public static class MongoDbMapping
                .SetElementName("status")
                .SetSerializer(new EnumSerializer<TelemetryStatus>(BsonType.String));
 
-            map.MapProperty(x => x.FailureReason).SetElementName("failureReason");
+            //map.MapProperty(x => x.FailureReason).SetElementName("failureReason");
 
             // Ignore navigation properties (relational concepts shouldn't embed whole roots)
             map.UnmapProperty(x => x.FlightPlan);

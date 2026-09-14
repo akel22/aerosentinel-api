@@ -42,7 +42,6 @@ app.UseCors();
 
 app.MapHttpTelemetryEndpoints();
 app.MapHttpFlightPlanEndpoints();
-app.MapHttpDashboardEndpoints();
 app.MapHttpWaypointEndpoints();
 
 // await app.SeedWaypoints();

@@ -13,9 +13,9 @@ namespace AeroSentinel.Infrastructure
                 options.UseNpgsql("Host=localhost;Port=5432;Database=testdb2;Username=postgres;Password=ezekiel-admin22",
                 x => x.MigrationsAssembly("AeroSentinel.Infrastructure")));
                             
-                var mongoClient = new MongoClient(configuration["MongoDbSettings:ConnectionString"]);
+                var mongoClient = new MongoClient("mongodb://localhost:27017");
 
-                var mongoDatabase = mongoClient.GetDatabase(configuration["MongoDbSettings:DatabaseName"]);
+                var mongoDatabase = mongoClient.GetDatabase("AeroSentinelDbTest2");
 
                 services.AddSingleton<IMongoDatabase>(mongoDatabase);
               
