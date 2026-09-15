@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.DataProtection;
 
 namespace AeroSentinel.Infrastructure
 {
@@ -9,7 +10,7 @@ namespace AeroSentinel.Infrastructure
 
             MongoDbMapping.ConfigureMappings();
 
-            services.AddDbContext<ApplicationDbContext>(options =>
+             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseNpgsql("Host=localhost;Port=5432;Database=testdb2;Username=postgres;Password=ezekiel-admin22",
                 x => x.MigrationsAssembly("AeroSentinel.Infrastructure")));
                             
@@ -17,7 +18,7 @@ namespace AeroSentinel.Infrastructure
 
                 var mongoDatabase = mongoClient.GetDatabase("AeroSentinelDbTest2");
 
-                services.AddSingleton<IMongoDatabase>(mongoDatabase);
+             services.AddSingleton<IMongoDatabase>(mongoDatabase);
               
              services.AddScoped<IAircraftTelemetryRepository, MongoAircraftTelemetryRepository>();
 
@@ -47,7 +48,11 @@ namespace AeroSentinel.Infrastructure
 
              services.AddHostedService<FlightTelemetryConsumerService>();
                         
-        
+            services.AddDataProtection()
+            .SetApplicationName("AeroSentinel")
+            .PersistKeysToFileSystem(new DirectoryInfo(@"./keys"));
+
+            services.AddScoped<ICredentialEncryptionService, CredentialEncryptionService>();
         return services;
 
         }

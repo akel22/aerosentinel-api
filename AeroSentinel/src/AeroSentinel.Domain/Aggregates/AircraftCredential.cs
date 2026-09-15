@@ -6,10 +6,7 @@ public sealed class AircraftCredential
     public Guid CredentialId {get; private set;}
     public string ICAO24 { get; init; } = null!;
     public AircraftProfile AircraftProfile { get; init; } = null!;
-    public byte[] VerificationKey {get; init;} = null!;
-
-    // public ReadOnlySpan<byte> VerificationKey =>
-    //     _secretVerificationKey.AsSpan();
+    public string VerificationKey {get; init;} = null!;
     public CredentialStatus Status { get; private set; }
     public DateTime CreatedUtc { get; private set; }
 
@@ -18,14 +15,14 @@ public sealed class AircraftCredential
         // ORM / serialization
     }
 
-    public AircraftCredential(string icao24)
+    public AircraftCredential(string icao24, string verificationKey)
     {
 
         CredentialId = AircraftCredentialValidation.RequireValidCredentialId(Guid.NewGuid(), null);
 
         ICAO24 = AircraftProfileValidation.RequireValidICAO24(icao24,nameof(icao24));
 
-        VerificationKey = RandomNumberGenerator.GetBytes(32);
+        VerificationKey = verificationKey.Trim();
 
         Status = CredentialStatus.Active;
 

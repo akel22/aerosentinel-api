@@ -22,12 +22,11 @@ public sealed class AircraftCredentialCacheService : IAircraftCredentialCacheSer
 
     public async Task<byte[]?> GetSharedVerificationAsync(string ICAO24, CancellationToken cancellationToken)
     {
-        var cacheKey = $"credential:{ICAO24}";
+        var cacheKey = $"credential:{ICAO24.ToUpperInvariant().Trim()}";
 
         if (_cache.TryGetValue(cacheKey, out byte[]? sharedKey))
         {
-            _logger.LogInformation("Credential cache hit");
-
+            _logger.LogInformation("Credential cache hit for {ICAO24}", ICAO24);
             return [.. sharedKey!];
         }
 
