@@ -17,28 +17,20 @@ namespace AeroSentinel.Api
 
                 return Results.Ok(waypointRecords);
             });
+               
 
-            // // GET BY MESSAGE ID
-            // waypoints.MapGet("/{waypointId}", async (
-            //     Guid messageId,
-            //     [FromServices] IWaypointRepository waypointRepository,
-            //     CancellationToken cancellationToken) =>
-            // {
-            //     try
-            //     {
-            //         var waypoint = await waypointRepository.GetByMessageIdAsync(messageId);
 
-            //         return Results.Ok(telemetry);
-            //     }
-            //     catch (DomainException exception)
-            //     {
-            //         return Results.NotFound(new
-            //         {
-            //             error = exception.Message
-            //         });
-            //     }
-            // })
-            // .WithName(routeName);
+             waypoints.MapGet("/{waypointId}", async (string waypointId,
+                [FromServices] IWaypointRepository waypointRepository,
+                CancellationToken cancellationToken) =>
+            {
+                var waypoint = await waypointRepository.GetByWaypointIdAsync(waypointId, cancellationToken);
+
+                return waypoint is null
+                    ? Results.NotFound(new { error = $"Waypoint '{waypointId}' was not found." })
+                    : Results.Ok(waypoint);
+            })
+            .WithName(routeName);
         }
     }
 }

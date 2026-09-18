@@ -6,5 +6,8 @@ namespace AeroSentinel.Application.Common.Interfaces
     {
         public Task<IReadOnlyList<Waypoint>> GetAllWaypointsAsync(CancellationToken cancellationToken = default);
 
+        public Task<Waypoint?> GetByWaypointIdAsync(string waypointId, CancellationToken cancellationToken = default);
+
+
     }
 }

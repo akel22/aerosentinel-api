@@ -1,4 +1,5 @@
 
+
 using AeroSentinel.Api;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -43,6 +44,7 @@ app.UseCors();
 app.MapHttpTelemetryEndpoints();
 app.MapHttpFlightPlanEndpoints();
 app.MapHttpWaypointEndpoints();
+app.MapAircraftCredentialEndpoints();
 
 // await app.SeedWaypoints();
 

@@ -13,11 +13,24 @@ namespace AeroSentinel.Infrastructure.Repositories
             _encryptionService = encryptionService;
         }
 
-        public async Task<IReadOnlyList<AircraftCredential>> GetAllAsync(CancellationToken cancellationToken = default)
+        public async Task<IReadOnlyList<CredentialDTO>> GetAllAsync(CancellationToken cancellationToken = default)
         {
-            return await _applicationDbContext.aircraft_credential
+            var credentials = await _applicationDbContext.aircraft_credential
                 .AsNoTracking()
                 .ToListAsync(cancellationToken);
+
+            return [.. credentials
+                .Select(c =>
+                {
+                    var decryptedKey = _encryptionService.Decrypt(c.VerificationKey);
+
+                    return new CredentialDTO(
+                        CredentialId: c.CredentialId,
+                        ICAO24: c.ICAO24,
+                        VerificationKey: Convert.ToHexString(decryptedKey),
+                        Status: c.Status,
+                        CreatedUtc: c.CreatedUtc);
+                })];
         }
 
         public async Task<CredentialDTO?> GetAircraftCredentialAsync(string ICAO24, CancellationToken cancellationToken)
@@ -42,7 +55,7 @@ namespace AeroSentinel.Infrastructure.Repositories
             return new CredentialDTO(
                 CredentialId: credential.CredentialId,
                 ICAO24: credential.ICAO24,
-                VerificationKey: decryptedKey,
+                VerificationKey: Convert.ToHexString(decryptedKey),
                 Status: credential.Status,
                 CreatedUtc: credential.CreatedUtc  
                 ); 
@@ -62,10 +75,12 @@ namespace AeroSentinel.Infrastructure.Repositories
 
             }
 
-            var encryptedKey = _encryptionService.Encrypt(credentialDTO.VerificationKey);
+            var decryptedKey = Convert.FromHexString(credentialDTO.VerificationKey);
+            
+            var encryptedKey = _encryptionService.Encrypt(decryptedKey);
 
-            var encryptedCredential =  new AircraftCredential(credentialDTO.ICAO24, encryptedKey);
-                                                                   
+            var encryptedCredential = new AircraftCredential(credentialDTO.ICAO24, encryptedKey);
+
             await _applicationDbContext.AddAsync(encryptedCredential, cancellationToken);
 
             await _applicationDbContext.SaveChangesAsync(cancellationToken);

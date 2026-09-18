@@ -14,13 +14,16 @@ public sealed class CredentialEncryptionService : ICredentialEncryptionService
 
     public string Encrypt(byte[] verificationKey)
     {
-        var base64Key = Convert.ToBase64String(verificationKey);
-        return _protector.Protect(base64Key);
+        var hexadecimalKey = Convert.ToHexString(verificationKey);
+        return _protector.Protect(hexadecimalKey);
     }
-
+ 
     public byte[] Decrypt(string encryptedValue)
     {
-        var base64Key = _protector.Unprotect(encryptedValue);
-        return Convert.FromBase64String(base64Key);
+        var hexadecimalKey = _protector.Unprotect(encryptedValue);
+
+        return Convert.FromHexString(hexadecimalKey);
+        
+       
     }
 }

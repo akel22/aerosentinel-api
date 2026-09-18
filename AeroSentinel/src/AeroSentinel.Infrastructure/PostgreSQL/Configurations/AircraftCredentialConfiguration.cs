@@ -8,7 +8,7 @@ namespace AeroSentinel.Infrastructure.Persistence.Configurations
         
            builder.Property(x => x.Status).HasConversion<string>();
 
-           builder.Property<byte[]>("VerificationKey").IsRequired();
+           builder.Property(x => x.VerificationKey).IsRequired().HasColumnType("varchar(512)");
 
            builder.HasOne(x => x.AircraftProfile)
                       .WithOne(x => x.AircraftCredential)

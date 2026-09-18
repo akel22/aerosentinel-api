@@ -53,6 +53,7 @@ namespace AeroSentinel.Infrastructure
             .PersistKeysToFileSystem(new DirectoryInfo(@"./keys"));
 
             services.AddScoped<ICredentialEncryptionService, CredentialEncryptionService>();
+            
         return services;
 
         }

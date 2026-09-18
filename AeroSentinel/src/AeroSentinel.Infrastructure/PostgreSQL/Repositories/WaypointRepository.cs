@@ -16,4 +16,10 @@ public sealed class WaypointRepository : IWaypointRepository
        return await _applicationDbContext.waypoint.ToListAsync();
 
     }
+
+    public async Task<Waypoint?> GetByWaypointIdAsync(string waypointId, CancellationToken cancellationToken = default)
+    {
+    return await _applicationDbContext.waypoint.FindAsync([waypointId], cancellationToken);
+
+    }
 }
