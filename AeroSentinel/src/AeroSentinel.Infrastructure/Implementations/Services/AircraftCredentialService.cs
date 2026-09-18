@@ -40,16 +40,15 @@ public sealed class AircraftCredentialCacheService : IAircraftCredentialCacheSer
             return null;
         }
 
-        sharedKey = [.. credential.VerificationKey];
+        sharedKey = Convert.FromHexString(credential.VerificationKey);
 
         var options = new MemoryCacheEntryOptions
         {
             SlidingExpiration = CacheDuration,
-
             Size = 1
         };
 
-        _cache.Set(cacheKey, sharedKey, options);
+        _cache.Set<byte[]>(cacheKey, [.. sharedKey], options);
 
         return [.. sharedKey];
     }
