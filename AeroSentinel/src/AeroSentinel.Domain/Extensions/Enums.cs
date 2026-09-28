@@ -3,6 +3,7 @@ namespace AeroSentinel.Domain.Extensions;
 public enum TelemetryStatus
 {
     Ongoing,
+    Verified = Ongoing,
     Spoofed,
     Finished,
 
