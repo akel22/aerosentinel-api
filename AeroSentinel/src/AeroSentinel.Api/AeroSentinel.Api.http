@@ -59,12 +59,12 @@ Content-Type: application/json
 Accept: application/json
 
 {
-  "icao24": "758001",
-  "callsign": "CEB123",
-  "departureAirport": "RPVM",
-  "destinationAirport": "RPLL",
-  "departureTimeUtc": "2026-08-03T09:00:00Z",
-  "estimatedArrivalTimeUtc": "2026-08-03T10:30:00Z"
+  "icao24": "758002",
+  "callsign": "MNL123",
+  "departureAirport": "RPLL",
+  "destinationAirport": "RPVM",
+  "departureTimeUtc": "2026-10-03T09:00:00Z",
+  "estimatedArrivalTimeUtc": "2026-10-03T10:30:00Z"
 }
 
 ### Add the first route waypoint
@@ -74,7 +74,7 @@ Content-Type: application/json
 Accept: application/json
 
 {
-  "waypointId": "ALDIN",
+  "waypointId": "ABMBS",
   "sequence": 1
 }
 
@@ -84,7 +84,7 @@ Content-Type: application/json
 Accept: application/json
 
 {
-  "waypointId": "ABMBS",
+  "waypointId": "ALDIN",
   "sequence": 2
 }
 
