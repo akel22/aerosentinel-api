@@ -13,7 +13,7 @@ public sealed class WaypointRepository : IWaypointRepository
 
     public async Task<IReadOnlyList<Waypoint>> GetAllWaypointsAsync(CancellationToken cancellationToken = default)
     {
-       return await _applicationDbContext.waypoint.ToListAsync();
+       return await _applicationDbContext.waypoint.ToListAsync(cancellationToken);
 
     }
 
