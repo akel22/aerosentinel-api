@@ -10,25 +10,23 @@ namespace AeroSentinel.Infrastructure.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AlterColumn<string>(
-                name: "VerificationKey",
-                table: "aircraft_credential",
-                type: "varchar(512)",
-                nullable: false,
-                oldClrType: typeof(byte[]),
-                oldType: "bytea");
+            migrationBuilder.Sql(
+                """
+                ALTER TABLE aircraft_credential
+                ALTER COLUMN "VerificationKey" TYPE varchar(512)
+                USING convert_from("VerificationKey", 'UTF8');
+                """);
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AlterColumn<byte[]>(
-                name: "VerificationKey",
-                table: "aircraft_credential",
-                type: "bytea",
-                nullable: false,
-                oldClrType: typeof(string),
-                oldType: "varchar(512)");
+            migrationBuilder.Sql(
+                """
+                ALTER TABLE aircraft_credential
+                ALTER COLUMN "VerificationKey" TYPE bytea
+                USING convert_to("VerificationKey", 'UTF8');
+                """);
         }
     }
 }
