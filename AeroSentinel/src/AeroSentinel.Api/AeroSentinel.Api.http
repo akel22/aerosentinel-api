@@ -88,10 +88,3 @@ Accept: application/json
   "sequence": 2
 }
 
-### Get dashboard snapshot
-GET http://localhost:5253/dashboard
-Accept: application/json
-
-### Get dashboard snapshot
-GET http://localhost:5253/waypoints
-Accept: application/json

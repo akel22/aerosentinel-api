@@ -46,7 +46,7 @@ public static class MapFlightPlanEndpoints
             }
 
             FlightPlanRoute route;
-            
+            //BULK INSERT
             try
             {
                 route = new FlightPlanRoute(flightPlanId, request.WaypointId, request.Sequence);

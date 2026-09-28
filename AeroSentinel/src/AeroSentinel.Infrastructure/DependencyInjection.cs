@@ -10,13 +10,20 @@ namespace AeroSentinel.Infrastructure
 
             MongoDbMapping.ConfigureMappings();
 
+            var postgresConnectionString = configuration.GetConnectionString("Postgres")
+                ?? throw new InvalidOperationException("Connection string 'Postgres' is not configured.");
+            var mongoConnectionString = configuration["Mongo:ConnectionString"]
+                ?? throw new InvalidOperationException("Mongo connection string is not configured.");
+            var mongoDatabaseName = configuration["Mongo:Database"]
+                ?? throw new InvalidOperationException("Mongo database name is not configured.");
+
              services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseNpgsql("Host=localhost;Port=5432;Database=testdb2;Username=postgres;Password=ezekiel-admin22",
+                options.UseNpgsql(postgresConnectionString,
                 x => x.MigrationsAssembly("AeroSentinel.Infrastructure")));
                             
-                var mongoClient = new MongoClient("mongodb://localhost:27017");
+                var mongoClient = new MongoClient(mongoConnectionString);
 
-                var mongoDatabase = mongoClient.GetDatabase("AeroSentinelDbTest2");
+                var mongoDatabase = mongoClient.GetDatabase(mongoDatabaseName);
 
              services.AddSingleton<IMongoDatabase>(mongoDatabase);
               
