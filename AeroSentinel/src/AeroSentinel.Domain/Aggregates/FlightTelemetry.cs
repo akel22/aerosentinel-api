@@ -65,7 +65,7 @@ public sealed class FlightTelemetry //Aggregate root
         
         Status = TelemetryStatus.PendingVerification;
         
-        FailureReason = null;
+        FailureReason = String.Empty;
 
 
     }
@@ -83,7 +83,7 @@ public sealed class FlightTelemetry //Aggregate root
 
     public void MarkAsVerified()
     {
-        Status = TelemetryStatus.Verified;
+        Status = TelemetryStatus.Ongoing;
         FailureReason = string.Empty;
     }
 }

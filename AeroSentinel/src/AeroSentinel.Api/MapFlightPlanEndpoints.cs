@@ -19,7 +19,9 @@ public static class MapFlightPlanEndpoints
                     request.DepartureAirport,
                     request.DestinationAirport,
                     request.DepartureTimeUtc,
-                    request.EstimatedArrivalTimeUtc);
+                    request.EstimatedArrivalTimeUtc,
+                    request.ActualArrivalTimeUtc,
+                    request.FlightStatus);
 
                 await dbContext.flight_plan.AddAsync(flightPlan, cancellationToken);
                 await dbContext.SaveChangesAsync(cancellationToken);
@@ -44,7 +46,7 @@ public static class MapFlightPlanEndpoints
             }
 
             FlightPlanRoute route;
-            
+            //BULK INSERT
             try
             {
                 route = new FlightPlanRoute(flightPlanId, request.WaypointId, request.Sequence);

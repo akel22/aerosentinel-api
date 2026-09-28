@@ -2,10 +2,13 @@ namespace AeroSentinel.Domain.Extensions;
 
 public enum TelemetryStatus
 {
-    Verified,
-    Compromised,
-    Spoofed,    
-    PendingVerification
+    Ongoing,
+    Verified = Ongoing,
+    Spoofed,
+    Finished,
+
+    PendingVerification    
+    
 }
 
 public enum CredentialStatus
@@ -35,4 +38,12 @@ public enum AircraftManufacturer
     Airbus,
     Boeing,
     ATR
+}
+
+public enum FlightStatus 
+{
+    Ongoing,
+    Finished,
+    Cancelled
+
 }

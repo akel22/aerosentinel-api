@@ -22,12 +22,11 @@ public sealed class AircraftCredentialCacheService : IAircraftCredentialCacheSer
 
     public async Task<byte[]?> GetSharedVerificationAsync(string ICAO24, CancellationToken cancellationToken)
     {
-        var cacheKey = $"credential:{ICAO24}";
+        var cacheKey = $"credential:{ICAO24.ToUpperInvariant().Trim()}";
 
         if (_cache.TryGetValue(cacheKey, out byte[]? sharedKey))
         {
-            _logger.LogInformation("Credential cache hit");
-
+            _logger.LogInformation("Credential cache hit for {ICAO24}", ICAO24);
             return [.. sharedKey!];
         }
 
@@ -41,16 +40,15 @@ public sealed class AircraftCredentialCacheService : IAircraftCredentialCacheSer
             return null;
         }
 
-        sharedKey = [.. credential.VerificationKey];
+        sharedKey = Convert.FromHexString(credential.VerificationKey);
 
         var options = new MemoryCacheEntryOptions
         {
             SlidingExpiration = CacheDuration,
-
             Size = 1
         };
 
-        _cache.Set(cacheKey, sharedKey, options);
+        _cache.Set<byte[]>(cacheKey, [.. sharedKey], options);
 
         return [.. sharedKey];
     }

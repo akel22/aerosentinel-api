@@ -11,13 +11,17 @@ namespace AeroSentinel.Domain.Aggregates
         public DateTime DepartureTimeUtc { get; init; }
         public DateTime EstimatedArrivalTimeUtc { get; init; }
 
+        public DateTime ActualArrivalTimeUtc { get; init; }
+
+        public FlightStatus FlightStatus {get; private set;}
+
         private FlightPlan()
         {
 
         }
 
         public FlightPlan(string icao24, string callsign, string departureAirport, string destinationAirport, DateTime departureTimeUtc,
-        DateTime estimatedArrivalTimeUtc)
+        DateTime estimatedArrivalTimeUtc, DateTime actualArrivalTimeUtc, FlightStatus flightStatus)
         {
             FlightPlanId =  FlightTelemetryValidation.RequireValidFlightPlanId(Guid.NewGuid(), null);
 
@@ -36,6 +40,10 @@ namespace AeroSentinel.Domain.Aggregates
 
             EstimatedArrivalTimeUtc = PhilippineFlightPlanDetailsValidation.RequireValidArrivalTime
             (estimatedArrivalTimeUtc, departureTimeUtc, nameof(estimatedArrivalTimeUtc));
+
+            ActualArrivalTimeUtc = actualArrivalTimeUtc;
+
+            FlightStatus = flightStatus;
 
         }
     }

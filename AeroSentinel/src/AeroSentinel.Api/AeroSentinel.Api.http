@@ -22,9 +22,9 @@ Content-Type: application/json
 Accept: application/json
 
 {
-  "flightPlanId": "3f7d9c1a-c8df-48b4-91d6-f84d50f4ef61",
-  "icao24": "758802",
-  "callsign": "PAL123",
+  "flightPlanId": "c047f9c7-e1c2-4481-9f42-85c77cb6eaae",
+  "icao24": "758001",
+  "callsign": "CEB123",
   "squawk": "2145",
   "timestampUtc": "2026-07-06T08:30:00Z",
   "latitude": 14.599500,
@@ -33,13 +33,13 @@ Accept: application/json
   "geoAltitudeFeet": 33980,
   "groundSpeedKnots": 445,
   "trackAngleDegrees": 182.5,
-  "verticalRateFpm": -500,
-  "selectedAltitudeFeet": 32000,
+  "verticalRateFpm": 0,
+  "selectedAltitudeFeet": 34000,
   "indicatedAirspeedKnots": 285,
   "magneticHeadingDegrees": 181.0,
   "rollAngleDegrees": -2.8,
   "sequence": 1,
-  "signature": "A7F2C4B8D2E13A91F3C82DAB4E129D8A6F92B8E11A4DCC7F2B9E41D1A0F45E22"
+  "signature": "9B0AF36570AEB56EDAD9660834A036E50B8F562BBC69B480E5F8BBE0165F680F"
 }
 
 ###
@@ -59,12 +59,12 @@ Content-Type: application/json
 Accept: application/json
 
 {
-  "icao24": "758822",
-  "callsign": "CEB123",
-  "departureAirport": "RPVM",
-  "destinationAirport": "RPLL",
-  "departureTimeUtc": "2026-08-03T09:00:00Z",
-  "estimatedArrivalTimeUtc": "2026-08-03T10:30:00Z"
+  "icao24": "758002",
+  "callsign": "MNL123",
+  "departureAirport": "RPLL",
+  "destinationAirport": "RPVM",
+  "departureTimeUtc": "2026-10-03T09:00:00Z",
+  "estimatedArrivalTimeUtc": "2026-10-03T10:30:00Z"
 }
 
 ### Add the first route waypoint
@@ -74,7 +74,7 @@ Content-Type: application/json
 Accept: application/json
 
 {
-  "waypointId": "ALDIN",
+  "waypointId": "ABMBS",
   "sequence": 1
 }
 
@@ -84,6 +84,7 @@ Content-Type: application/json
 Accept: application/json
 
 {
-  "waypointId": "ABMBS",
+  "waypointId": "ALDIN",
   "sequence": 2
 }
+
